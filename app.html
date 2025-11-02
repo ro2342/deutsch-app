@@ -11,6 +11,10 @@
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Ionicons Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     
     <!-- Estilos CSS -->
     <style>
@@ -317,30 +321,30 @@
     </div>
     
     <!-- ATUALIZAÇÃO: Barra de Navegação "Liquid Glass" -->
-    <nav class="liquid-nav-container">
-        <div class="liquid-nav">
-            <!-- 3. A Pílula Líquida (controlada por JS) -->
-            <div id="nav-liquid-pill" class="liquid-pill"></div>
-            
-            <!-- Links (data-link-id é usado pelo JS) -->
-            <a href="#/home" class="nav-link" data-link-id="home">
-                <i data-lucide="home" class="w-5 h-5"></i>
-                <span>Início</span>
-            </a>
-            <a href="#/map" class="nav-link" data-link-id="map">
-                <i data-lucide="map" class="w-5 h-5"></i>
-                <span>Mapa</span>
-            </a>
-            <a href="#/progress" class="nav-link" data-link-id="progress">
-                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-                <span>Progresso</span>
-            </a>
-            <a href="#/settings" class="nav-link" data-link-id="settings">
-                <i data-lucide="settings" class="w-5 h-5"></i>
-                <span>Ajustes</span>
-            </a>
-        </div>
-    </nav>
+<nav class="liquid-nav-container">
+    <div class="liquid-nav">
+        <div id="nav-liquid-pill" class="liquid-pill"></div>
+        <a href="#/home" class="nav-link" data-link-id="home">
+            <ion-icon name="home-outline" class="w-5 h-5"></ion-icon>
+            <span>Início</span>
+        </a>
+
+        <a href="#/map" class="nav-link" data-link-id="map">
+            <ion-icon name="map-outline" class="w-5 h-5"></ion-icon>
+            <span>Mapa</span>
+        </a>
+
+        <a href="#/progress" class="nav-link" data-link-id="progress">
+            <ion-icon name="stats-chart-outline" class="w-5 h-5"></ion-icon>
+            <span>Progresso</span>
+        </a>
+
+        <a href="#/settings" class="nav-link" data-link-id="settings">
+            <ion-icon name="settings-outline" class="w-5 h-5"></ion-icon>
+            <span>Ajustes</span>
+        </a>
+    </div>
+</nav>
     
     <!-- Scripts de Dados -->
     <script src="themes.js"></script>
