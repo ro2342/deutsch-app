@@ -1,5 +1,6 @@
 // app.js - Lógica principal do App Deutsch A1.1 (Vanilla JS)
 // ATUALIZAÇÃO: Unificado com Ionicons para um visual estilo iOS.
+// CORREÇÃO: Ajuste no cálculo da "liquid-pill" para centralização perfeita.
 
 // Importações do Firebase (SDK 9 modular)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -204,7 +205,6 @@ function showModal(title, contentHtml) {
         </div>
     `;
     modalContainer.classList.remove('hidden');
-    // safeCreateIcons() removido;
 
     modalContainer.addEventListener('click', hideModal);
     modalContent.addEventListener('click', (e) => e.stopPropagation());
@@ -285,8 +285,6 @@ function router() {
         document.getElementById('page-home').classList.remove('hidden');
         renderHome();
     }
-    
-    // safeCreateIcons() removido
 }
 
 // --- ATUALIZAÇÃO: LÓGICA DA BARRA DE NAVEGAÇÃO "LIQUID GLASS" ---
@@ -320,11 +318,16 @@ function moveLiquidPill(activeLinkEl) {
         const navRect = navContainer.getBoundingClientRect();
         const linkRect = activeLinkEl.getBoundingClientRect();
         
-        // Calcula a posição da pílula relativa ao container
-        // Considera o padding do container (0.5rem = 8px)
-        const containerPadding = 8;
-        const pillLeft = linkRect.left - navRect.left - containerPadding;
+        // --- INÍCIO DA CORREÇÃO ---
+        // O cálculo da posição da pílula
+        // A pílula (absolute) é relativa ao navContainer (relative).
+        // A posição 'left' da pílula deve ser a diferença entre
+        // o 'left' do link e o 'left' do container.
+        // A subtração anterior do 'containerPadding' estava incorreta.
+        
+        const pillLeft = linkRect.left - navRect.left;
         const pillWidth = linkRect.width;
+        // --- FIM DA CORREÇÃO ---
 
         // Aplica as transformações com animação suave
         liquidPill.style.left = `${pillLeft}px`;
@@ -468,8 +471,6 @@ function renderMap() {
             startLektion(lektionId);
         };
     });
-    
-    // safeCreateIcons() removido
 }
 
 function renderProgress() {
@@ -506,8 +507,6 @@ function renderProgress() {
             </div>
         </div>
     `;
-    
-    // safeCreateIcons() removido
 }
 
 function renderSettings() {
@@ -649,7 +648,6 @@ function renderExercisePage() {
         window.location.hash = '#/map';
     };
     
-    // safeCreateIcons() removido
     renderCurrentExerciseOnPage();
 }
 
@@ -749,8 +747,6 @@ function renderCurrentExerciseOnPage() {
     
     document.getElementById('grammar-btn').onclick = showGrammarModal;
     document.getElementById('action-btn').onclick = feedback ? nextExercise : checkAnswer;
-    
-    // safeCreateIcons() removido
 }
 
 function showGrammarModal() {
