@@ -26,7 +26,7 @@ let profileUnsubscribe = () => {};
 let userProfile = {
     score: 0,
     completedLektions: [],
-    inProgressLektions: {}, // Salva o progresso no meio da lição
+    inProgressLektions: {},
     theme: 'taylorSwift',
     name: 'Estudante',
     avatarUrl: ''
@@ -45,9 +45,6 @@ let userAnswer = '';
 let feedback = null;
 
 // --- FUNÇÃO DE AJUDA PARA ÍCONES ---
-/**
- * Executa o lucide.createIcons() de forma segura.
- */
 function safeCreateIcons() {
     if (window.lucide) {
         try {
@@ -95,7 +92,6 @@ function initFirebase() {
 function initializeAppLogic() {
     console.log("App lógico iniciado para o usuário:", userId);
     
-    // ATUALIZAÇÃO: Adiciona CSS dinâmico para legibilidade dos temas
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = `.text-secondary { color: var(--text); opacity: 0.7; }`;
@@ -103,12 +99,13 @@ function initializeAppLogic() {
     
     listenToProfile();
     window.addEventListener('hashchange', router);
-    
-    // Adiciona o listener para o "popstate" (botão de voltar do navegador)
     window.addEventListener('popstate', router);
+    
+    // Inicializa a navegação líquida
+    initLiquidNav();
 }
 
-// --- SISTEMA DE TEMAS (Inspirado no BookTracker) ---
+// --- SISTEMA DE TEMAS ---
 
 function applyTheme(themeName, saveToDb = true) {
     const theme = allThemes[themeName];
@@ -117,7 +114,6 @@ function applyTheme(themeName, saveToDb = true) {
         return;
     }
 
-    // Define as variáveis CSS globais
     document.documentElement.style.setProperty('--primary', theme.primary);
     document.documentElement.style.setProperty('--accent', theme.accent);
     document.documentElement.style.setProperty('--bg', theme.bg);
@@ -125,11 +121,9 @@ function applyTheme(themeName, saveToDb = true) {
     document.documentElement.style.setProperty('--text', theme.text);
     document.documentElement.style.setProperty('--border', theme.border);
     
-    // ATUALIZAÇÃO: Adiciona valores RGB para o "Glassmorphism"
     document.documentElement.style.setProperty('--text-rgb', theme['text-rgb'] || '45, 32, 51');
     document.documentElement.style.setProperty('--card-rgb', theme['card-rgb'] || '240, 230, 255');
     document.documentElement.style.setProperty('--border-rgb', theme['border-rgb'] || '216, 195, 232');
-
 
     currentTheme = themeName;
     localStorage.setItem('deutschAppTheme', themeName);
@@ -141,7 +135,6 @@ function applyTheme(themeName, saveToDb = true) {
 
 // --- FUNÇÕES DE DADOS (FIRESTORE) ---
 
-// Ouve as mudanças no perfil do usuário
 function listenToProfile() {
     if (profileUnsubscribe) profileUnsubscribe();
     if (!userId) return;
@@ -153,8 +146,8 @@ function listenToProfile() {
         if (docSnap.exists()) {
             const data = docSnap.data();
             userProfile = {
-                ...userProfile, // Mantém padrões
-                ...data, // Sobrescreve com dados do FB
+                ...userProfile,
+                ...data,
                 name: data.name || googleUser?.displayName || 'Estudante',
                 avatarUrl: data.avatarUrl || googleUser?.photoURL || ''
             };
@@ -171,21 +164,19 @@ function listenToProfile() {
                 uid: userId,
                 email: googleUser?.email || ''
             };
-            // Usa setDoc para criar o documento
             saveProfileData(userProfile, false); 
         }
         
         applyTheme(userProfile.theme || 'taylorSwift', false);
         
         document.getElementById('page-loader').classList.add('hidden');
-        router(); // Roda o router pela primeira vez
+        router();
     }, (error) => {
         console.error("Erro ao ouvir perfil:", error);
         document.getElementById('page-loader').innerHTML = `<p class="text-red-500">Erro ao carregar perfil: ${error.message}</p>`;
     });
 }
 
-// Função genérica para salvar dados no perfil
 async function saveProfileData(dataToSave, showLoadingFeedback = true) {
     if (!userId) return;
 
@@ -193,7 +184,6 @@ async function saveProfileData(dataToSave, showLoadingFeedback = true) {
     if (showLoadingFeedback) showLoading("Salvando...");
 
     try {
-        // Usa setDoc com merge: true para criar ou atualizar
         await setDoc(profileDocRef, {
             ...dataToSave,
             lastUpdated: serverTimestamp()
@@ -201,21 +191,19 @@ async function saveProfileData(dataToSave, showLoadingFeedback = true) {
         
         if (showLoadingFeedback) hideModal();
         console.log("Dados salvos com sucesso:", dataToSave);
-    } catch (error)
-    {
+    } catch (error) {
         console.error("Erro ao salvar dados do perfil:", error);
         if (showLoadingFeedback) hideModal();
         showModal("Erro ao Salvar", `Não foi possível salvar seu progresso: ${error.message}`);
     }
 }
 
-// --- SISTEMA DE MODAL (Gramática, Loading) ---
+// --- SISTEMA DE MODAL ---
 
 const modalContainer = document.getElementById('modal-container');
 const modalContent = document.getElementById('modal-content');
 
 function showModal(title, contentHtml) {
-    // ATUALIZAÇÃO: O estilo agora é controlado pelo CSS
     modalContent.innerHTML = `
         <button id="modal-close-btn">
             <i data-lucide="x" class="w-5 h-5"></i>
@@ -247,7 +235,6 @@ function handleEscKey(event) {
 }
 
 function showLoading(message = 'Carregando...') {
-    // Usa o mesmo estilo de modal para consistência
     modalContent.innerHTML = `
         <div class="flex flex-col items-center justify-center p-8 text-center" style="color: var(--text);">
             <svg class="animate-spin h-8 w-8 mb-4" style="color: var(--primary);" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -263,7 +250,7 @@ function showLoading(message = 'Carregando...') {
     document.removeEventListener('keydown', handleEscKey);
 }
 
-// --- ROUTER (Inspirado no BookTracker) ---
+// --- ROUTER ---
 
 const pages = ['home', 'map', 'progress', 'settings', 'exercise'];
 
@@ -281,7 +268,6 @@ function router() {
     const [path] = currentHash.substring(2).split('/');
     
     if (path === 'menu') {
-        // Lógica de menu modal (se necessário)
         return;
     }
 
@@ -290,7 +276,7 @@ function router() {
     }
 
     hideAllPages();
-    updateNavLinks(path || 'home'); // ATUALIZADO: Passa só o 'path'
+    updateNavLinks(path || 'home');
 
     const targetPage = document.getElementById(`page-${path}`);
     if (targetPage) {
@@ -330,7 +316,7 @@ function updateNavLinks(activePath) {
         }
     });
 
-    // 2. Move a pílula líquida
+    // 2. Move a pílula líquida com animação
     moveLiquidPill(activeLinkEl);
 }
 
@@ -345,18 +331,38 @@ function moveLiquidPill(activeLinkEl) {
         const linkRect = activeLinkEl.getBoundingClientRect();
         
         // Calcula a posição da pílula relativa ao container
-        const pillLeft = linkRect.left - navRect.left;
+        // Considera o padding do container (0.5rem = 8px)
+        const containerPadding = 8;
+        const pillLeft = linkRect.left - navRect.left - containerPadding;
         const pillWidth = linkRect.width;
 
+        // Aplica as transformações com animação suave
         liquidPill.style.left = `${pillLeft}px`;
         liquidPill.style.width = `${pillWidth}px`;
         liquidPill.style.opacity = '1';
+        
+        // Adiciona um leve "bounce" ao mover
+        liquidPill.style.transform = 'scale(1.05)';
+        setTimeout(() => {
+            liquidPill.style.transform = 'scale(1)';
+        }, 150);
     } else {
         // Esconde a pílula se nenhuma rota estiver ativa (ex: #/exercise)
         liquidPill.style.opacity = '0';
+        liquidPill.style.transform = 'scale(0.95)';
     }
 }
 
+// Inicializa a posição da pílula quando a página carregar
+function initLiquidNav() {
+    const currentHash = window.location.hash || '#/home';
+    const [path] = currentHash.substring(2).split('/');
+    
+    // Aguarda um frame para garantir que o DOM está pronto
+    requestAnimationFrame(() => {
+        updateNavLinks(path || 'home');
+    });
+}
 
 // --- RENDERIZAÇÃO DE PÁGINAS ---
 
@@ -566,7 +572,7 @@ function renderSettings() {
         btn.onclick = () => {
             const themeName = btn.dataset.theme;
             applyTheme(themeName, true);
-            renderSettings(); // Re-renderiza para mostrar a seleção
+            renderSettings();
         };
     });
     
@@ -585,20 +591,14 @@ function renderSettings() {
 
 // --- LÓGICA DE LIÇÃO E EXERCÍCIOS ---
 
-/**
- * Converte o texto simples (quase-markdown) das explicações em HTML.
- */
 function parseSimpleMarkdown(text = '') {
     return text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Negrito
-        .replace(/• (.*?)(\n|$)/g, '<ul><li>$1</li></ul>') // Listas
-        .replace(/<\/ul><ul>/g, '') // Junta listas
-        .replace(/\n/g, '<br>'); // Quebra de linha
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/• (.*?)(\n|$)/g, '<ul><li>$1</li></ul>')
+        .replace(/<\/ul><ul>/g, '')
+        .replace(/\n/g, '<br>');
 }
 
-/**
- * Inicia uma lição.
- */
 async function startLektion(lektionId) {
     const lektion = allLektions.find(l => l.id === lektionId);
     if (!lektion) {
@@ -608,9 +608,6 @@ async function startLektion(lektionId) {
 
     currentLektion = lektion;
     
-    // ATUALIZAÇÃO: Verifica se há progresso salvo
-    // Temos que ler UMA VEZ do banco de dados, pois o userProfile pode estar
-    // um pouco desatualizado se o usuário fechou o app rápido.
     const profileDocRef = doc(db, "users", userId, "profile", "data");
     const docSnap = await getDoc(profileDocRef);
     const profileData = docSnap.data() || {};
@@ -629,9 +626,6 @@ async function startLektion(lektionId) {
     window.location.hash = '#/exercise';
 }
 
-/**
- * Renderiza a PÁGINA de exercício
- */
 function renderExercisePage() {
     const page = document.getElementById('page-exercise');
 
@@ -661,8 +655,7 @@ function renderExercisePage() {
     `;
     
     document.getElementById('back-to-map-btn').onclick = () => {
-        // Simplesmente volta ao mapa. O progresso já está salvo.
-        currentLektion = null; // Limpa a lição atual
+        currentLektion = null;
         window.location.hash = '#/map';
     };
     
@@ -670,9 +663,6 @@ function renderExercisePage() {
     renderCurrentExerciseOnPage();
 }
 
-/**
- * Renderiza o exercício ATUAL dentro da página
- */
 function renderCurrentExerciseOnPage() {
     const container = document.getElementById('exercise-container-page');
     if (!container || !currentLektion) return;
@@ -762,7 +752,7 @@ function renderCurrentExerciseOnPage() {
             btn.onclick = () => {
                 if (feedback) return;
                 userAnswer = btn.dataset.option;
-                renderCurrentExerciseOnPage(); // Re-renderiza para mostrar a seleção
+                renderCurrentExerciseOnPage();
             };
         });
     }
@@ -773,9 +763,6 @@ function renderCurrentExerciseOnPage() {
     safeCreateIcons();
 }
 
-/**
- * Abre o modal de gramática
- */
 function showGrammarModal() {
     if (!currentLektion) return;
 
@@ -787,7 +774,7 @@ function showGrammarModal() {
     const grammarHtml = currentLektion.grammarKeys.map(key => {
         const explanation = allGrammar[key];
         return explanation ? `
-            <div classmb-6>
+            <div class="mb-6">
                 <h3 class="text-xl font-bold mb-3" style="color: var(--primary);">${explanation.title}</h3>
                 <div class="text-gray-700 whitespace-pre-line leading-relaxed break-words">
                     ${parseSimpleMarkdown(explanation.content)}
@@ -796,13 +783,9 @@ function showGrammarModal() {
         ` : `<p class="text-red-500">Erro: Tópico de gramática "${key}" não encontrado.</p>`;
     }).join('<hr class="my-6">');
     
-    // ATUALIZAÇÃO: O título agora é fixo no CSS, passamos só o conteúdo
     showModal("Explicações Gramaticais 📚", grammarHtml);
 }
 
-/**
- * Verifica a resposta
- */
 function checkAnswer() {
     if (!userAnswer) return;
     
@@ -827,11 +810,9 @@ function checkAnswer() {
     };
 
     if (isCorrect) {
-        // Adiciona pontos
         const newScore = (userProfile.score || 0) + 10;
         userProfile.score = newScore;
         
-        // ATUALIZAÇÃO: Salva o progresso parcial da lição
         const nextIndex = currentExerciseIndex + 1;
         const currentLektionId = currentLektion.id;
         
@@ -849,9 +830,6 @@ function checkAnswer() {
     renderCurrentExerciseOnPage();
 }
 
-/**
- * Avança para o próximo exercício
- */
 async function nextExercise() {
     if (currentExerciseIndex < currentLektion.exercises.length - 1) {
         currentExerciseIndex++;
@@ -863,9 +841,6 @@ async function nextExercise() {
     }
 }
 
-/**
- * Finaliza a lição
- */
 async function finishLektion() {
     showLoading("Salvando progresso...");
     
@@ -875,7 +850,6 @@ async function finishLektion() {
         userProfile.completedLektions = completed;
     }
     
-    // ATUALIZAÇÃO: Remove o progresso "em andamento"
     if (userProfile.inProgressLektions) {
         delete userProfile.inProgressLektions[currentLektion.id];
     }
@@ -892,5 +866,3 @@ async function finishLektion() {
 
 // --- INICIALIZAÇÃO DO APP ---
 initFirebase();
-
-
