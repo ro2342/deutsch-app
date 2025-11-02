@@ -17,7 +17,6 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     
     <style>
-        /* Define as variáveis do tema na raiz */
         :root {
             --primary: #8e44ad;
             --accent: #9b59b6;
@@ -25,27 +24,23 @@
             --card: #f0e6ff;
             --text: #2d2033;
             --border: #d8c3e8;
-            /* Valores RGB para transparência */
             --text-rgb: 45, 32, 51;
             --card-rgb: 240, 230, 255;
             --border-rgb: 216, 195, 232;
         }
 
-        /* --- CORREÇÃO DO BUG DO BACKGROUND --- */
         html {
-            background: var(--bg); /* Aplicado ao HTML */
-            min-height: 100vh; /* Garante que o gradiente preencha toda a altura */
+            background: var(--bg);
+            min-height: 100vh;
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            /* background foi removido daqui */
             color: var(--text);
             transition: color 0.3s;
             padding-bottom: 100px;
         }
 
-        /* Título grande para páginas de Ajustes */
         .ios-main-title {
             font-size: 2.25rem; /* 36px */
             font-weight: 700; /* bold */
@@ -53,14 +48,13 @@
             margin-bottom: 1.5rem; /* 24px */
         }
 
-        /* Cabeçalho para sub-páginas (com botão voltar) */
         .ios-subpage-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding-top: 1.5rem; /* 24px */
             margin-bottom: 1.5rem; /* 24px */
-            position: relative; /* Para centralizar o título */
+            position: relative;
         }
         .ios-subpage-header .back-link {
             display: flex;
@@ -68,21 +62,21 @@
             color: var(--primary);
             font-size: 1.05rem; /* 17px */
             text-decoration: none;
-            position: absolute; /* Para não empurrar o título */
+            position: absolute;
             left: 0;
         }
         .ios-subpage-header .back-link ion-icon {
             font-size: 1.75rem; /* 28px */
-            margin-right: -4px; /* Ajuste fino do ícone */
+            margin-right: -4px;
         }
         .ios-subpage-header h2 {
             font-size: 1.05rem; /* 17px */
             font-weight: 600;
             text-align: center;
-            width: 100%; /* Ocupa todo o espaço para centralizar */
+            width: 100%;
         }
 
-        /* Estilo .card (Mantido para páginas como Progresso e Exercício) */
+        /* Estilo .card */
         .card {
             background-color: var(--card);
             border: 1px solid var(--border);
@@ -115,7 +109,6 @@
             transition: background-color 0.1s ease-out;
         }
 
-        /* Estilo para item da conta */
         a.account-header-item {
             cursor: pointer;
             text-decoration: none;
@@ -129,7 +122,6 @@
             margin-left: auto;
         }
 
-        /* Estilo para botões "destrutivos" (ex: Logout) */
         .inset-group-item.destructive {
             color: #ef4444;
             font-weight: 500;
@@ -138,7 +130,6 @@
              background-color: rgba(239, 68, 68, 0.1);
         }
         
-        /* Estilo para item de navegação (como o "Tema") */
         .inset-group-item.navigation-item {
             justify-content: space-between;
             cursor: pointer;
@@ -150,7 +141,6 @@
             opacity: 0.6;
         }
         
-        /* Estilo para lista de seleção de tema */
         .theme-option-item {
             width: 100%;
             justify-content: space-between;
@@ -162,6 +152,29 @@
             font-size: 1.5rem; /* 24px */
         }
 
+        /* --- NOVO: Estilo para seleção de Cor de Destaque --- */
+        .accent-color-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .accent-color-option::before {
+            content: '';
+            width: 28px;
+            height: 28px;
+            border-radius: 99px;
+            background-color: var(--swatch-color, #ccc); /* Será definido inline */
+            border: 2px solid rgba(var(--text-rgb), 0.1);
+            margin-right: 1rem;
+        }
+        .accent-color-option ion-icon {
+            color: var(--primary);
+            font-size: 1.5rem; /* 24px */
+            margin-left: auto;
+        }
 
         /* Botões e Inputs */
         .btn-primary {
@@ -403,7 +416,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
-            user-select: none; /* Impede a seleção de texto */
+            user-select: none;
         }
         .word-token:hover {
             background-color: rgba(var(--text-rgb), 0.12);
@@ -416,7 +429,7 @@
         }
         .word-bank .word-token.hidden {
             opacity: 0.3;
-            pointer-events: none; /* Não pode ser clicado */
+            pointer-events: none;
         }
         #reset-words-btn {
             background: none;
@@ -425,12 +438,9 @@
             font-weight: 500;
             cursor: pointer;
             padding: 0.25rem;
-            margin-left: auto; /* Joga para a direita */
-            display: none; /* Começa escondido */
+            margin-left: auto;
+            display: none;
         }
-
-        /* --- REMOVIDO: Estilos .fortune-box --- */
-        
     </style>
 
 </head>
@@ -491,9 +501,9 @@
         </div>
     </nav>
     
-    <script src="themes.js"></script>
-    <script src="grammarExplanations.js"></script>
+    <script src="themes.js"></script> <script src="grammarExplanations.js"></script>
     <script src="exercisesData.js"></script>
+    
     <script type="module" src="main.js"></script> 
 </body>
 </html>

@@ -6,11 +6,9 @@ import { renderMap } from './pageMap.js';
 import { renderProgress } from './pageProgress.js';
 import { renderSettings, renderThemeSettings } from './pageSettings.js';
 import { renderReview } from './pageReview.js'; 
-// NOVO: Importa a página de perfil
 import { renderProfileSettings } from './pageProfile.js';
 import { renderExercisePage } from '../exerciseService.js'; 
 
-// ATUALIZAÇÃO: Adiciona 'settings-profile'
 const pages = [
     'home', 'map', 'progress', 'review', 'settings', 'exercise', 
     'settings-theme', 'settings-profile'
@@ -30,20 +28,20 @@ function showPage(pageId) {
     }
 }
 
-export function router(path, subpath, userProfile, allLektions, allThemes) {
+/**
+ * ATUALIZADO: O router agora recebe 'baseThemes' e 'accentColors'
+ */
+export function router(path, subpath, userProfile, allLektions, baseThemes, accentColors) {
     if (!userProfile) return; // Proteção
 
     hideModal();
     hideAllPages();
     
-    // ATUALIZAÇÃO: A barra de navegação só fica ativa na rota principal
     if (path === 'settings' && !subpath) {
         updateNavLinks(path);
     } else if (path !== 'settings') {
          updateNavLinks(path);
     } else {
-        // Se for subpágina de settings (como /theme ou /profile),
-        // mantém o ícone de 'settings' ativo
         updateNavLinks('settings');
     }
 
@@ -68,20 +66,20 @@ export function router(path, subpath, userProfile, allLektions, allThemes) {
         case 'settings':
             if (subpath === 'theme') {
                 showPage('settings-theme');
-                renderThemeSettings(userProfile, allThemes);
-            // NOVO: Rota para a página de perfil
+                // ATUALIZADO: Passa os novos objetos de tema
+                renderThemeSettings(userProfile, baseThemes, accentColors);
             } else if (subpath === 'profile') {
                 showPage('settings-profile');
                 renderProfileSettings(userProfile);
             } else {
-                // Página principal de ajustes
                 showPage('settings');
-                renderSettings(userProfile, allThemes);
+                // ATUALIZADO: Não precisa mais passar os temas para a pág. principal
+                renderSettings(userProfile);
             }
             break;
         case 'exercise': 
             showPage('exercise');
-            renderExercisePage(); // O exerciseService cuida de si mesmo
+            renderExercisePage(); 
             break;
         default:
             showPage('home');

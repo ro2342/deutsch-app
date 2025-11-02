@@ -53,13 +53,14 @@ export async function signOutUser() {
 export function listenToProfile(userId, onProfileUpdate) {
     const profileDocRef = doc(db, "users", userId, "profile", "data");
     
-    // Perfil Padrão com as novas propriedades
+    // Perfil Padrão com as novas propriedades de tema
     const defaultProfile = {
         score: 0,
         inProgressLektions: {},
         lektionStats: {}, 
         failedExercises: {}, 
-        theme: 'verzaubert', // ATUALIZADO: Novo tema padrão
+        themeBase: 'light',     // ATUALIZADO
+        themeAccent: 'purple',  // ATUALIZADO
         name: 'Estudante',
         avatarUrl: ''
     };
@@ -76,6 +77,8 @@ export function listenToProfile(userId, onProfileUpdate) {
                 name: data.name || googleUser?.displayName || 'Estudante',
                 avatarUrl: data.avatarUrl || googleUser?.photoURL || ''
             };
+            // Remove o 'theme' antigo se ele ainda existir
+            if (userProfile.theme) delete userProfile.theme; 
         } else {
             console.log("Nenhum perfil encontrado, criando um novo...");
             userProfile = {
@@ -124,12 +127,41 @@ export async function saveProfileData(userId, dataToSave) {
 export async function getProfileDataOnce(userId) {
     const profileDocRef = doc(db, "users", userId, "profile", "data");
     const docSnap = await getDoc(profileDocRef);
-    return {
+    
+    // Garante que o perfil retornado tenha os campos padrão
+    const data = docSnap.data() || {};
+    const profile = {
         score: 0,
         inProgressLektions: {},
         lektionStats: {},
         failedExercises: {},
-        theme: 'verzaubert', // ATUALIZADO: Novo tema padrão
-        ...docSnap.data()
-    } || {};
+        themeBase: 'light',
+        themeAccent: 'purple',
+        ...data
+    };
+    
+    // Lógica de migração: se o 'theme' antigo existir, converte-o
+    if (profile.theme) {
+        // Tenta mapear o tema antigo para uma cor de destaque
+        const themeMap = {
+            'taylorSwift': 'beige',
+            'fearless': 'yellow',
+            'speakNow': 'purple',
+            'red': 'red',
+            'nineteen89': 'lightBlue',
+            'reputation': 'gray',
+            'lover': 'pink',
+            'folklore': 'gray',
+            'evermore': 'brown',
+            'midnights': 'darkBlue',
+            'ttpd': 'gray',
+            'showgirl': 'orange'
+        };
+        profile.themeAccent = themeMap[profile.theme] || 'purple';
+        // Define o modo base com base no tema antigo
+        profile.themeBase = (profile.theme === 'dark' || profile.theme === 'reputation' || profile.theme === 'midnights') ? 'dark' : 'light';
+        delete profile.theme; // Remove o campo antigo
+    }
+    
+    return profile;
 }

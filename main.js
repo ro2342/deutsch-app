@@ -14,14 +14,15 @@ let profileUnsubscribe = () => {};
 // Dados estáticos (carregados globalmente pelo app.html)
 const allLektions = window.exercisesData || [];
 const allGrammar = window.grammarExplanations || {};
-const allThemes = window.themes || {};
-// Frases da sorte não são importadas aqui, mas direto no pageHome.js
+// ATUALIZADO: Passa ambos os objetos de tema
+const baseThemes = window.baseThemes || {};
+const accentColors = window.accentColors || {};
 
 // --- Inicialização ---
 
 function initApp() {
     // 1. Inicializa serviços de UI
-    initThemeService(allThemes);
+    initThemeService(baseThemes, accentColors); // Passa ambos
     initLiquidNav();
 
     // 2. Inicializa serviço de Exercício (com dados estáticos)
@@ -41,8 +42,8 @@ function onUserLoggedIn(uid) {
         // 5. Atualiza o exerciseService com os dados dinâmicos do perfil
         updateExerciseServiceProfile(userProfile, userId);
 
-        // 6. Aplica o tema vindo do perfil
-        applyTheme(userProfile.theme || 'taylorSwift');
+        // 6. ATUALIZADO: Aplica o tema com base e destaque
+        applyTheme(userProfile.themeBase, userProfile.themeAccent);
         
         // 7. Esconde o loader e inicia o roteador
         hidePageLoader();
@@ -74,8 +75,8 @@ function handleRouting() {
     
     if (path === 'menu') return;
 
-    // Chama o roteador da UI com todos os dados
-    router(path, subpath, userProfile, allLektions, allThemes);
+    // ATUALIZADO: Passa os novos objetos de tema para o roteador
+    router(path, subpath, userProfile, allLektions, baseThemes, accentColors);
 }
 
 // --- Listeners de Eventos Globais ---
@@ -98,21 +99,43 @@ function addGlobalClickListeners() {
             return;
         }
 
-        // Listener para a lista de temas
-        const themeOptionItem = e.target.closest('.theme-option-item');
-        if (themeOptionItem) {
-            const themeName = themeOptionItem.dataset.theme;
-            applyTheme(themeName); 
+        // --- ATUALIZAÇÃO: Novos Listeners de Tema ---
+        
+        // 1. Listener para MODO DE EXIBIÇÃO (Claro/Escuro)
+        const baseThemeBtn = e.target.closest('[data-base-theme]');
+        if (baseThemeBtn) {
+            const newBase = baseThemeBtn.dataset.baseTheme;
+            userProfile.themeBase = newBase; // Atualiza o perfil local
+            applyTheme(newBase, userProfile.themeAccent); // Aplica imediatamente
             try {
-                saveProfileData(userId, { theme: themeName });
+                // Salva só o 'base' no Firebase
+                saveProfileData(userId, { themeBase: newBase });
             } catch (err) {
                 showModal("Erro", "Não foi possível salvar seu tema.");
             }
-            handleRouting();
+            handleRouting(); // Re-renderiza a página de temas
             return;
         }
 
-        // NOVO: Listener para salvar o perfil
+        // 2. Listener para COR DE DESTAQUE
+        const accentColorBtn = e.target.closest('[data-accent-color]');
+        if (accentColorBtn) {
+            const newAccent = accentColorBtn.dataset.accentColor;
+            userProfile.themeAccent = newAccent; // Atualiza o perfil local
+            applyTheme(userProfile.themeBase, newAccent); // Aplica imediatamente
+            try {
+                // Salva só o 'accent' no Firebase
+                saveProfileData(userId, { themeAccent: newAccent });
+            } catch (err) {
+                showModal("Erro", "Não foi possível salvar sua cor.");
+            }
+            handleRouting(); // Re-renderiza a página de temas
+            return;
+        }
+        
+        // --- Fim dos Listeners de Tema ---
+
+        // Listener para salvar o perfil
         const saveProfileBtn = e.target.closest('#save-profile-btn');
         if (saveProfileBtn) {
             const newName = document.getElementById('profile-name-input').value;

@@ -4,12 +4,10 @@ import { getPageHeader } from './components.js';
 /**
  * Renderiza a página principal de Ajustes (iOS-style)
  */
-export function renderSettings(userProfile, allThemes) {
+export function renderSettings(userProfile, allThemes) { // allThemes não é mais usado aqui
     const page = document.getElementById('page-settings');
     
-    // ATUALIZADO: Fallback para o novo tema padrão
-    const currentThemeName = userProfile.theme || 'verzaubert';
-    const currentTheme = allThemes[currentThemeName]?.name || 'Padrão';
+    // A lógica de 'currentTheme' foi movida para 'renderThemeSettings'
     const avatarUrl = userProfile.avatarUrl || `https://placehold.co/100x100/333/FFF?text=${userProfile.name.charAt(0)}`;
 
     page.innerHTML = `
@@ -28,8 +26,8 @@ export function renderSettings(userProfile, allThemes) {
 
         <div class="inset-group mb-6">
             <a href="#/settings/theme" class="inset-group-item navigation-item">
-                <span class="font-medium">Tema do Aplicativo</span>
-                <span class="item-value">${currentTheme}</span>
+                <span class="font-medium">Aparência</span>
+                <span class="item-value">Modo e Cor</span>
             </a>
         </div>
 
@@ -42,12 +40,17 @@ export function renderSettings(userProfile, allThemes) {
 }
 
 /**
- * Renderiza a sub-página de seleção de Tema
+ * ATUALIZADO: Renderiza a nova sub-página de Aparência
+ * @param {object} userProfile 
+ * @param {object} baseThemes (window.baseThemes)
+ * @param {object} accentColors (window.accentColors)
  */
-export function renderThemeSettings(userProfile, allThemes) {
+export function renderThemeSettings(userProfile, baseThemes, accentColors) {
     const page = document.getElementById('page-settings-theme');
-    // ATUALIZADO: Fallback para o novo tema padrão
-    const currentThemeName = userProfile.theme || 'verzaubert';
+    
+    // Define os padrões
+    const currentBase = userProfile.themeBase || 'light';
+    const currentAccent = userProfile.themeAccent || 'purple';
 
     page.innerHTML = `
         <div class="ios-subpage-header">
@@ -55,18 +58,34 @@ export function renderThemeSettings(userProfile, allThemes) {
                 <ion-icon name="chevron-back-outline"></ion-icon>
                 <span>Ajustes</span>
             </a>
-            <h2>Tema</h2>
+            <h2>Aparência</h2>
         </div>
 
+        <h3 class="text-secondary font-semibold uppercase text-xs mb-2 px-4">Modo de Exibição</h3>
         <div class="inset-group">
-            ${Object.keys(allThemes).map(themeName => {
-                const theme = allThemes[themeName];
-                const isSelected = themeName === currentThemeName;
-                
+            ${Object.keys(baseThemes).map(themeName => {
+                const theme = baseThemes[themeName];
+                const isSelected = themeName === currentBase;
                 return `
-                    <button class="inset-group-item theme-option-item" data-theme="${themeName}">
+                    <button class="inset-group-item theme-option-item" data-base-theme="${themeName}">
                         <span>${theme.name}</span>
                         ${isSelected ? '<ion-icon name="checkmark-outline"></ion-icon>' : ''}
+                    </button>
+                `;
+            }).join('')}
+        </div>
+        
+        <h3 class="text-secondary font-semibold uppercase text-xs mb-2 px-4 mt-8">Akzentfarbe (Cor em Destaque)</h3>
+        <div class="inset-group">
+            ${Object.keys(accentColors).map(colorKey => {
+                const color = accentColors[colorKey];
+                const isSelected = colorKey === currentAccent;
+                return `
+                    <button class="inset-group-item" data-accent-color="${colorKey}">
+                        <span class="accent-color-option" style="--swatch-color: ${color.primary};">
+                            <span>${color.name}</span>
+                            ${isSelected ? '<ion-icon name="checkmark-outline"></ion-icon>' : ''}
+                        </span>
                     </button>
                 `;
             }).join('')}

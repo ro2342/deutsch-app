@@ -1,33 +1,53 @@
 // ui/theme.js
 
-let allThemes = {};
+let allBaseThemes = {};
+let allAccentColors = {};
 
-export function initThemeService(themes) {
-    allThemes = themes;
+export function initThemeService(baseThemes, accentColors) {
+    allBaseThemes = baseThemes;
+    allAccentColors = accentColors;
+    
     // Aplica o tema salvo no localStorage imediatamente
-    const savedTheme = localStorage.getItem('deutschAppTheme');
-    if (savedTheme && allThemes[savedTheme]) {
-        applyTheme(savedTheme);
-    }
+    const savedBase = localStorage.getItem('deutschAppThemeBase') || 'light';
+    const savedAccent = localStorage.getItem('deutschAppThemeAccent') || 'purple';
+    
+    applyTheme(savedBase, savedAccent);
 }
 
-export function applyTheme(themeName) {
-    const theme = allThemes[themeName];
-    if (!theme) {
-        console.warn(`Tema "${themeName}" não encontrado.`);
-        return;
+/**
+ * Aplica o tema combinando uma base (light/dark) e uma cor de destaque.
+ * @param {string} baseName - "light" ou "dark"
+ * @param {string} accentName - "purple", "red", "teal", etc.
+ */
+export function applyTheme(baseName, accentName) {
+    const base = allBaseThemes[baseName];
+    const accent = allAccentColors[accentName];
+
+    if (!base) {
+        console.warn(`Tema base "${baseName}" não encontrado. Usando 'light'.`);
+        baseName = 'light';
+        base = allBaseThemes.light;
+    }
+    if (!accent) {
+        console.warn(`Cor de destaque "${accentName}" não encontrada. Usando 'purple'.`);
+        accentName = 'purple';
+        accent = allAccentColors.purple;
     }
 
-    // Define as variáveis CSS globais
-    document.documentElement.style.setProperty('--primary', theme.primary);
-    document.documentElement.style.setProperty('--accent', theme.accent);
-    document.documentElement.style.setProperty('--bg', theme.bg);
-    document.documentElement.style.setProperty('--card', theme.card);
-    document.documentElement.style.setProperty('--text', theme.text);
-    document.documentElement.style.setProperty('--border', theme.border);
-    document.documentElement.style.setProperty('--text-rgb', theme['text-rgb'] || '45, 32, 51');
-    document.documentElement.style.setProperty('--card-rgb', theme['card-rgb'] || '240, 230, 255');
-    document.documentElement.style.setProperty('--border-rgb', theme['border-rgb'] || '216, 195, 232');
+    // 1. Aplica todas as propriedades do tema BASE
+    document.documentElement.style.setProperty('--bg', base.bg);
+    document.documentElement.style.setProperty('--card', base.card);
+    document.documentElement.style.setProperty('--text', base.text);
+    document.documentElement.style.setProperty('--border', base.border);
+    document.documentElement.style.setProperty('--text-rgb', base['text-rgb']);
+    document.documentElement.style.setProperty('--card-rgb', base['card-rgb']);
+    document.documentElement.style.setProperty('--border-rgb', base['border-rgb']);
 
-    localStorage.setItem('deutschAppTheme', themeName);
+    // 2. Sobrescreve as cores de DESTAQUE
+    document.documentElement.style.setProperty('--primary', accent.primary);
+    document.documentElement.style.setProperty('--accent', accent.accent);
+
+    // 3. Salva as escolhas no localStorage
+    localStorage.setItem('deutschAppThemeBase', baseName);
+    localStorage.setItem('deutschAppThemeAccent', accentName);
 }
