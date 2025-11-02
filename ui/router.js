@@ -5,12 +5,16 @@ import { renderHome } from './pageHome.js';
 import { renderMap } from './pageMap.js';
 import { renderProgress } from './pageProgress.js';
 import { renderSettings, renderThemeSettings } from './pageSettings.js';
-// NOVO: Importa a página de revisão
 import { renderReview } from './pageReview.js'; 
-import { renderExercisePage } from '../exerciseService.js'; // Importa do nível acima
+// NOVO: Importa a página de perfil
+import { renderProfileSettings } from './pageProfile.js';
+import { renderExercisePage } from '../exerciseService.js'; 
 
-// ATUALIZAÇÃO: Adiciona 'review' e 'settings-theme'
-const pages = ['home', 'map', 'progress', 'review', 'settings', 'exercise', 'settings-theme'];
+// ATUALIZAÇÃO: Adiciona 'settings-profile'
+const pages = [
+    'home', 'map', 'progress', 'review', 'settings', 'exercise', 
+    'settings-theme', 'settings-profile'
+];
 
 function hideAllPages() {
     pages.forEach(pageId => {
@@ -26,16 +30,22 @@ function showPage(pageId) {
     }
 }
 
-/**
- * ATUALIZAÇÃO: O router agora recebe 'path' e 'subpath'
- */
 export function router(path, subpath, userProfile, allLektions, allThemes) {
     if (!userProfile) return; // Proteção
 
     hideModal();
     hideAllPages();
-    // A barra de navegação só fica ativa na rota principal 'settings'
-    updateNavLinks(path);
+    
+    // ATUALIZAÇÃO: A barra de navegação só fica ativa na rota principal
+    if (path === 'settings' && !subpath) {
+        updateNavLinks(path);
+    } else if (path !== 'settings') {
+         updateNavLinks(path);
+    } else {
+        // Se for subpágina de settings (como /theme ou /profile),
+        // mantém o ícone de 'settings' ativo
+        updateNavLinks('settings');
+    }
 
     // Lógica de roteamento atualizada
     switch (path) {
@@ -51,20 +61,22 @@ export function router(path, subpath, userProfile, allLektions, allThemes) {
             showPage('progress');
             renderProgress(userProfile, allLektions); 
             break;
-        // NOVO: Rota para a página de revisão
         case 'review':
             showPage('review');
             renderReview(userProfile, allLektions);
             break;
         case 'settings':
-            // Se houver uma sub-rota 'theme', mostra a página de temas
             if (subpath === 'theme') {
                 showPage('settings-theme');
                 renderThemeSettings(userProfile, allThemes);
+            // NOVO: Rota para a página de perfil
+            } else if (subpath === 'profile') {
+                showPage('settings-profile');
+                renderProfileSettings(userProfile);
             } else {
-                // Senão, mostra a página principal de ajustes
+                // Página principal de ajustes
                 showPage('settings');
-                renderSettings(userProfile, allThemes); // Passa 'allThemes'
+                renderSettings(userProfile, allThemes);
             }
             break;
         case 'exercise': 

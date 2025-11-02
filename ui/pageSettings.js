@@ -15,14 +15,14 @@ export function renderSettings(userProfile, allThemes) {
         <h1 class="ios-main-title">Ajustes</h1>
 
         <div class="inset-group mb-6">
-            <div class="inset-group-item account-header-item">
+            <a href="#/settings/profile" class="inset-group-item account-header-item">
                 <img src="${avatarUrl}" alt="Avatar" class="w-16 h-16 rounded-full object-cover">
                 <div class="flex-grow">
                     <h3 class="text-lg font-bold">${userProfile.name}</h3>
-                    <p class="text-sm text-secondary">${userProfile.email || 'Detalhes do perfil'}</p>
+                    <p class="text-sm text-secondary">${userProfile.email || 'Editar perfil'}</p>
                 </div>
                 <ion-icon name="chevron-forward-outline" class="w-5 h-5 text-secondary"></ion-icon>
-            </div>
+            </a>
         </div>
 
         <div class="inset-group mb-6">
@@ -41,7 +41,7 @@ export function renderSettings(userProfile, allThemes) {
 }
 
 /**
- * NOVO: Renderiza a sub-página de seleção de Tema
+ * Renderiza a sub-página de seleção de Tema
  */
 export function renderThemeSettings(userProfile, allThemes) {
     const page = document.getElementById('page-settings-theme');

@@ -1,6 +1,5 @@
 // main.js - Ponto de entrada principal do App
 import { db, auth, setupAuthListener, listenToProfile, saveProfileData, signOutUser } from './firebaseService.js';
-// ATUALIZADO: Importa 'startLektion' e o novo 'startReviewSession'
 import { initExerciseService, updateExerciseServiceProfile, startLektion, startReviewSession } from './exerciseService.js';
 import { initThemeService, applyTheme } from './ui/theme.js';
 import { showModal, hideModal, showLoading, hidePageLoader, showPageLoaderError } from './ui/modal.js';
@@ -16,6 +15,7 @@ let profileUnsubscribe = () => {};
 const allLektions = window.exercisesData || [];
 const allGrammar = window.grammarExplanations || {};
 const allThemes = window.themes || {};
+// Frases da sorte não são importadas aqui, mas direto no pageHome.js
 
 // --- Inicialização ---
 
@@ -64,23 +64,17 @@ function onUserLoggedOut() {
 
 // --- Roteador Principal ---
 
-/**
- * ATUALIZAÇÃO: O handleRouting agora divide a rota em 'path' e 'subpath'
- * Ex: #/settings/theme -> path = 'settings', subpath = 'theme'
- */
 function handleRouting() {
     if (!userId) return; 
     const currentHash = window.location.hash || '#/home';
     
-    // Remove o '#/' e divide a rota
     const parts = currentHash.substring(2).split('/');
     const path = parts[0] || 'home';
     const subpath = parts[1] || null;
     
     if (path === 'menu') return;
 
-    // Chama o roteador da UI com ambos os paths
-    // ATUALIZADO: Passa allLektions para o router
+    // Chama o roteador da UI com todos os dados
     router(path, subpath, userProfile, allLektions, allThemes);
 }
 
@@ -89,43 +83,62 @@ function handleRouting() {
 function addGlobalClickListeners() {
     document.body.addEventListener('click', async (e) => {
         
-        // Listener para o Mapa -> Iniciar Lição (Sem mudança)
+        // Listener para o Mapa -> Iniciar Lição
         const lektionCard = e.target.closest('.lektion-card:not(.locked)');
         if (lektionCard) {
             const lektionId = parseInt(lektionCard.dataset.lektionId);
-            startLektion(lektionId); // Chama o exerciseService
-            return; // Impede outros cliques
+            startLektion(lektionId); 
+            return; 
         }
 
-        // NOVO: Listener para a Página de Revisão -> Iniciar Sessão
+        // Listener para a Página de Revisão -> Iniciar Sessão
         const reviewBtn = e.target.closest('#start-review-btn');
         if (reviewBtn) {
-            startReviewSession(); // Chama o exerciseService
+            startReviewSession(); 
             return;
         }
 
-        // ATUALIZAÇÃO: Listener para a NOVA lista de temas
+        // Listener para a lista de temas
         const themeOptionItem = e.target.closest('.theme-option-item');
         if (themeOptionItem) {
             const themeName = themeOptionItem.dataset.theme;
-            applyTheme(themeName); // Chama o themeService
+            applyTheme(themeName); 
             try {
-                // Salva no Firebase sem bloquear a UI
                 saveProfileData(userId, { theme: themeName });
             } catch (err) {
                 showModal("Erro", "Não foi possível salvar seu tema.");
             }
-            // Re-renderiza a página de temas para mostrar o "check" no lugar certo
             handleRouting();
             return;
         }
 
-        // Listener para Configurações -> Logout (Sem mudança)
+        // NOVO: Listener para salvar o perfil
+        const saveProfileBtn = e.target.closest('#save-profile-btn');
+        if (saveProfileBtn) {
+            const newName = document.getElementById('profile-name-input').value;
+            if (!newName || newName.trim().length === 0) {
+                showModal("Erro", "O nome não pode ficar em branco.");
+                return;
+            }
+            
+            showLoading("Salvando...");
+            try {
+                await saveProfileData(userId, { name: newName.trim() });
+                hideModal();
+                window.location.hash = '#/settings'; // Volta para Ajustes
+            } catch (error) {
+                hideModal();
+                showModal("Erro ao Salvar", error.message);
+            }
+            return;
+        }
+
+        // Listener para Configurações -> Logout
         const logoutBtn = e.target.closest('#logout-btn');
         if (logoutBtn) {
             showLoading("Saindo...");
             try {
-                await signOutUser(); // Chama o firebaseService
+                await signOutUser(); 
             } catch (error) {
                 hideModal();
                 showModal("Erro ao Sair", error.message);

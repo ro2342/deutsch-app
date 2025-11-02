@@ -103,20 +103,23 @@
         .inset-group-item:last-child {
             border-bottom: none;
         }
+        /* ATUALIZAÇÃO: 'account-header-item' agora é um 'a' (link) */
         .inset-group-item:not(.locked):active,
-        .account-header-item:active {
+        a.account-header-item:active {
             background-color: rgba(var(--text-rgb), 0.05);
             transition: background-color 0.1s ease-out;
         }
 
         /* Estilo para item da conta */
-        .account-header-item {
+        a.account-header-item {
             cursor: pointer;
+            text-decoration: none;
+            color: var(--text);
         }
-        .account-header-item div {
+        a.account-header-item div {
             flex-grow: 1;
         }
-        .account-header-item ion-icon {
+        a.account-header-item ion-icon {
             flex-shrink: 0;
             margin-left: auto;
         }
@@ -189,6 +192,12 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(var(--primary), 0.3);
         }
+        /* NOVO: Foco no input de perfil */
+        #profile-name-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
         .progress-bar {
             background-color: var(--border);
         }
@@ -263,7 +272,7 @@
         }
         #modal-body strong {
             font-weight: 700;
-            color: var(--text); /* Corrigido de #000 para var(--text) */
+            color: var(--text); 
         }
         #modal-body ul {
             list-style-type: disc;
@@ -360,7 +369,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* --- NOVO: Estilos para Word Order --- */
+        /* --- Estilos para Word Order --- */
         .answer-area {
             min-height: 50px;
             background-color: rgba(var(--text-rgb), 0.02);
@@ -396,18 +405,15 @@
             background-color: rgba(var(--text-rgb), 0.12);
             transform: translateY(-2px);
         }
-        /* Estilo do token quando está na área de resposta */
         .answer-area .word-token {
             background-color: var(--primary);
             color: white;
             border-color: var(--primary);
         }
-        /* Estilo do token quando está no banco (e já foi usado) */
         .word-bank .word-token.hidden {
             opacity: 0.3;
             pointer-events: none; /* Não pode ser clicado */
         }
-        /* Botão de reset */
         #reset-words-btn {
             background: none;
             border: none;
@@ -417,6 +423,42 @@
             padding: 0.25rem;
             margin-left: auto; /* Joga para a direita */
             display: none; /* Começa escondido */
+        }
+
+        /* --- NOVO: Estilos para Sorte do Dia --- */
+        .fortune-box {
+            /* Inspirado no Orkut */
+            background-color: rgba(var(--primary), 0.05);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+        .fortune-box-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .fortune-box-header ion-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        .fortune-box-header h3 {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .fortune-box .fortune-de {
+            font-weight: 500;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+        .fortune-box .fortune-pt {
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.7;
+            line-height: 1.4;
         }
     </style>
 
@@ -438,10 +480,12 @@
         <div id="page-home"></div>
         <div id="page-map" class="hidden"></div>
         <div id="page-progress" class="hidden"></div>
+        <div id="page-review" class="hidden"></div>
         <div id="page-settings" class="hidden"></div>
         <div id="page-exercise" class="hidden pt-8"></div>
 
         <div id="page-settings-theme" class="hidden"></div>
+        <div id="page-settings-profile" class="hidden"></div>
         
     </div>
     
@@ -461,6 +505,10 @@
                 <ion-icon name="map-outline" class="w-5 h-5"></ion-icon>
                 <span>Mapa</span>
             </a>
+            <a href="#/review" class="nav-link" data-link-id="review">
+                <ion-icon name="heart-dislike-outline" class="w-5 h-5"></ion-icon>
+                <span>Revisão</span>
+            </a>
             <a href="#/progress" class="nav-link" data-link-id="progress">
                 <ion-icon name="stats-chart-outline" class="w-5 h-5"></ion-icon>
                 <span>Progresso</span>
@@ -475,6 +523,7 @@
     <script src="themes.js"></script>
     <script src="grammarExplanations.js"></script>
     <script src="exercisesData.js"></script>
+    <script type="module" src="data/fortunes.js"></script> 
     
     <script type="module" src="main.js"></script> 
 </body>
