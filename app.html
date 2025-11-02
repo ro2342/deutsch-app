@@ -47,7 +47,7 @@
             margin-bottom: 1.5rem; /* 24px */
         }
 
-        /* NOVO: Cabeçalho para sub-páginas (com botão voltar) */
+        /* Cabeçalho para sub-páginas (com botão voltar) */
         .ios-subpage-header {
             display: flex;
             align-items: center;
@@ -130,7 +130,7 @@
              background-color: rgba(239, 68, 68, 0.1);
         }
         
-        /* NOVO: Estilo para item de navegação (como o "Tema") */
+        /* Estilo para item de navegação (como o "Tema") */
         .inset-group-item.navigation-item {
             justify-content: space-between;
             cursor: pointer;
@@ -142,7 +142,7 @@
             opacity: 0.6;
         }
         
-        /* NOVO: Estilo para lista de seleção de tema */
+        /* Estilo para lista de seleção de tema */
         .theme-option-item {
             width: 100%;
             justify-content: space-between;
@@ -155,7 +155,7 @@
         }
 
 
-        /* Botões e Inputs (sem mudanças) */
+        /* Botões e Inputs */
         .btn-primary {
             background-color: var(--primary);
             color: white;
@@ -221,7 +221,7 @@
             opacity: 0.6;
         }
 
-        /* Modal com "Liquid Glass" (sem mudanças) */
+        /* Modal com "Liquid Glass" */
         #modal-container {
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
@@ -273,7 +273,7 @@
             line-height: 1.6;
         }
 
-        /* --- Estilos da Barra de Navegação "Liquid Glass" --- (Sem mudanças) */
+        /* --- Estilos da Barra de Navegação "Liquid Glass" --- */
         .liquid-nav-container {
             position: fixed;
             bottom: 1.5rem; 
@@ -367,7 +367,14 @@
     <div class="max-w-3xl mx-auto px-4">
         
         <div id="page-loader" class="fixed inset-0 z-[9999] flex items-center justify-center" style="background: var(--bg);">
+            <div class="text-center">
+                <svg class="animate-spin h-10 w-10 mx-auto mb-4" style="color: var(--primary);" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="font-medium text-lg">Carregando seu progresso...</p>
             </div>
+        </div>
         
         <div id="page-home"></div>
         <div id="page-map" class="hidden"></div>
@@ -385,7 +392,26 @@
     </div>
     
     <nav class="liquid-nav-container">
-        </nav>
+        <div class="liquid-nav">
+            <div id="nav-liquid-pill" class="liquid-pill"></div>
+            <a href="#/home" class="nav-link" data-link-id="home">
+                <ion-icon name="home-outline" class="w-5 h-5"></ion-icon>
+                <span>Início</span>
+            </a>
+            <a href="#/map" class="nav-link" data-link-id="map">
+                <ion-icon name="map-outline" class="w-5 h-5"></ion-icon>
+                <span>Mapa</span>
+            </a>
+            <a href="#/progress" class="nav-link" data-link-id="progress">
+                <ion-icon name="stats-chart-outline" class="w-5 h-5"></ion-icon>
+                <span>Progresso</span>
+            </a>
+            <a href="#/settings" class="nav-link" data-link-id="settings">
+                <ion-icon name="cog-outline" class="w-5 h-5"></ion-icon>
+                <span>Ajustes</span>
+            </a>
+        </div>
+    </nav>
     
     <script src="themes.js"></script>
     <script src="grammarExplanations.js"></script>
