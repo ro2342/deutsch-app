@@ -3,12 +3,30 @@ import { getPageHeader } from './components.js';
 
 export function renderSettings(userProfile, allThemes) {
     const page = document.getElementById('page-settings');
-    if (Object.keys(allThemes).length === 0) { /* ... (código de erro) ... */ }
+    if (Object.keys(allThemes).length === 0) { 
+        /* ... (código de erro) ... */ 
+        // Você pode adicionar uma mensagem de erro aqui se necessário
+    }
     
     const currentThemeName = userProfile.theme || 'taylorSwift';
+    
+    // Pega a lógica do avatar que já existe no seu components.js
+    const avatarUrl = userProfile.avatarUrl || `https://placehold.co/100x100/333/FFF?text=${userProfile.name.charAt(0)}`;
+
     page.innerHTML = `
-        ${getPageHeader(userProfile, 'Configurações')}
-        
+        ${getPageHeader(userProfile, 'Ajustes')}
+
+        <div class="inset-group mb-6">
+            <div class="inset-group-item account-header-item">
+                <img src="${avatarUrl}" alt="Avatar" class="w-16 h-16 rounded-full object-cover">
+                <div class="flex-grow">
+                    <h3 class="text-lg font-bold">${userProfile.name}</h3>
+                    <p class="text-sm text-secondary">${userProfile.email || 'Detalhes do perfil'}</p>
+                </div>
+                <ion-icon name="chevron-forward-outline" class="w-5 h-5 text-secondary"></ion-icon>
+            </div>
+        </div>
+
         <div class="inset-group p-6 mb-6">
             <h2 class="text-xl font-bold mb-4">Tema do Aplicativo</h2>
             <p class="text-secondary mb-6">Escolha seu tema favorito.</p>
@@ -24,15 +42,13 @@ export function renderSettings(userProfile, allThemes) {
                 }).join('')}
             </div>
         </div>
-        
-        <div class="inset-group p-6">
-            <h2 class="text-xl font-bold mb-4">Conta</h2>
-            <p class="text-secondary mb-4">Você está logado como ${userProfile.name} (${userProfile.email || 'sem e-mail'}).</p>
-            <button id="logout-btn" class="btn-secondary w-full py-3 rounded-xl font-semibold" style="border-color: #ef4444; color: #ef4444; background-color: transparent;">
+
+        <div class="inset-group">
+            <button id="logout-btn" class="inset-group-item destructive w-full text-left cursor-pointer">
                 Sair (Logout)
             </button>
         </div>
     `;
-    // Listeners de clique SÃO ADICIONADOS NO main.js,
-    // pois eles precisam chamar o firebaseService e o themeService.
+    // Os listeners de clique (para .theme-option e #logout-btn)
+    // JÁ ESTÃO no main.js, então tudo continua funcionando!
 }
