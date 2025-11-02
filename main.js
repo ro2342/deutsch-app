@@ -1,6 +1,7 @@
 // main.js - Ponto de entrada principal do App
 import { db, auth, setupAuthListener, listenToProfile, saveProfileData, signOutUser } from './firebaseService.js';
-import { initExerciseService, updateExerciseServiceProfile, startLektion } from './exerciseService.js';
+// ATUALIZADO: Importa 'startLektion' e o novo 'startReviewSession'
+import { initExerciseService, updateExerciseServiceProfile, startLektion, startReviewSession } from './exerciseService.js';
 import { initThemeService, applyTheme } from './ui/theme.js';
 import { showModal, hideModal, showLoading, hidePageLoader, showPageLoaderError } from './ui/modal.js';
 import { initLiquidNav } from './ui/navigation.js';
@@ -79,6 +80,7 @@ function handleRouting() {
     if (path === 'menu') return;
 
     // Chama o roteador da UI com ambos os paths
+    // ATUALIZADO: Passa allLektions para o router
     router(path, subpath, userProfile, allLektions, allThemes);
 }
 
@@ -92,6 +94,14 @@ function addGlobalClickListeners() {
         if (lektionCard) {
             const lektionId = parseInt(lektionCard.dataset.lektionId);
             startLektion(lektionId); // Chama o exerciseService
+            return; // Impede outros cliques
+        }
+
+        // NOVO: Listener para a Página de Revisão -> Iniciar Sessão
+        const reviewBtn = e.target.closest('#start-review-btn');
+        if (reviewBtn) {
+            startReviewSession(); // Chama o exerciseService
+            return;
         }
 
         // ATUALIZAÇÃO: Listener para a NOVA lista de temas
@@ -107,6 +117,7 @@ function addGlobalClickListeners() {
             }
             // Re-renderiza a página de temas para mostrar o "check" no lugar certo
             handleRouting();
+            return;
         }
 
         // Listener para Configurações -> Logout (Sem mudança)
@@ -119,6 +130,7 @@ function addGlobalClickListeners() {
                 hideModal();
                 showModal("Erro ao Sair", error.message);
             }
+            return;
         }
     });
 }

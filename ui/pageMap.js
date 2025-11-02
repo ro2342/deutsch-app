@@ -3,19 +3,30 @@ import { getPageHeader } from './components.js';
 
 export function renderMap(userProfile, allLektions) {
     const page = document.getElementById('page-map');
-    const completed = userProfile.completedLektions || [];
+    
+    // ATUALIZAÇÃO: Usa os novos objetos de stats
+    const stats = userProfile.lektionStats || {};
     const inProgress = userProfile.inProgressLektions || {};
 
-    if (allLektions.length === 0) { /* ... (código de erro) ... */ }
+    if (allLektions.length === 0) { 
+        page.innerHTML = `${getPageHeader(userProfile, 'Mapa de Aprendizado')}
+            <div class="card p-6 text-center">
+                <h2 class="text-xl font-bold mb-4 text-red-500">Erro de Carregamento</h2>
+                <p class="text-secondary">Não foi possível carregar os dados das lições (<code>exercisesData.js</code>).</p>
+            </div>`;
+        return;
+    }
     
     page.innerHTML = `
         ${getPageHeader(userProfile, 'Mapa de Aprendizado')}
         
         <div class="inset-group">
             ${allLektions.map((lektion, index) => {
-                const isCompleted = completed.includes(lektion.id);
+                const lektionStats = stats[lektion.id];
+                const isCompleted = lektionStats && lektionStats.completed;
                 const isInProgress = Object.keys(inProgress).includes(String(lektion.id));
-                const isLocked = index > 0 && !completed.includes(allLektions[index - 1].id);
+                // ATUALIZAÇÃO: Verifica o stats da lição anterior
+                const isLocked = index > 0 && !(stats[allLektions[index - 1].id]?.completed);
                 
                 let icon = `<span class="text-xl">${index + 1}</span>`;
                 if (isLocked) icon = '<ion-icon name="lock-closed-outline" class="w-6 h-6"></ion-icon>';
@@ -28,12 +39,18 @@ export function renderMap(userProfile, allLektions) {
                         class="inset-group-item lektion-card ${isLocked ? 'locked' : 'cursor-pointer'}"
                         data-lektion-id="${lektion.id}"
                     >
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl" style="background-color: ${isLocked ? 'var(--border)' : (isCompleted ? '#28a745' : 'var(--primary)')}; color: white;">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl" 
+                             style="background-color: ${isLocked ? 'var(--border)' : (isCompleted ? '#28a745' : 'var(--primary)')}; color: white;">
                             ${icon}
                         </div>
                         <div class="flex-grow">
                             <h3 class="text-lg font-bold">${lektion.title}</h3>
                             <p class="text-sm text-secondary">${lektion.topics.join(', ')}</p>
+                            ${isCompleted ? `
+                                <div class="font-medium text-sm mt-1" style="color: var(${lektionStats.correct === lektionStats.total ? 'primary' : 'accent'});">
+                                    ${lektionStats.correct} / ${lektionStats.total} Acertos
+                                </div>
+                            ` : ''}
                         </div>
                         ${!isLocked ? '<ion-icon name="chevron-forward-outline" class="w-6 h-6 text-secondary"></ion-icon>' : ''}
                     </div>
@@ -41,6 +58,5 @@ export function renderMap(userProfile, allLektions) {
             }).join('')}
         </div>
     `;
-    // Os listeners de clique SÃO ADICIONADOS NO main.js,
-    // pois eles precisam chamar o exerciseService.
+    // Os listeners de clique SÃO ADICIONADOS NO main.js
 }

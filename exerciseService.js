@@ -1,5 +1,4 @@
 // exerciseService.js
-// ATUALIZADO: Importa de ui/modal.js
 import { showModal, showLoading, hideModal } from './ui/modal.js'; 
 import { parseSimpleMarkdown } from './utils.js';
 import { saveProfileData, getProfileDataOnce } from './firebaseService.js';
@@ -7,14 +6,15 @@ import { saveProfileData, getProfileDataOnce } from './firebaseService.js';
 // --- Estado do Exercício ---
 let currentLektion = null;
 let currentExerciseIndex = 0;
-// ATUALIZAÇÃO: userAnswer pode ser string (text, choice) ou array (wordOrder)
 let userAnswer = ''; 
 let feedback = null;
+let wordOrderState = { bank: [], answer: [] };
 
-// ATUALIZAÇÃO: Estado específico para o wordOrder
-let wordOrderState = {
-    bank: [], // Array de {id, word, hidden}
-    answer: [] // Array de {id, word}
+// NOVO: Flag de modo de revisão e stats da sessão
+let isInReviewMode = false;
+let currentLektionStats = {
+    correct: 0,
+    incorrectIndices: new Set()
 };
 
 let allLektions = [];
@@ -34,12 +34,18 @@ export function updateExerciseServiceProfile(profile, uId) {
     userId = uId;
 }
 
-// --- Lógica Principal ---
+// --- Lógica Principal de Lição ---
+
 export async function startLektion(lektionId) {
     const lektion = allLektions.find(l => l.id === lektionId);
     if (!lektion) return;
+
+    // Reseta o estado para uma lição normal
+    isInReviewMode = false;
     currentLektion = lektion;
+    currentLektionStats = { correct: 0, incorrectIndices: new Set() };
     
+    // Busca o progresso salvo
     const profileData = await getProfileDataOnce(userId);
     userProfile.inProgressLektions = profileData.inProgressLektions || {};
     
@@ -48,23 +54,55 @@ export async function startLektion(lektionId) {
     
     userAnswer = '';
     feedback = null;
+    wordOrderState = { bank: [], answer: [] };
     window.location.hash = '#/exercise';
 }
 
 async function finishLektion() {
     showLoading("Salvando progresso...");
-    
-    const completed = userProfile.completedLektions || [];
-    if (!completed.includes(currentLektion.id)) {
-        completed.push(currentLektion.id);
-    }
+
+    const lektionId = currentLektion.id;
+    const totalExercises = currentLektion.exercises.length;
+
+    // 1. Atualiza o 'lektionStats'
+    if (!userProfile.lektionStats) userProfile.lektionStats = {};
+    userProfile.lektionStats[lektionId] = {
+        correct: currentLektionStats.correct,
+        total: totalExercises,
+        completed: true
+    };
+
+    // 2. Remove o "inProgress"
     if (userProfile.inProgressLektions) {
-        delete userProfile.inProgressLektions[currentLektion.id];
+        delete userProfile.inProgressLektions[lektionId];
     }
 
+    // 3. Atualiza a lista de 'failedExercises'
+    if (!userProfile.failedExercises) userProfile.failedExercises = {};
+    
+    // Pega todos os exercícios que o usuário acertou NESTA SESSÃO
+    const sessionCorrectIndices = new Set();
+    for (let i = 0; i < totalExercises; i++) {
+        if (!currentLektionStats.incorrectIndices.has(i)) {
+            sessionCorrectIndices.add(i);
+        }
+    }
+
+    // Pega os exercícios errados de sessões ANTERIORES
+    let existingFailed = userProfile.failedExercises[lektionId] || [];
+    
+    // Remove os que foram corrigidos AGORA
+    existingFailed = existingFailed.filter(index => !sessionCorrectIndices.has(index));
+
+    // Adiciona os novos errados desta sessão
+    const newFailedSet = new Set([...existingFailed, ...currentLektionStats.incorrectIndices]);
+    userProfile.failedExercises[lektionId] = Array.from(newFailedSet);
+
+    // 4. Salva tudo no Firebase
     try {
         await saveProfileData(userId, { 
-            completedLektions: userProfile.completedLektions,
+            lektionStats: userProfile.lektionStats,
+            failedExercises: userProfile.failedExercises,
             inProgressLektions: userProfile.inProgressLektions
         });
     } catch (error) {
@@ -77,51 +115,75 @@ async function finishLektion() {
 }
 
 async function nextExercise() {
+    // Verifica se há mais exercícios na lição
     if (currentExerciseIndex < currentLektion.exercises.length - 1) {
         currentExerciseIndex++;
-        // Limpa o estado para o próximo exercício
         userAnswer = '';
         feedback = null;
         wordOrderState = { bank: [], answer: [] };
-        
         renderCurrentExerciseOnPage();
     } else {
-        await finishLektion();
+        // Se for o último exercício, finaliza
+        if (isInReviewMode) {
+            await finishReviewSession();
+        } else {
+            await finishLektion();
+        }
     }
 }
 
-// ATUALIZAÇÃO: Lógica de verificação refatorada
 function checkAnswer() {
     if (!userAnswer && wordOrderState.answer.length === 0) return;
     
     const exercise = currentLektion.exercises[currentExerciseIndex];
     let userAns, correctAns, alternatives, correctAnswers, isCorrect;
 
+    // Lógica de verificação (igual à anterior)
     if (exercise.type === 'wordOrder') {
-        // Pega a resposta da área de resposta e junta com espaços
         userAns = wordOrderState.answer.map(w => w.word).join(' ').toLowerCase();
         correctAns = exercise.answer.toLowerCase();
         alternatives = exercise.alternatives?.map(a => a.toLowerCase()) || [];
         correctAnswers = [correctAns, ...alternatives];
-        // Compara a string montada com as respostas corretas
         isCorrect = correctAnswers.some(ans => userAns === ans);
-    
     } else {
-        // Lógica existente para fillBlank, multipleChoice, translation
         userAns = userAnswer.trim().toLowerCase();
         correctAns = exercise.answer.toLowerCase();
         alternatives = exercise.alternatives?.map(a => a.toLowerCase()) || [];
         correctAnswers = [correctAns, ...alternatives];
-        isCorrect = correctAnswers.some(ans => {
-            // A lógica do pipe | foi removida pois esses exercícios viraram wordOrder
-            return userAns === ans;
-        });
+        isCorrect = correctAnswers.some(ans => userAns === ans);
     }
 
     feedback = { isCorrect, explanation: exercise.explanation };
 
+    // --- Lógica de Stats ---
     if (isCorrect) {
-        userProfile.score = (userProfile.score || 0) + 10;
+        if (isInReviewMode) {
+            // Se acertou na REVISÃO, remove da lista de falhas
+            const lId = exercise.originalLektionId;
+            const eIdx = exercise.originalExerciseIndex;
+            
+            let failedList = userProfile.failedExercises[lId] || [];
+            failedList = failedList.filter(idx => idx !== eIdx); // Remove
+            userProfile.failedExercises[lId] = failedList;
+            
+            // Salva a remoção imediatamente
+            saveProfileData(userId, { failedExercises: userProfile.failedExercises })
+                .catch(err => console.error("Falha ao salvar remoção de revisão:", err));
+        } else {
+            // Se acertou na LIÇÃO NORMAL, conta como +1 correto
+            currentLektionStats.correct++;
+            userProfile.score = (userProfile.score || 0) + 10;
+        }
+    } else {
+        if (!isInReviewMode) {
+            // Se errou na LIÇÃO NORMAL, adiciona ao set de erros da sessão
+            currentLektionStats.incorrectIndices.add(currentExerciseIndex);
+        }
+        // Se errou na REVISÃO, não faz nada (ele já está na lista)
+    }
+
+    // Salva o progresso parcial (índice e pontuação)
+    if (!isInReviewMode) {
         const nextIndex = currentExerciseIndex + 1;
         if (!userProfile.inProgressLektions) userProfile.inProgressLektions = {};
         userProfile.inProgressLektions[currentLektion.id] = nextIndex;
@@ -132,14 +194,77 @@ function checkAnswer() {
         }).catch(err => console.error("Falha ao salvar progresso parcial:", err));
     }
     
-    // Re-renderiza a página para mostrar o feedback
     renderCurrentExerciseOnPage();
 }
 
-// --- Funções de Renderização de Exercício ---
+// --- NOVO: Lógica do Modo de Revisão ---
+
+export function startReviewSession() {
+    isInReviewMode = true;
+    const reviewExercises = [];
+
+    // 1. Coleta todos os exercícios errados
+    if (userProfile.failedExercises) {
+        for (const lektionId in userProfile.failedExercises) {
+            const indices = userProfile.failedExercises[lektionId] || [];
+            indices.forEach(exerciseIndex => {
+                const lektion = allLektions.find(l => l.id == lektionId);
+                const exercise = lektion?.exercises[exerciseIndex];
+                
+                if (exercise) {
+                    // Adiciona o exercício e guarda sua origem
+                    reviewExercises.push({
+                        ...exercise,
+                        originalLektionId: lektionId,
+                        originalExerciseIndex: exerciseIndex
+                    });
+                }
+            });
+        }
+    }
+
+    if (reviewExercises.length === 0) {
+        showModal("Parabéns!", "Você não tem nenhum exercício para revisar.");
+        return;
+    }
+
+    // 2. Cria uma "lição virtual" com esses exercícios
+    currentLektion = {
+        id: 'review',
+        title: 'Ponto de Revisão',
+        exercises: reviewExercises // Idealmente, deveriam ser embaralhados
+    };
+    
+    // 3. Reseta o estado e navega
+    currentExerciseIndex = 0;
+    userAnswer = '';
+    feedback = null;
+    wordOrderState = { bank: [], answer: [] };
+    window.location.hash = '#/exercise';
+}
+
+async function finishReviewSession() {
+    showLoading("Concluindo revisão...");
+    
+    // Limpa o estado
+    isInReviewMode = false;
+    currentLektion = null;
+    
+    hideModal();
+    // Volta para a página de revisão
+    window.location.hash = '#/review';
+    
+    // Atraso de 100ms para o modal aparecer *depois* da página carregar
+    setTimeout(() => {
+         showModal("Revisão Concluída", "Bom trabalho! Continue praticando.");
+    }, 100);
+}
+
+
+// --- Funções de Renderização (Sem grandes mudanças, apenas no 'checkAnswer') ---
+
 function showGrammarModal() {
     if (!currentLektion) return;
-    // ... (lógica do modal de gramática - sem mudanças) ...
     if (Object.keys(allGrammar).length === 0) {
         showModal("Erro", "Dados de gramática não carregados.");
         return;
@@ -160,7 +285,6 @@ function showGrammarModal() {
 
 export function renderExercisePage() {
     const page = document.getElementById('page-exercise');
-    // ... (lógica de renderExercisePage - sem mudanças) ...
     if (!currentLektion) {
         page.innerHTML = `
             <div class="card p-6 text-center">
@@ -172,9 +296,13 @@ export function renderExercisePage() {
         document.getElementById('back-to-map-btn').onclick = () => window.location.hash = '#/map';
         return;
     }
+    
+    // Define para onde o botão 'fechar' deve voltar
+    const closeHash = isInReviewMode ? '#/review' : '#/map';
+    
     page.innerHTML = `
         <div class="flex items-center justify-between gap-4 mb-6">
-            <button id="back-to-map-btn" class="btn-secondary !border-0" style="padding: 0.75rem;">
+            <button id="close-exercise-btn" class="btn-secondary !border-0" style="padding: 0.75rem;">
                 <ion-icon name="close-outline" class="w-6 h-6"></ion-icon>
             </button>
             <div class="flex-grow text-right">
@@ -184,16 +312,15 @@ export function renderExercisePage() {
         </div>
         <div id="exercise-container-page"></div>
     `;
-    document.getElementById('back-to-map-btn').onclick = () => {
+    document.getElementById('close-exercise-btn').onclick = () => {
         currentLektion = null;
-        window.location.hash = '#/map';
+        isInReviewMode = false; // Garante que sai do modo revisão
+        window.location.hash = closeHash;
     };
     renderCurrentExerciseOnPage();
 }
 
-// --- NOVO: Funções de ajuda para o Word Order ---
-
-// Embaralha um array
+// Funções de ajuda do wordOrder (sem mudanças)
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -201,8 +328,6 @@ function shuffleArray(array) {
     }
     return array;
 }
-
-// Inicializa o estado do wordOrder (só na primeira renderização)
 function initWordOrderState(words) {
     if (wordOrderState.bank.length === 0 && wordOrderState.answer.length === 0) {
         const shuffledWords = shuffleArray([...words]);
@@ -213,53 +338,43 @@ function initWordOrderState(words) {
         }));
     }
 }
-
-// Move palavra do banco para a resposta
 function moveWordToAnswer(wordId) {
-    if (feedback) return; // Não faz nada se já tiver feedback
+    if (feedback) return; 
     const wordIndex = wordOrderState.bank.findIndex(w => w.id === wordId);
     if (wordIndex > -1) {
         const word = wordOrderState.bank[wordIndex];
-        word.hidden = true; // "Esconde" no banco
-        wordOrderState.answer.push(word); // Adiciona na resposta
-        renderCurrentExerciseOnPage(); // Re-renderiza
+        word.hidden = true; 
+        wordOrderState.answer.push(word); 
+        renderCurrentExerciseOnPage(); 
     }
 }
-
-// Move palavra da resposta de volta para o banco
 function moveWordToBank(wordId) {
-    if (feedback) return; // Não faz nada se já tiver feedback
+    if (feedback) return; 
     const wordIndex = wordOrderState.answer.findIndex(w => w.id === wordId);
     if (wordIndex > -1) {
-        const [word] = wordOrderState.answer.splice(wordIndex, 1); // Remove da resposta
+        const [word] = wordOrderState.answer.splice(wordIndex, 1); 
         const bankWord = wordOrderState.bank.find(w => w.id === word.id);
-        if (bankWord) bankWord.hidden = false; // "Mostra" de volta no banco
-        renderCurrentExerciseOnPage(); // Re-renderiza
+        if (bankWord) bankWord.hidden = false; 
+        renderCurrentExerciseOnPage(); 
     }
 }
-
-// Reseta o exercício de wordOrder
 function resetWordOrder() {
-    if (feedback) return; // Não pode resetar se já verificou
+    if (feedback) return; 
     wordOrderState.answer = [];
     wordOrderState.bank.forEach(w => w.hidden = false);
     renderCurrentExerciseOnPage();
 }
 
-
-// ATUALIZAÇÃO: renderCurrentExerciseOnPage foi modificado
+// Renderização do exercício (sem mudanças na lógica de renderização)
 function renderCurrentExerciseOnPage() {
     const container = document.getElementById('exercise-container-page');
-    // ... (lógica de renderCurrentExerciseOnPage - sem mudanças) ...
     if (!container || !currentLektion) return;
     const exercise = currentLektion.exercises[currentExerciseIndex];
     const progress = ((currentExerciseIndex + 1) / currentLektion.exercises.length) * 100;
     let inputHtml = '';
-
-    // --- Lógica de renderização por tipo ---
+    
     if (exercise.type === 'fillBlank' || exercise.type === 'translation') {
         inputHtml = `<input type="text" id="exercise-input" class="input-field w-full text-lg p-4 rounded-xl" placeholder="Digite sua resposta..." value="${userAnswer}" ${feedback ? 'disabled' : ''} autocomplete="off">`;
-    
     } else if (exercise.type === 'multipleChoice') {
         inputHtml = `<div class="flex flex-col gap-3">
             ${exercise.options.map(option => `
@@ -268,21 +383,14 @@ function renderCurrentExerciseOnPage() {
                 </button>
             `).join('')}
         </div>`;
-    
     } else if (exercise.type === 'wordOrder') {
-        // 1. Inicializa o estado se for a primeira vez
         initWordOrderState(exercise.words);
-        
-        // 2. Renderiza a área de resposta
         const answerWordsHtml = wordOrderState.answer.map(word => 
             `<div class="word-token" data-word-id="${word.id}">${word.word}</div>`
         ).join('');
-
-        // 3. Renderiza o banco de palavras
         const bankWordsHtml = wordOrderState.bank.map(word =>
             `<div class="word-token ${word.hidden ? 'hidden' : ''}" data-word-id="${word.id}">${word.word}</div>`
         ).join('');
-
         inputHtml = `
             <div class="flex justify-between items-center mb-2">
                 <span class="text-sm text-secondary">Organize as palavras:</span>
@@ -298,7 +406,6 @@ function renderCurrentExerciseOnPage() {
             </div>
         `;
     }
-    // --- Fim da lógica de renderização ---
 
     container.innerHTML = `
         <div class="card p-4 mb-6"><div class="progress-bar h-2.5 rounded-full" style="margin: 0;"><div class="progress-fill h-2.5 rounded-full" style="width: ${progress}%;"></div></div></div>
@@ -325,9 +432,8 @@ function renderCurrentExerciseOnPage() {
         </div>
     `;
 
-    // --- ATUALIZAÇÃO: Listeners ---
+    // Listeners (sem mudanças)
     const actionBtn = document.getElementById('action-btn');
-
     if (exercise.type === 'fillBlank' || exercise.type === 'translation') {
         const input = document.getElementById('exercise-input');
         input.oninput = (e) => { 
@@ -337,7 +443,6 @@ function renderCurrentExerciseOnPage() {
         input.onkeydown = (e) => { if (e.key === 'Enter' && !feedback && userAnswer) actionBtn.click(); };
         if (!feedback) input.focus();
         actionBtn.disabled = !userAnswer && !feedback;
-    
     } else if (exercise.type === 'multipleChoice') {
         document.querySelectorAll('.btn-secondary[data-option]').forEach(btn => {
             btn.onclick = () => { 
@@ -347,27 +452,20 @@ function renderCurrentExerciseOnPage() {
             };
         });
         actionBtn.disabled = !userAnswer && !feedback;
-
     } else if (exercise.type === 'wordOrder') {
-        // Listener para o banco de palavras
         document.getElementById('word-bank')?.addEventListener('click', (e) => {
             if (e.target.classList.contains('word-token')) {
                 moveWordToAnswer(Number(e.target.dataset.wordId));
             }
         });
-        // Listener para a área de resposta
         document.getElementById('answer-area')?.addEventListener('click', (e) => {
             if (e.target.classList.contains('word-token')) {
                 moveWordToBank(Number(e.target.dataset.wordId));
             }
         });
-        // Listener para o botão de reset
         document.getElementById('reset-words-btn')?.addEventListener('click', resetWordOrder);
-        
-        // Habilita o botão de verificar se tiver palavras na resposta
         actionBtn.disabled = wordOrderState.answer.length === 0 && !feedback;
     }
-    
     document.getElementById('grammar-btn').onclick = showGrammarModal;
     document.getElementById('action-btn').onclick = feedback ? nextExercise : checkAnswer;
 }

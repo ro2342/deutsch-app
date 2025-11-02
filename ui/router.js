@@ -4,12 +4,13 @@ import { updateNavLinks } from './navigation.js';
 import { renderHome } from './pageHome.js';
 import { renderMap } from './pageMap.js';
 import { renderProgress } from './pageProgress.js';
-// ATUALIZAÇÃO: Importa as duas funções de 'pageSettings'
 import { renderSettings, renderThemeSettings } from './pageSettings.js';
+// NOVO: Importa a página de revisão
+import { renderReview } from './pageReview.js'; 
 import { renderExercisePage } from '../exerciseService.js'; // Importa do nível acima
 
-// ATUALIZAÇÃO: Adiciona a nova página 'settings-theme'
-const pages = ['home', 'map', 'progress', 'settings', 'exercise', 'settings-theme'];
+// ATUALIZAÇÃO: Adiciona 'review' e 'settings-theme'
+const pages = ['home', 'map', 'progress', 'review', 'settings', 'exercise', 'settings-theme'];
 
 function hideAllPages() {
     pages.forEach(pageId => {
@@ -50,6 +51,11 @@ export function router(path, subpath, userProfile, allLektions, allThemes) {
             showPage('progress');
             renderProgress(userProfile, allLektions); 
             break;
+        // NOVO: Rota para a página de revisão
+        case 'review':
+            showPage('review');
+            renderReview(userProfile, allLektions);
+            break;
         case 'settings':
             // Se houver uma sub-rota 'theme', mostra a página de temas
             if (subpath === 'theme') {
@@ -58,7 +64,7 @@ export function router(path, subpath, userProfile, allLektions, allThemes) {
             } else {
                 // Senão, mostra a página principal de ajustes
                 showPage('settings');
-                renderSettings(userProfile, allLektions, allThemes); // Passa 'allThemes'
+                renderSettings(userProfile, allThemes); // Passa 'allThemes'
             }
             break;
         case 'exercise': 

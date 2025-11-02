@@ -360,7 +360,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* --- NOVO: Estilos para Word Order --- */
+        /* --- Estilos para Word Order --- */
         .answer-area {
             min-height: 50px;
             background-color: rgba(var(--text-rgb), 0.02);
@@ -438,9 +438,9 @@
         <div id="page-home"></div>
         <div id="page-map" class="hidden"></div>
         <div id="page-progress" class="hidden"></div>
+        <div id="page-review" class="hidden"></div>
         <div id="page-settings" class="hidden"></div>
         <div id="page-exercise" class="hidden pt-8"></div>
-
         <div id="page-settings-theme" class="hidden"></div>
         
     </div>
@@ -461,6 +461,10 @@
                 <ion-icon name="map-outline" class="w-5 h-5"></ion-icon>
                 <span>Mapa</span>
             </a>
+            <a href="#/review" class="nav-link" data-link-id="review">
+                <ion-icon name="heart-dislike-outline" class="w-5 h-5"></ion-icon>
+                <span>Revisão</span>
+            </a>
             <a href="#/progress" class="nav-link" data-link-id="progress">
                 <ion-icon name="stats-chart-outline" class="w-5 h-5"></ion-icon>
                 <span>Progresso</span>
@@ -476,6 +480,6 @@
     <script src="grammarExplanations.js"></script>
     <script src="exercisesData.js"></script>
     
-    <script type="module" src="main.js"></script> 
+    <script type."module" src="main.js"></script> 
 </body>
 </html>

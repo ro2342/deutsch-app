@@ -3,9 +3,15 @@ import { getPageHeader } from './components.js';
 
 export function renderProgress(userProfile, allLektions) {
     const page = document.getElementById('page-progress');
-    const completedCount = userProfile.completedLektions?.length || 0;
+    
+    // ATUALIZAÇÃO: Lê dos novos objetos de stats
+    const stats = userProfile.lektionStats || {};
+    const completedLektionsMap = Object.keys(stats).filter(id => stats[id].completed);
+    
+    const completedCount = completedLektionsMap.length;
     const totalLektions = allLektions.length;
     const score = userProfile.score || 0;
+
     page.innerHTML = `
         ${getPageHeader(userProfile, 'Progresso')}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -23,9 +29,19 @@ export function renderProgress(userProfile, allLektions) {
                 <h2 class="text-xl font-bold mb-4">Lições Completadas</h2>
                 ${(completedCount > 0 && allLektions.length > 0) ? `
                     <ul class="space-y-3">
-                        ${userProfile.completedLektions.map(id => {
-                            const lektion = allLektions.find(l => l.id === id);
-                            return lektion ? `<li class="flex items-center gap-3"><ion-icon name="checkmark-outline" class="w-5 h-5 text-green-500"></ion-icon> ${lektion.title}</li>` : '';
+                        ${completedLektionsMap.map(id => {
+                            const lektion = allLektions.find(l => l.id == id);
+                            const lektionStats = stats[id];
+                            return lektion ? `
+                                <li class="flex items-center justify-between gap-3">
+                                    <span class="flex items-center gap-3">
+                                        <ion-icon name="checkmark-outline" class="w-5 h-5 text-green-500"></ion-icon> 
+                                        ${lektion.title}
+                                    </span>
+                                    <span class="font-medium text-sm" style="color: var(--accent);">
+                                        ${lektionStats.correct} / ${lektionStats.total}
+                                    </span>
+                                </li>` : '';
                         }).join('')}
                     </ul>
                 ` : `<p class="text-secondary text-center py-4">Você ainda não completou nenhuma lição.</p>`}

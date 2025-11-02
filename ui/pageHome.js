@@ -3,7 +3,9 @@ import { getPageHeader } from './components.js';
 
 export function renderHome(userProfile, allLektions) {
     const page = document.getElementById('page-home');
-    const completedCount = userProfile.completedLektions?.length || 0;
+    
+    // ATUALIZAÇÃO: Calcula o progresso com base no 'lektionStats'
+    const completedCount = Object.values(userProfile.lektionStats || {}).filter(s => s.completed).length;
     const totalLektions = allLektions.length;
     
     if (totalLektions === 0) { /* ... (código de erro) ... */ }

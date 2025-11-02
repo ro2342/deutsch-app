@@ -53,6 +53,18 @@ export async function signOutUser() {
 export function listenToProfile(userId, onProfileUpdate) {
     const profileDocRef = doc(db, "users", userId, "profile", "data");
     
+    // Perfil Padrão com as novas propriedades
+    const defaultProfile = {
+        score: 0,
+        completedLektions: [], // Mantido por segurança, mas será substituído por lektionStats
+        inProgressLektions: {},
+        lektionStats: {}, // NOVO: Armazena { correct, total, completed }
+        failedExercises: {}, // NOVO: Armazena { lektionId: [exerciseIndex, ...] }
+        theme: 'taylorSwift',
+        name: 'Estudante',
+        avatarUrl: ''
+    };
+
     return onSnapshot(profileDocRef, (docSnap) => {
         const googleUser = auth.currentUser;
         let userProfile;
@@ -60,12 +72,7 @@ export function listenToProfile(userId, onProfileUpdate) {
         if (docSnap.exists()) {
             const data = docSnap.data();
             userProfile = {
-                score: 0,
-                completedLektions: [],
-                inProgressLektions: {},
-                theme: 'taylorSwift',
-                name: 'Estudante',
-                avatarUrl: '',
+                ...defaultProfile, // Garante que os novos campos existam
                 ...data,
                 name: data.name || googleUser?.displayName || 'Estudante',
                 avatarUrl: data.avatarUrl || googleUser?.photoURL || ''
@@ -73,17 +80,14 @@ export function listenToProfile(userId, onProfileUpdate) {
         } else {
             console.log("Nenhum perfil encontrado, criando um novo...");
             userProfile = {
-                score: 0,
-                completedLektions: [],
-                inProgressLektions: {},
-                theme: 'taylorSwift',
+                ...defaultProfile,
                 name: googleUser?.displayName || 'Estudante',
                 avatarUrl: googleUser?.photoURL || '',
                 uid: userId,
                 email: googleUser?.email || ''
             };
             // Salva o perfil recém-criado
-            saveProfileData(userId, userProfile, false); 
+            saveProfileData(userId, userProfile); // Não precisa de 'await' aqui
         }
         onProfileUpdate(userProfile); // Envia os dados de volta
         
@@ -122,5 +126,12 @@ export async function saveProfileData(userId, dataToSave) {
 export async function getProfileDataOnce(userId) {
     const profileDocRef = doc(db, "users", userId, "profile", "data");
     const docSnap = await getDoc(profileDocRef);
-    return docSnap.data() || {};
+    // Garante que o perfil retornado tenha os campos padrão
+    return {
+        score: 0,
+        inProgressLektions: {},
+        lektionStats: {},
+        failedExercises: {},
+        ...docSnap.data()
+    } || {};
 }
