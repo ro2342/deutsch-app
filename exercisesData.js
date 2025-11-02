@@ -1,6 +1,6 @@
 // exercisesData.js - Banco de dados completo dos 150 exercícios organizados em 30 lições
-// ATUALIZADO: Convertido exercícios de 'fillBlank' com respostas duplas
-// para 'wordOrder' (ordenação de palavras) ou 'multipleChoice'
+// ATUALIZADO: Corrigido enunciados (questions) dos exercícios 'wordOrder'
+// para corresponderem ao formato de preencher lacunas.
 
 window.exercisesData = [
     // LEKTION 1: Vorstellung (Apresentação) - OK
@@ -308,7 +308,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 11: Trennbare Verben - ATUALIZADO
+    // LEKTION 11: Trennbare Verben - ATUALIZADO (Bug 3)
     {
         id: 11,
         title: 'Lektion 11: Trennbare Verben',
@@ -317,31 +317,31 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (abfahren):',
-                words: ['Wann', 'fährt', 'der Zug', 'ab', '?'],
-                answer: 'wann fährt der zug ab ?',
-                alternatives: ['wann faehrt der zug ab ?'],
+                question: 'Complete a frase (abfahren): Wann ___ der Zug ___?',
+                words: ['fährt', 'ab'],
+                answer: 'fährt ab',
+                alternatives: ['faehrt ab'],
                 explanation: 'Verbo separável (abfahren): O prefixo "ab" vai para o final. Wann fährt der Zug ab?'
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (einladen):',
-                words: ['Ich', 'lade', 'meine Freunde', 'zum Essen', 'ein', '.'],
-                answer: 'ich lade meine freunde zum essen ein .',
+                question: 'Complete a frase (einladen): Ich ___ meine Freunde zum Essen ___.',
+                words: ['lade', 'ein'],
+                answer: 'lade ein',
                 explanation: 'Verbo separável (einladen): O prefixo "ein" vai para o final. Ich lade ... ein.'
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (zumachen):',
-                words: ['Er', 'macht', 'die Tür', 'zu', '.'],
-                answer: 'er macht die tür zu .',
+                question: 'Complete a frase (zumachen): Er ___ die Tür ___.',
+                words: ['macht', 'zu'],
+                answer: 'macht zu',
                 explanation: 'Verbo separável (zumachen): O prefixo "zu" vai para o final. Er macht ... zu.'
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (einkaufen):',
-                words: ['Sie', 'kauft', 'im Supermarkt', 'ein', '.'],
-                answer: 'sie kauft im supermarkt ein .',
+                question: 'Complete a frase (einkaufen): Sie ___ im Supermarkt ___.',
+                words: ['kauft', 'ein'],
+                answer: 'kauft ein',
                 explanation: 'Verbo separável (einkaufen): O prefixo "ein" vai para o final. Sie kauft ... ein.'
             }
         ]
@@ -416,7 +416,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 17: Tagesablauf - ATUALIZADO
+    // LEKTION 17: Tagesablauf - ATUALIZADO (Bug 3)
     {
         id: 17,
         title: 'Lektion 17: Tagesablauf',
@@ -454,7 +454,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 19: Freizeit - ATUALIZADO
+    // LEKTION 19: Freizeit - ATUALIZADO (Bug 3)
     {
         id: 19,
         title: 'Lektion 19: Freizeit',
@@ -477,9 +477,9 @@ window.exercisesData = [
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (fernsehen):',
-                words: ['Sie', 'sieht', 'jeden Abend', 'fern', '.'],
-                answer: 'sie sieht jeden abend fern .',
+                question: 'Complete a frase (fernsehen): Sie ___ jeden Abend ___.',
+                words: ['sieht', 'fern'],
+                answer: 'sieht fern',
                 explanation: 'fernsehen é trennbar: Sie sieht fern.'
             }
         ]
@@ -578,7 +578,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 27: Modalverben Erweitert - ATUALIZADO
+    // LEKTION 27: Modalverben Erweitert - ATUALIZADO (Bug 3)
     {
         id: 27,
         title: 'Lektion 27: Modalverben',
@@ -587,16 +587,16 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase com modal (können):',
-                words: ['Ich', 'kann', 'heute', 'nicht', 'kommen', '.'],
-                answer: 'ich kann heute nicht kommen .',
+                question: 'Complete com o modal (können): Ich ___ heute nicht ___. (kommen)',
+                words: ['kann', 'kommen'],
+                answer: 'kann kommen',
                 explanation: 'Modalverb Satzklammer: Verbo principal (kommen) vai para o final. Ich kann ... kommen.'
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase com modal (können):',
-                words: ['Sie', 'kann', 'sehr gut', 'singen', '.'],
-                answer: 'sie kann sehr gut singen .',
+                question: 'Complete com o modal (können): Sie ___ sehr gut ___. (singen)',
+                words: ['kann', 'singen'],
+                answer: 'kann singen',
                 explanation: 'Modalverb Satzklammer: Verbo principal (singen) vai para o final. Sie kann ... singen.'
             }
         ]
@@ -681,7 +681,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 35: Reisen - ATUALIZADO
+    // LEKTION 35: Reisen - ATUALIZADO (Bug 3)
     {
         id: 35,
         title: 'Lektion 35: Reisen',
@@ -690,10 +690,9 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'wordOrder',
-                question: 'Ordene (preposição "mit" + Dativ):',
-                words: ['Ich fahre', 'mit', 'dem Zug', 'zur Arbeit', '.'],
-                answer: 'ich fahre mit dem zug zur arbeit .',
-                alternatives: ['ich fahre zur arbeit mit dem zug .'],
+                question: 'Complete (preposição "mit" + Dativ): Ich fahre zur Arbeit ___ ___ ___. (o trem)',
+                words: ['mit', 'dem', 'Zug'],
+                answer: 'mit dem zug',
                 explanation: 'mit dem Zug = de trem (preposição "mit" + Dativ).'
             },
             {
@@ -888,7 +887,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 51: Perfekt com haben - ATUALIZADO
+    // LEKTION 51: Perfekt com haben - OK
     {
         id: 51,
         title: 'Lektion 51: Perfekt mit haben',
@@ -926,7 +925,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 53: Perfekt com sein - ATUALIZADO
+    // LEKTION 53: Perfekt com sein - OK
     {
         id: 53,
         title: 'Lektion 53: Perfekt mit sein',
@@ -971,7 +970,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 55: Jahreszeiten - ATUALIZADO
+    // LEKTION 55: Jahreszeiten - OK
     {
         id: 55,
         title: 'Lektion 55: Jahreszeiten',
@@ -1002,7 +1001,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 57: Lebensläufe - ATUALIZADO
+    // LEKTION 57: Lebensläufe - OK
     {
         id: 57,
         title: 'Lektion 57: Lebensläufe',
@@ -1040,7 +1039,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 59: Wetter - ATUALIZADO
+    // LEKTION 59: Wetter - OK
     {
         id: 59,
         title: 'Lektion 59: Wetter',
@@ -1130,6 +1129,7 @@ window.exercisesData = [
         ]
     },
 
+    // LEKTION 61: ATUALIZADO (Bug 3)
     {
         id: 61,
         title: 'Lektion 61: Wiederholung Teil 2',
@@ -1152,17 +1152,17 @@ window.exercisesData = [
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (anrufen):',
-                words: ['Ich', 'rufe', 'dich morgen', 'an', '.'],
-                answer: 'ich rufe dich morgen an .',
+                question: 'Complete a frase (anrufen): Ich ___ dich morgen ___.',
+                words: ['rufe', 'an'],
+                answer: 'rufe an',
                 explanation: 'Verbo separável (anrufen): "an" vai para o final.'
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (abfahren):',
-                words: ['Der Zug', 'fährt', 'um 10 Uhr', 'ab', '.'],
-                answer: 'der zug fährt um 10 uhr ab .',
-                alternatives: ['der zug faehrt um 10 uhr ab .'],
+                question: 'Complete a frase (abfahren): Der Zug ___ um 10 Uhr ___.',
+                words: ['fährt', 'ab'],
+                answer: 'fährt ab',
+                alternatives: ['faehrt ab'],
                 explanation: 'Verbo separável (abfahren): "ab" vai para o final.'
             },
             {
@@ -1175,6 +1175,7 @@ window.exercisesData = [
         ]
     },
 
+    // LEKTION 62: ATUALIZADO (Bug 3)
     {
         id: 62,
         title: 'Lektion 62: Wiederholung Teil 3',
@@ -1183,16 +1184,16 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'wordOrder',
-                question: 'Ordene com Modalverb (müssen):',
-                words: ['Ich', 'muss', 'heute', 'arbeiten', '.'],
-                answer: 'ich muss heute arbeiten .',
+                question: 'Complete com o modal (müssen): Ich ___ heute ___. (arbeiten)',
+                words: ['muss', 'arbeiten'],
+                answer: 'muss arbeiten',
                 explanation: 'Satzklammer Modal: Verbo principal (arbeiten) no final. Ich muss ... arbeiten.'
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene no Perfekt (arbeiten):',
-                words: ['Ich', 'habe', 'heute', 'gearbeitet', '.'],
-                answer: 'ich habe heute gearbeitet .',
+                question: 'Complete no Perfekt (arbeiten): Ich ___ heute ___.',
+                words: ['habe', 'gearbeitet'],
+                answer: 'habe gearbeitet',
                 explanation: 'Satzklammer Perfekt: Particípio (gearbeitet) no final. Ich habe ... gearbeitet.'
             },
             {
@@ -1212,6 +1213,7 @@ window.exercisesData = [
         ]
     },
 
+    // LEKTION 63: OK
     {
         id: 63,
         title: 'Lektion 63: Wortschatz Mix 1',
@@ -1249,6 +1251,7 @@ window.exercisesData = [
         ]
     },
 
+    // LEKTION 64: ATUALIZADO (Bug 3)
     {
         id: 64,
         title: 'Lektion 64: Wortschatz Mix 2',
@@ -1278,14 +1281,15 @@ window.exercisesData = [
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (aufstehen):',
-                words: ['Morgens', 'stehe', 'ich', 'um 7 Uhr', 'auf', '.'],
-                answer: 'morgens stehe ich um 7 uhr auf .',
-                explanation: 'Verbo separável (aufstehen): "auf" vai para o final.'
+                question: 'Complete a frase (aufstehen): Morgens ___ ich um 7 Uhr ___.',
+                words: ['stehe', 'auf'],
+                answer: 'stehe auf',
+                explanation: 'Trennbar: Ich stehe um 7 Uhr auf.'
             }
         ]
     },
 
+    // LEKTION 65: OK
     {
         id: 65,
         title: 'Lektion 65: Perfekt Übungen',
@@ -1323,6 +1327,7 @@ window.exercisesData = [
         ]
     },
 
+    // LEKTION 66: OK (Estes eram para ser 'wordOrder' de frase inteira)
     {
         id: 66,
         title: 'Lektion 66: Satzbildung Übungen',
@@ -1348,6 +1353,7 @@ window.exercisesData = [
         ]
     },
 
+    // LEKTION 67: OK
     {
         id: 67,
         title: 'Lektion 67: W-Fragen Vertiefung',
@@ -1385,6 +1391,7 @@ window.exercisesData = [
         ]
     },
 
+    // LEKTION 68: OK
     {
         id: 68,
         title: 'Lektion 68: Artikel-Training',
@@ -1422,6 +1429,7 @@ window.exercisesData = [
         ]
     },
 
+    // LEKTION 69: OK
     {
         id: 69,
         title: 'Lektion 69: Possessivartikel-Training',
@@ -1459,6 +1467,7 @@ window.exercisesData = [
         ]
     },
 
+    // LEKTION 70: ATUALIZADO (Bug 3)
     {
         id: 70,
         title: 'Lektion 70: Final Review - Alles zusammen',
@@ -1474,23 +1483,21 @@ window.exercisesData = [
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (Perfekt):',
-                words: ['Ich', 'habe', 'in Berlin', 'Deutsch', 'gelernt', '.'],
-                answer: 'ich habe in berlin deutsch gelernt .',
-                alternatives: ['in berlin habe ich deutsch gelernt .'],
+                question: 'Complete a frase (Perfekt): Ich ___ in Berlin Deutsch ___. (lernen)',
+                words: ['habe', 'gelernt'],
+                answer: 'habe gelernt',
                 explanation: 'Perfekt: Ich habe in Berlin Deutsch gelernt.'
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (Modal):',
-                words: ['Ich', 'kann', 'in Berlin', 'Deutsch', 'lernen', '.'],
-                answer: 'ich kann in berlin deutsch lernen .',
-                alternatives: ['in berlin kann ich deutsch lernen .'],
+                question: 'Complete com o modal (können): Ich ___ in Berlin Deutsch ___. (lernen)',
+                words: ['kann', 'lernen'],
+                answer: 'kann lernen',
                 explanation: 'Modal: Ich kann in Berlin Deutsch lernen.'
             },
             {
                 type: 'wordOrder',
-                question: 'Ordene a frase (Trennbar):',
+                question: 'Ordene a frase (aufstehen):',
                 words: ['Ich', 'stehe', 'um 7 Uhr', 'auf', '.'],
                 answer: 'ich stehe um 7 uhr auf .',
                 explanation: 'Trennbar im Präsens: Ich stehe um 7 Uhr auf.'

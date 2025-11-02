@@ -43,14 +43,35 @@ export async function startLektion(lektionId) {
     // Reseta o estado para uma lição normal
     isInReviewMode = false;
     currentLektion = lektion;
-    currentLektionStats = { correct: 0, incorrectIndices: new Set() };
     
     // Busca o progresso salvo
     const profileData = await getProfileDataOnce(userId);
+    userProfile.lektionStats = profileData.lektionStats || {};
     userProfile.inProgressLektions = profileData.inProgressLektions || {};
-    
-    const savedProgress = userProfile.inProgressLektions?.[lektionId];
-    currentExerciseIndex = (savedProgress && savedProgress < lektion.exercises.length) ? savedProgress : 0;
+
+    const stats = userProfile.lektionStats[lektionId];
+
+    // --- CORREÇÃO (Bug 2): Se a lição já foi completada, reseta tudo ---
+    if (stats && stats.completed) {
+        console.log(`Lição ${lektionId} já completa. Reiniciando...`);
+        currentExerciseIndex = 0;
+        // Reseta as stats da sessão
+        currentLektionStats = { correct: 0, incorrectIndices: new Set() };
+        
+        // Remove o "inProgress" antigo, se existir
+        if (userProfile.inProgressLektions?.[lektionId]) {
+            delete userProfile.inProgressLektions[lektionId];
+            // Salva a remoção do "inProgress" (não precisa de await)
+            saveProfileData(userId, { inProgressLektions: userProfile.inProgressLektions });
+        }
+    } else {
+        // Lógica antiga: carregar progresso se não estiver completa
+        console.log(`Continuando lição ${lektionId}...`);
+        const savedProgress = userProfile.inProgressLektions?.[lektionId];
+        currentExerciseIndex = (savedProgress && savedProgress < lektion.exercises.length) ? savedProgress : 0;
+        // As stats da sessão são resetadas de qualquer forma
+        currentLektionStats = { correct: 0, incorrectIndices: new Set() };
+    }
     
     userAnswer = '';
     feedback = null;
@@ -216,7 +237,9 @@ export function startReviewSession() {
                     reviewExercises.push({
                         ...exercise,
                         originalLektionId: lektionId,
-                        originalExerciseIndex: exerciseIndex
+                        originalExerciseIndex: exerciseIndex,
+                        // Garante que a gramática da lição original seja carregada
+                        grammarKeys: lektion.grammarKeys 
                     });
                 }
             });
@@ -232,7 +255,8 @@ export function startReviewSession() {
     currentLektion = {
         id: 'review',
         title: 'Ponto de Revisão',
-        exercises: reviewExercises // Idealmente, deveriam ser embaralhados
+        exercises: shuffleArray(reviewExercises), // Embaralha os exercícios de revisão
+        grammarKeys: [] // A gramática está em cada exercício
     };
     
     // 3. Reseta o estado e navega
@@ -265,11 +289,24 @@ async function finishReviewSession() {
 
 function showGrammarModal() {
     if (!currentLektion) return;
+    
+    let keysToShow = [];
+    
+    if (isInReviewMode) {
+        // No modo revisão, pega as chaves do exercício individual
+        const exercise = currentLektion.exercises[currentExerciseIndex];
+        keysToShow = exercise.grammarKeys || [];
+    } else {
+        // Modo normal, pega as chaves da lição
+        keysToShow = currentLektion.grammarKeys || [];
+    }
+    
     if (Object.keys(allGrammar).length === 0) {
         showModal("Erro", "Dados de gramática não carregados.");
         return;
     }
-    const grammarHtml = currentLektion.grammarKeys.map(key => {
+    
+    const grammarHtml = keysToShow.map(key => {
         const explanation = allGrammar[key];
         return explanation ? `
             <div class="mb-6">
@@ -280,7 +317,8 @@ function showGrammarModal() {
             </div>
         ` : `<p class="text-red-500">Erro: Tópico "${key}" não encontrado.</p>`;
     }).join('<hr class="my-6">');
-    showModal("Explicações Gramaticais 📚", grammarHtml);
+    
+    showModal("Explicações Gramaticais 📚", grammarHtml || "<p>Nenhuma explicação de gramática associada.</p>");
 }
 
 export function renderExercisePage() {
@@ -322,15 +360,17 @@ export function renderExercisePage() {
 
 // Funções de ajuda do wordOrder (sem mudanças)
 function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
+    if (!array) return [];
+    let newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
-    return array;
+    return newArray;
 }
 function initWordOrderState(words) {
     if (wordOrderState.bank.length === 0 && wordOrderState.answer.length === 0) {
-        const shuffledWords = shuffleArray([...words]);
+        const shuffledWords = shuffleArray(words);
         wordOrderState.bank = shuffledWords.map((word, index) => ({
             id: index,
             word: word,

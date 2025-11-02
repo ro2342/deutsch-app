@@ -56,7 +56,6 @@ export function listenToProfile(userId, onProfileUpdate) {
     // Perfil Padrão com as novas propriedades
     const defaultProfile = {
         score: 0,
-        completedLektions: [], // Mantido por segurança, mas será substituído por lektionStats
         inProgressLektions: {},
         lektionStats: {}, // NOVO: Armazena { correct, total, completed }
         failedExercises: {}, // NOVO: Armazena { lektionId: [exerciseIndex, ...] }
@@ -71,9 +70,10 @@ export function listenToProfile(userId, onProfileUpdate) {
 
         if (docSnap.exists()) {
             const data = docSnap.data();
+            // CORREÇÃO: Garante que um usuário antigo receba os campos padrão
             userProfile = {
                 ...defaultProfile, // Garante que os novos campos existam
-                ...data,
+                ...data, // Sobrescreve com os dados salvos do usuário
                 name: data.name || googleUser?.displayName || 'Estudante',
                 avatarUrl: data.avatarUrl || googleUser?.photoURL || ''
             };
