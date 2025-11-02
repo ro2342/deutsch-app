@@ -1,14 +1,14 @@
 // ui/components.js
 
+/**
+ * ATUALIZADO: Retorna o cabeçalho principal da página no estilo "iOS",
+ * apenas com o título, conforme solicitado.
+ */
 export function getPageHeader(userProfile, title) {
-    const avatarUrl = userProfile.avatarUrl || `https://placehold.co/100x100/333/FFF?text=${userProfile.name.charAt(0)}`;
+    // O userProfile não é mais necessário aqui, mas mantemos a assinatura
+    // da função para não quebrar as importações nos outros arquivos.
+    
     return `
-        <div class="flex items-center gap-4 mb-8 pt-8">
-            <img src="${avatarUrl}" alt="Avatar" class="w-16 h-16 rounded-full object-cover shadow-lg border-2" style="border-color: var(--primary);">
-            <div>
-                <h1 class="font-bold text-3xl md:text-4xl">${title}</h1>
-                <p class="text-lg text-secondary">Olá, ${userProfile.name.split(' ')[0]}!</p>
-            </div>
-        </div>
+        <h1 class="ios-main-title">${title}</h1>
     `;
 }
