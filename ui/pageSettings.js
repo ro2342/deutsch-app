@@ -7,7 +7,8 @@ import { getPageHeader } from './components.js';
 export function renderSettings(userProfile, allThemes) {
     const page = document.getElementById('page-settings');
     
-    const currentThemeName = userProfile.theme || 'taylorSwift';
+    // ATUALIZADO: Fallback para o novo tema padrão
+    const currentThemeName = userProfile.theme || 'verzaubert';
     const currentTheme = allThemes[currentThemeName]?.name || 'Padrão';
     const avatarUrl = userProfile.avatarUrl || `https://placehold.co/100x100/333/FFF?text=${userProfile.name.charAt(0)}`;
 
@@ -45,7 +46,8 @@ export function renderSettings(userProfile, allThemes) {
  */
 export function renderThemeSettings(userProfile, allThemes) {
     const page = document.getElementById('page-settings-theme');
-    const currentThemeName = userProfile.theme || 'taylorSwift';
+    // ATUALIZADO: Fallback para o novo tema padrão
+    const currentThemeName = userProfile.theme || 'verzaubert';
 
     page.innerHTML = `
         <div class="ios-subpage-header">

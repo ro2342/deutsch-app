@@ -57,9 +57,9 @@ export function listenToProfile(userId, onProfileUpdate) {
     const defaultProfile = {
         score: 0,
         inProgressLektions: {},
-        lektionStats: {}, // NOVO: Armazena { correct, total, completed }
-        failedExercises: {}, // NOVO: Armazena { lektionId: [exerciseIndex, ...] }
-        theme: 'taylorSwift',
+        lektionStats: {}, 
+        failedExercises: {}, 
+        theme: 'verzaubert', // ATUALIZADO: Novo tema padrão
         name: 'Estudante',
         avatarUrl: ''
     };
@@ -70,10 +70,9 @@ export function listenToProfile(userId, onProfileUpdate) {
 
         if (docSnap.exists()) {
             const data = docSnap.data();
-            // CORREÇÃO: Garante que um usuário antigo receba os campos padrão
             userProfile = {
-                ...defaultProfile, // Garante que os novos campos existam
-                ...data, // Sobrescreve com os dados salvos do usuário
+                ...defaultProfile, 
+                ...data, 
                 name: data.name || googleUser?.displayName || 'Estudante',
                 avatarUrl: data.avatarUrl || googleUser?.photoURL || ''
             };
@@ -86,10 +85,9 @@ export function listenToProfile(userId, onProfileUpdate) {
                 uid: userId,
                 email: googleUser?.email || ''
             };
-            // Salva o perfil recém-criado
-            saveProfileData(userId, userProfile); // Não precisa de 'await' aqui
+            saveProfileData(userId, userProfile); 
         }
-        onProfileUpdate(userProfile); // Envia os dados de volta
+        onProfileUpdate(userProfile); 
         
     }, (error) => {
         console.error("Erro ao ouvir perfil:", error);
@@ -114,7 +112,7 @@ export async function saveProfileData(userId, dataToSave) {
         console.log("Dados salvos com sucesso:", dataToSave);
     } catch (error) {
         console.error("Erro ao salvar dados do perfil:", error);
-        throw error; // Lança o erro para que o chamador possa tratá-lo
+        throw error; 
     }
 }
 
@@ -126,12 +124,12 @@ export async function saveProfileData(userId, dataToSave) {
 export async function getProfileDataOnce(userId) {
     const profileDocRef = doc(db, "users", userId, "profile", "data");
     const docSnap = await getDoc(profileDocRef);
-    // Garante que o perfil retornado tenha os campos padrão
     return {
         score: 0,
         inProgressLektions: {},
         lektionStats: {},
         failedExercises: {},
+        theme: 'verzaubert', // ATUALIZADO: Novo tema padrão
         ...docSnap.data()
     } || {};
 }
