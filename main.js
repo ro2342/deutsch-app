@@ -63,44 +63,53 @@ function onUserLoggedOut() {
 
 // --- Roteador Principal ---
 
+/**
+ * ATUALIZAÇÃO: O handleRouting agora divide a rota em 'path' e 'subpath'
+ * Ex: #/settings/theme -> path = 'settings', subpath = 'theme'
+ */
 function handleRouting() {
     if (!userId) return; 
     const currentHash = window.location.hash || '#/home';
-    const [path] = currentHash.substring(2).split('/');
+    
+    // Remove o '#/' e divide a rota
+    const parts = currentHash.substring(2).split('/');
+    const path = parts[0] || 'home';
+    const subpath = parts[1] || null;
     
     if (path === 'menu') return;
 
-    // Chama o roteador da UI
-    router(path || 'home', userProfile, allLektions, allThemes);
+    // Chama o roteador da UI com ambos os paths
+    router(path, subpath, userProfile, allLektions, allThemes);
 }
 
 // --- Listeners de Eventos Globais ---
-// Aqui é onde a "mágica" acontece. O main.js ouve os cliques
-// e diz aos outros serviços o que fazer.
+
 function addGlobalClickListeners() {
     document.body.addEventListener('click', async (e) => {
         
-        // Listener para o Mapa -> Iniciar Lição
+        // Listener para o Mapa -> Iniciar Lição (Sem mudança)
         const lektionCard = e.target.closest('.lektion-card:not(.locked)');
         if (lektionCard) {
             const lektionId = parseInt(lektionCard.dataset.lektionId);
             startLektion(lektionId); // Chama o exerciseService
         }
 
-        // Listener para Configurações -> Mudar Tema
-        const themeOption = e.target.closest('.theme-option');
-        if (themeOption) {
-            const themeName = themeOption.dataset.theme;
+        // ATUALIZAÇÃO: Listener para a NOVA lista de temas
+        const themeOptionItem = e.target.closest('.theme-option-item');
+        if (themeOptionItem) {
+            const themeName = themeOptionItem.dataset.theme;
             applyTheme(themeName); // Chama o themeService
             try {
-                await saveProfileData(userId, { theme: themeName }); // Chama o firebaseService
+                // Salva no Firebase sem bloquear a UI
+                saveProfileData(userId, { theme: themeName });
             } catch (err) {
                 showModal("Erro", "Não foi possível salvar seu tema.");
             }
-            handleRouting(); // Re-renderiza a página de configurações
+            // Re-renderiza a página de temas para mostrar o "check" no lugar certo
+            handleRouting();
         }
 
-        // Listener para Configurações -> Logout
+        // Listener para Configurações -> Logout (Sem mudança)
         const logoutBtn = e.target.closest('#logout-btn');
         if (logoutBtn) {
             showLoading("Saindo...");

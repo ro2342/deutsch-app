@@ -1,20 +1,18 @@
 // ui/pageSettings.js
 import { getPageHeader } from './components.js';
 
+/**
+ * Renderiza a página principal de Ajustes (iOS-style)
+ */
 export function renderSettings(userProfile, allThemes) {
     const page = document.getElementById('page-settings');
-    if (Object.keys(allThemes).length === 0) { 
-        /* ... (código de erro) ... */ 
-        // Você pode adicionar uma mensagem de erro aqui se necessário
-    }
     
     const currentThemeName = userProfile.theme || 'taylorSwift';
-    
-    // Pega a lógica do avatar que já existe no seu components.js
+    const currentTheme = allThemes[currentThemeName]?.name || 'Padrão';
     const avatarUrl = userProfile.avatarUrl || `https://placehold.co/100x100/333/FFF?text=${userProfile.name.charAt(0)}`;
 
     page.innerHTML = `
-        ${getPageHeader(userProfile, 'Ajustes')}
+        <h1 class="ios-main-title">Ajustes</h1>
 
         <div class="inset-group mb-6">
             <div class="inset-group-item account-header-item">
@@ -27,20 +25,11 @@ export function renderSettings(userProfile, allThemes) {
             </div>
         </div>
 
-        <div class="inset-group p-6 mb-6">
-            <h2 class="text-xl font-bold mb-4">Tema do Aplicativo</h2>
-            <p class="text-secondary mb-6">Escolha seu tema favorito.</p>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                ${Object.keys(allThemes).map(themeName => {
-                    const theme = allThemes[themeName];
-                    const isSelected = themeName === currentThemeName;
-                    return `
-                        <button class="theme-option p-4 rounded-lg border-2 text-center" data-theme="${themeName}" style="border-color: ${isSelected ? theme.primary : 'var(--border)'}; background: ${theme.bg};">
-                            <span class="font-medium" style="color: ${theme.text};">${theme.name}</span>
-                        </button>
-                    `;
-                }).join('')}
-            </div>
+        <div class="inset-group mb-6">
+            <a href="#/settings/theme" class="inset-group-item navigation-item">
+                <span class="font-medium">Tema do Aplicativo</span>
+                <span class="item-value">${currentTheme}</span>
+            </a>
         </div>
 
         <div class="inset-group">
@@ -49,6 +38,36 @@ export function renderSettings(userProfile, allThemes) {
             </button>
         </div>
     `;
-    // Os listeners de clique (para .theme-option e #logout-btn)
-    // JÁ ESTÃO no main.js, então tudo continua funcionando!
+}
+
+/**
+ * NOVO: Renderiza a sub-página de seleção de Tema
+ */
+export function renderThemeSettings(userProfile, allThemes) {
+    const page = document.getElementById('page-settings-theme');
+    const currentThemeName = userProfile.theme || 'taylorSwift';
+
+    page.innerHTML = `
+        <div class="ios-subpage-header">
+            <a href="#/settings" class="back-link">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+                <span>Ajustes</span>
+            </a>
+            <h2>Tema</h2>
+        </div>
+
+        <div class="inset-group">
+            ${Object.keys(allThemes).map(themeName => {
+                const theme = allThemes[themeName];
+                const isSelected = themeName === currentThemeName;
+                
+                return `
+                    <button class="inset-group-item theme-option-item" data-theme="${themeName}">
+                        <span>${theme.name}</span>
+                        ${isSelected ? '<ion-icon name="checkmark-outline"></ion-icon>' : ''}
+                    </button>
+                `;
+            }).join('')}
+        </div>
+    `;
 }
