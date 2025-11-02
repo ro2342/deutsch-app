@@ -263,7 +263,7 @@
         }
         #modal-body strong {
             font-weight: 700;
-            color: #000;
+            color: var(--text); /* Corrigido de #000 para var(--text) */
         }
         #modal-body ul {
             list-style-type: disc;
@@ -358,6 +358,65 @@
         body.dark-theme .liquid-nav {
             background: rgba(30, 30, 30, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- NOVO: Estilos para Word Order --- */
+        .answer-area {
+            min-height: 50px;
+            background-color: rgba(var(--text-rgb), 0.02);
+            border: 2px dashed var(--border);
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .word-bank {
+            min-height: 50px;
+            padding: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            border-top: 1px solid var(--border);
+            margin-top: 1rem;
+        }
+        .word-token {
+            padding: 0.5rem 1rem;
+            background-color: rgba(var(--text-rgb), 0.08);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none; /* Impede a seleção de texto */
+        }
+        .word-token:hover {
+            background-color: rgba(var(--text-rgb), 0.12);
+            transform: translateY(-2px);
+        }
+        /* Estilo do token quando está na área de resposta */
+        .answer-area .word-token {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        /* Estilo do token quando está no banco (e já foi usado) */
+        .word-bank .word-token.hidden {
+            opacity: 0.3;
+            pointer-events: none; /* Não pode ser clicado */
+        }
+        /* Botão de reset */
+        #reset-words-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.25rem;
+            margin-left: auto; /* Joga para a direita */
+            display: none; /* Começa escondido */
         }
     </style>
 

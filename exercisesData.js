@@ -1,8 +1,9 @@
 // exercisesData.js - Banco de dados completo dos 150 exercícios organizados em 30 lições
-// ATUALIZADO: Enunciados (questions) corrigidos para maior clareza.
+// ATUALIZADO: Convertido exercícios de 'fillBlank' com respostas duplas
+// para 'wordOrder' (ordenação de palavras) ou 'multipleChoice'
 
 window.exercisesData = [
-    // LEKTION 1: Vorstellung (Apresentação)
+    // LEKTION 1: Vorstellung (Apresentação) - OK
     {
         id: 1,
         title: 'Lektion 1: Vorstellung',
@@ -61,7 +62,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 2: Städte und Länder (Cidades e Países)
+    // LEKTION 2: Städte und Länder (Cidades e Países) - OK
     {
         id: 2,
         title: 'Lektion 2: Städte und Länder',
@@ -113,7 +114,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 3: Sprachen und Nationalitäten
+    // LEKTION 3: Sprachen und Nationalitäten - OK
     {
         id: 3,
         title: 'Lektion 3: Sprachen und Nationalitäten',
@@ -158,7 +159,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 5: Berufe und Verwandtschaft
+    // LEKTION 5: Berufe und Verwandtschaft - OK
     {
         id: 5,
         title: 'Lektion 5: Berufe und Verwandtschaft',
@@ -210,7 +211,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 7: Lebensmittel
+    // LEKTION 7: Lebensmittel - OK
     {
         id: 7,
         title: 'Lektion 7: Lebensmittel',
@@ -262,7 +263,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 9: Unregelmäßige Verben
+    // LEKTION 9: Unregelmäßige Verben - OK
     {
         id: 9,
         title: 'Lektion 9: Unregelmäßige Verben',
@@ -307,7 +308,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 11: Trennbare Verben
+    // LEKTION 11: Trennbare Verben - ATUALIZADO
     {
         id: 11,
         title: 'Lektion 11: Trennbare Verben',
@@ -315,37 +316,38 @@ window.exercisesData = [
         grammarKeys: ['Trennbare-Verben', 'Negativartikel', 'Satzklammer'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Wann ___ der Zug ___? (abfahren)',
-                answer: 'fährt|ab',
-                alternatives: ['faehrt|ab'],
-                explanation: 'Trennbare Verben: Präfix geht ans Ende. Der Zug fährt ab.'
+                type: 'wordOrder',
+                question: 'Ordene a frase (abfahren):',
+                words: ['Wann', 'fährt', 'der Zug', 'ab', '?'],
+                answer: 'wann fährt der zug ab ?',
+                alternatives: ['wann faehrt der zug ab ?'],
+                explanation: 'Verbo separável (abfahren): O prefixo "ab" vai para o final. Wann fährt der Zug ab?'
             },
             {
-                type: 'fillBlank',
-                question: 'Ich ___ meine Freunde zum Essen ___. (einladen)',
-                answer: 'lade|ein',
-                alternatives: [],
-                explanation: 'einladen → Ich lade ein. Der Präfix "ein" geht ans Ende.'
+                type: 'wordOrder',
+                question: 'Ordene a frase (einladen):',
+                words: ['Ich', 'lade', 'meine Freunde', 'zum Essen', 'ein', '.'],
+                answer: 'ich lade meine freunde zum essen ein .',
+                explanation: 'Verbo separável (einladen): O prefixo "ein" vai para o final. Ich lade ... ein.'
             },
             {
-                type: 'fillBlank',
-                question: 'Er ___ die Tür ___. (zumachen)',
-                answer: 'macht|zu',
-                alternatives: [],
-                explanation: 'zumachen → Er macht zu. Trennbar!'
+                type: 'wordOrder',
+                question: 'Ordene a frase (zumachen):',
+                words: ['Er', 'macht', 'die Tür', 'zu', '.'],
+                answer: 'er macht die tür zu .',
+                explanation: 'Verbo separável (zumachen): O prefixo "zu" vai para o final. Er macht ... zu.'
             },
             {
-                type: 'fillBlank',
-                question: 'Sie ___ im Supermarkt ___. (einkaufen)',
-                answer: 'kauft|ein',
-                alternatives: [],
-                explanation: 'einkaufen → Sie kauft ein.'
+                type: 'wordOrder',
+                question: 'Ordene a frase (einkaufen):',
+                words: ['Sie', 'kauft', 'im Supermarkt', 'ein', '.'],
+                answer: 'sie kauft im supermarkt ein .',
+                explanation: 'Verbo separável (einkaufen): O prefixo "ein" vai para o final. Sie kauft ... ein.'
             }
         ]
     },
 
-    // LEKTION 13: Einkaufen
+    // LEKTION 13: Einkaufen - OK
     {
         id: 13,
         title: 'Lektion 13: Einkaufen',
@@ -383,7 +385,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 15: Kochen
+    // LEKTION 15: Kochen - OK
     {
         id: 15,
         title: 'Lektion 15: Kochen',
@@ -414,7 +416,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 17: Tagesablauf
+    // LEKTION 17: Tagesablauf - ATUALIZADO
     {
         id: 17,
         title: 'Lektion 17: Tagesablauf',
@@ -443,16 +445,16 @@ window.exercisesData = [
                 explanation: 'Estações do ano usam "im": im Sommer.'
             },
             {
-                type: 'fillBlank',
-                question: 'Preposição temporal (de... até...): Ich arbeite ___ 9:00 Uhr ___ 17:00 Uhr.',
-                answer: 'von|bis',
-                alternatives: [],
-                explanation: 'von... bis... = de... até...'
+                type: 'wordOrder',
+                question: 'Complete (de... até...): Ich arbeite ___ 9:00 Uhr ___ 17:00 Uhr.',
+                words: ['von', 'bis'],
+                answer: 'von bis',
+                explanation: 'von... bis... = de... até... (Neste caso, apenas ordene as preposições)'
             }
         ]
     },
 
-    // LEKTION 19: Freizeit
+    // LEKTION 19: Freizeit - ATUALIZADO
     {
         id: 19,
         title: 'Lektion 19: Freizeit',
@@ -474,16 +476,16 @@ window.exercisesData = [
                 explanation: 'encontrar = treffen. Ich treffe Freunde.'
             },
             {
-                type: 'fillBlank',
-                question: 'Sie ___ jeden Abend ___. (fernsehen)',
-                answer: 'sieht|fern',
-                alternatives: [],
+                type: 'wordOrder',
+                question: 'Ordene a frase (fernsehen):',
+                words: ['Sie', 'sieht', 'jeden Abend', 'fern', '.'],
+                answer: 'sie sieht jeden abend fern .',
                 explanation: 'fernsehen é trennbar: Sie sieht fern.'
             }
         ]
     },
 
-    // LEKTION 21: Modalverben
+    // LEKTION 21: Modalverben - OK
     {
         id: 21,
         title: 'Lektion 21: Freizeit und Modalverben',
@@ -514,7 +516,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 23: Verabredung
+    // LEKTION 23: Verabredung - OK
     {
         id: 23,
         title: 'Lektion 23: Verabredung',
@@ -545,7 +547,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 25: Zeit und Geld
+    // LEKTION 25: Zeit und Geld - OK
     {
         id: 25,
         title: 'Lektion 25: Zeit und Geld',
@@ -576,7 +578,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 27: Modalverben Erweitert
+    // LEKTION 27: Modalverben Erweitert - ATUALIZADO
     {
         id: 27,
         title: 'Lektion 27: Modalverben',
@@ -584,23 +586,23 @@ window.exercisesData = [
         grammarKeys: ['Modalverben', 'Satzklammer'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Complete com o modal (können): Ich ___ heute nicht ___. (kommen)',
-                answer: 'kann|kommen',
-                alternatives: [],
-                explanation: 'Modalverb Satzklammer: Ich kann heute nicht kommen.'
+                type: 'wordOrder',
+                question: 'Ordene a frase com modal (können):',
+                words: ['Ich', 'kann', 'heute', 'nicht', 'kommen', '.'],
+                answer: 'ich kann heute nicht kommen .',
+                explanation: 'Modalverb Satzklammer: Verbo principal (kommen) vai para o final. Ich kann ... kommen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Complete com o modal (können): Sie ___ sehr gut ___. (singen)',
-                answer: 'kann|singen',
-                alternatives: [],
-                explanation: 'Sie kann sehr gut singen.'
+                type: 'wordOrder',
+                question: 'Ordene a frase com modal (können):',
+                words: ['Sie', 'kann', 'sehr gut', 'singen', '.'],
+                answer: 'sie kann sehr gut singen .',
+                explanation: 'Modalverb Satzklammer: Verbo principal (singen) vai para o final. Sie kann ... singen.'
             }
         ]
     },
 
-    // LEKTION 29: Natur
+    // LEKTION 29: Natur - OK
     {
         id: 29,
         title: 'Lektion 29: Natur',
@@ -624,7 +626,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 31: Kleidung
+    // LEKTION 31: Kleidung - OK
     {
         id: 31,
         title: 'Lektion 31: Kleidung',
@@ -655,7 +657,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 33: Verwandtschaft
+    // LEKTION 33: Verwandtschaft - OK
     {
         id: 33,
         title: 'Lektion 33: Verwandtschaft',
@@ -679,7 +681,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 35: Reisen
+    // LEKTION 35: Reisen - ATUALIZADO
     {
         id: 35,
         title: 'Lektion 35: Reisen',
@@ -687,10 +689,11 @@ window.exercisesData = [
         grammarKeys: ['Wortschatz'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Complete (preposição "mit" + Dativ): Ich fahre zur Arbeit ___ ___ ___. (o trem)',
-                answer: 'mit|dem|zug',
-                alternatives: [],
+                type: 'wordOrder',
+                question: 'Ordene (preposição "mit" + Dativ):',
+                words: ['Ich fahre', 'mit', 'dem Zug', 'zur Arbeit', '.'],
+                answer: 'ich fahre mit dem zug zur arbeit .',
+                alternatives: ['ich fahre zur arbeit mit dem zug .'],
                 explanation: 'mit dem Zug = de trem (preposição "mit" + Dativ).'
             },
             {
@@ -703,7 +706,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 37: Glückwünsche
+    // LEKTION 37: Glückwünsche - OK
     {
         id: 37,
         title: 'Lektion 37: Glückwünsche',
@@ -727,7 +730,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 39: Orte in der Stadt
+    // LEKTION 39: Orte in der Stadt - OK
     {
         id: 39,
         title: 'Lektion 39: Orte in der Stadt',
@@ -751,7 +754,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 41: Berufe Erweitert
+    // LEKTION 41: Berufe Erweitert - OK
     {
         id: 41,
         title: 'Lektion 41: Berufe',
@@ -782,7 +785,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 43: Pläne
+    // LEKTION 43: Pläne - OK
     {
         id: 43,
         title: 'Lektion 43: Pläne',
@@ -806,7 +809,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 45: Feste
+    // LEKTION 45: Feste - OK
     {
         id: 45,
         title: 'Lektion 45: Ostern und Weihnachten',
@@ -830,7 +833,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 47: Telefon
+    // LEKTION 47: Telefon - OK
     {
         id: 47,
         title: 'Lektion 47: Telefon',
@@ -854,7 +857,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 49: Tageszeiten
+    // LEKTION 49: Tageszeiten - OK
     {
         id: 49,
         title: 'Lektion 49: Tageszeiten',
@@ -885,7 +888,7 @@ window.exercisesData = [
         ]
     },
 
-    // LEKTION 51: Perfekt com haben
+    // LEKTION 51: Perfekt com haben - ATUALIZADO
     {
         id: 51,
         title: 'Lektion 51: Perfekt mit haben',
@@ -893,37 +896,37 @@ window.exercisesData = [
         grammarKeys: ['Perfekt', 'Perfekt-haben', 'Satzklammer'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Ich ___ Deutsch ___. (lernen)',
-                answer: 'habe|gelernt',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (lernen): Ich ___ Deutsch ___.',
+                answer: 'habe gelernt',
+                options: ['habe gelernt', 'bin gelernt', 'habe gelerntet', 'bin gelerntet'],
                 explanation: 'Perfekt com haben: Ich habe Deutsch gelernt. (ge + Raiz + t)'
             },
             {
-                type: 'fillBlank',
-                question: 'Er ___ Musik ___. (hören)',
-                answer: 'hat|gehört',
-                alternatives: ['hat|gehoert'],
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (hören): Er ___ Musik ___.',
+                answer: 'hat gehört',
+                options: ['hat gehört', 'ist gehört', 'habe gehört', 'ist gehort'],
                 explanation: 'Perfekt: Er hat Musik gehört.'
             },
             {
                 type: 'multipleChoice',
-                question: '___ (du) die Hausaufgaben ___? (machen)',
-                answer: 'hast|gemacht',
-                options: ['habe|gemacht', 'hast|gemacht', 'hat|gemacht', 'haben|gemacht'],
+                question: 'Complete a pergunta no Perfekt (machen): ___ du die Hausaufgaben ___?',
+                answer: 'hast gemacht',
+                options: ['habe gemacht', 'hast gemacht', 'hat gemacht', 'bist gemacht'],
                 explanation: 'Perfekt com du: Hast du die Hausaufgaben gemacht?'
             },
             {
-                type: 'fillBlank',
-                question: 'Wir ___ Pizza ___. (kochen)',
-                answer: 'haben|gekocht',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (kochen): Wir ___ Pizza ___.',
+                answer: 'haben gekocht',
+                options: ['haben gekocht', 'sind gekocht', 'haben gekocht', 'sind gekochen'],
                 explanation: 'Perfekt: Wir haben Pizza gekocht.'
             }
         ]
     },
 
-    // LEKTION 53: Perfekt com sein
+    // LEKTION 53: Perfekt com sein - ATUALIZADO
     {
         id: 53,
         title: 'Lektion 53: Perfekt mit sein',
@@ -931,44 +934,44 @@ window.exercisesData = [
         grammarKeys: ['Perfekt', 'Perfekt-sein', 'Satzklammer'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Ich ___ nach Berlin ___. (fahren)',
-                answer: 'bin|gefahren',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (fahren): Ich ___ nach Berlin ___.',
+                answer: 'bin gefahren',
+                options: ['habe gefahren', 'bin gefahren', 'bin gefahrt', 'habe gefahrt'],
                 explanation: 'Movimento usa sein: Ich bin nach Berlin gefahren.'
             },
             {
-                type: 'fillBlank',
-                question: 'Er ___ ins Kino ___. (gehen)',
-                answer: 'ist|gegangen',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (gehen): Er ___ ins Kino ___.',
+                answer: 'ist gegangen',
+                options: ['hat gegangen', 'ist gegangen', 'hat gegangt', 'ist gegangt'],
                 explanation: 'gehen usa sein: Er ist ins Kino gegangen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Wir ___ nach Hause ___. (laufen)',
-                answer: 'sind|gelaufen',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (laufen): Wir ___ nach Hause ___.',
+                answer: 'sind gelaufen',
+                options: ['sind gelaufen', 'haben gelaufen', 'sind gelauft', 'haben gelauft'],
                 explanation: 'Movimento: Wir sind nach Hause gelaufen.'
             },
             {
-                type: 'fillBlank',
-                question: '___ (du) gestern ___? (kommen)',
-                answer: 'bist|gekommen',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete a pergunta no Perfekt (kommen): ___ du gestern ___?',
+                answer: 'bist gekommen',
+                options: ['hast gekommen', 'bist gekommen', 'hast gekommt', 'bist gekommt'],
                 explanation: 'kommen usa sein: Bist du gestern gekommen?'
             },
             {
-                type: 'fillBlank',
-                question: 'Sie (pl.) ___ in die USA ___. (fliegen)',
-                answer: 'sind|geflogen',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (fliegen): Sie (pl.) ___ in die USA ___.',
+                answer: 'sind geflogen',
+                options: ['haben geflogen', 'sind geflogen', 'haben gefliegt', 'sind gefliegt'],
                 explanation: 'fliegen usa sein: Sie sind in die USA geflogen.'
             }
         ]
     },
 
-    // LEKTION 55: Jahreszeiten
+    // LEKTION 55: Jahreszeiten - ATUALIZADO
     {
         id: 55,
         title: 'Lektion 55: Jahreszeiten',
@@ -976,30 +979,30 @@ window.exercisesData = [
         grammarKeys: ['Perfekt', 'Perfekt-haben', 'Wortschatz'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Ich ___ zu Hause ___. (bleiben)',
-                answer: 'bin|geblieben',
-                alternatives: [],
-                explanation: 'bleiben usa sein: Ich bin zu Hause geblieben.'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (bleiben): Ich ___ zu Hause ___.',
+                answer: 'bin geblieben',
+                options: ['bin geblieben', 'habe geblieben', 'bin gebleibt', 'habe gebleibt'],
+                explanation: 'bleiben (ficar, mudança de estado) usa sein: Ich bin zu Hause geblieben.'
             },
             {
-                type: 'fillBlank',
-                question: 'Er ___ gestern krank ___. (sein)',
-                answer: 'ist|gewesen',
-                alternatives: [],
-                explanation: 'sein im Perfekt: Er ist krank gewesen.'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (sein): Er ___ gestern krank ___.',
+                answer: 'ist gewesen',
+                options: ['hat gewesen', 'ist gewesen', 'hat gesein', 'ist gesein'],
+                explanation: 'O Perfekt do verbo "sein" usa "sein": Er ist krank gewesen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Wir ___ um 7 Uhr ___. (aufstehen)',
-                answer: 'sind|aufgestanden',
-                alternatives: [],
-                explanation: 'aufstehen usa sein: Wir sind um 7 Uhr aufgestanden.'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (aufstehen): Wir ___ um 7 Uhr ___.',
+                answer: 'sind aufgestanden',
+                options: ['haben aufgestanden', 'sind aufgestanden', 'haben aufgesteht', 'sind aufgesteht'],
+                explanation: 'aufstehen (levantar-se, mudança de estado) usa sein: Wir sind ... aufgestanden.'
             }
         ]
     },
 
-    // LEKTION 57: Lebensläufe
+    // LEKTION 57: Lebensläufe - ATUALIZADO
     {
         id: 57,
         title: 'Lektion 57: Lebensläufe',
@@ -1007,37 +1010,37 @@ window.exercisesData = [
         grammarKeys: ['Perfekt', 'Perfekt-haben', 'Wortschatz'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Ich ___ ein Buch ___. (lesen)',
-                answer: 'habe|gelesen',
-                alternatives: [],
-                explanation: 'Perfekt irregular: Ich habe ein Buch gelesen.'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (lesen): Ich ___ ein Buch ___.',
+                answer: 'habe gelesen',
+                options: ['habe gelesen', 'bin gelesen', 'habe gelest', 'bin gelest'],
+                explanation: 'Perfekt irregular com haben: Ich habe ein Buch gelesen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Er ___ seinen Freund ___. (treffen)',
-                answer: 'hat|getroffen',
-                alternatives: [],
-                explanation: 'treffen im Perfekt: Er hat seinen Freund getroffen.'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (treffen): Er ___ seinen Freund ___.',
+                answer: 'hat getroffen',
+                options: ['hat getroffen', 'ist getroffen', 'hat getrefft', 'ist getrefft'],
+                explanation: 'treffen no Perfekt usa haben: Er hat seinen Freund getroffen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Wir ___ Wasser ___. (trinken)',
-                answer: 'haben|getrunken',
-                alternatives: [],
-                explanation: 'trinken im Perfekt: Wir haben Wasser getrunken.'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (trinken): Wir ___ Wasser ___.',
+                answer: 'haben getrunken',
+                options: ['sind getrunken', 'haben getrinkt', 'sind getrinkt', 'haben getrunken'],
+                explanation: 'trinken no Perfekt usa haben: Wir haben Wasser getrunken.'
             },
             {
-                type: 'fillBlank',
-                question: '___ (ihr) den Film ___? (sehen)',
-                answer: 'habt|gesehen',
-                alternatives: [],
-                explanation: 'sehen im Perfekt: Habt ihr den Film gesehen?'
+                type: 'multipleChoice',
+                question: 'Complete a pergunta no Perfekt (sehen): ___ ihr den Film ___?',
+                answer: 'habt gesehen',
+                options: ['seid gesehen', 'habt gesehen', 'seid geseht', 'habt geseht'],
+                explanation: 'sehen no Perfekt usa haben: Habt ihr den Film gesehen?'
             }
         ]
     },
 
-    // LEKTION 59: Wetter
+    // LEKTION 59: Wetter - ATUALIZADO
     {
         id: 59,
         title: 'Lektion 59: Wetter',
@@ -1045,44 +1048,42 @@ window.exercisesData = [
         grammarKeys: ['Perfekt', 'Verben-ieren', 'Wortschatz'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Ich ___ Deutsch ___. (studieren)',
-                answer: 'habe|studiert',
-                alternatives: [],
-                explanation: 'Verben auf -ieren: kein "ge-"! Ich habe Deutsch studiert.'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (studieren): Ich ___ Deutsch ___.',
+                answer: 'habe studiert',
+                options: ['habe studiert', 'habe gestudiert', 'bin studiert', 'bin gestudiert'],
+                explanation: 'Verbos em "-ieren" não usam "ge-" no Perfekt: Ich habe Deutsch studiert.'
             },
             {
-                type: 'fillBlank',
-                question: '___ (du) das Auto ___? (reparieren)',
-                answer: 'hast|repariert',
-                alternatives: [],
-                explanation: 'reparieren ohne "ge-": Hast du das Auto repariert?'
+                type: 'multipleChoice',
+                question: 'Complete a pergunta no Perfekt (reparieren): ___ du das Auto ___?',
+                answer: 'hast repariert',
+                options: ['bist repariert', 'hast gerepariert', 'hast repariert', 'bist gerepariert'],
+                explanation: 'Verbos em "-ieren" (reparieren) não usam "ge-": Hast du das Auto repariert?'
             },
             {
-                type: 'fillBlank',
-                question: 'Er ___ mit mir ___. (telefonieren)',
-                answer: 'hat|telefoniert',
-                alternatives: [],
-                explanation: 'telefonieren: Er hat mit mir telefoniert.'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (telefonieren): Er ___ mit mir ___.',
+                answer: 'hat telefoniert',
+                options: ['ist telefoniert', 'hat getelefoniert', 'ist getelefoniert', 'hat telefoniert'],
+                explanation: 'Verbos em "-ieren" (telefonieren) não usam "ge-": Er hat ... telefoniert.'
             },
             {
-                type: 'fillBlank',
-                question: 'Ich ___ (anrufen) dich ___.',
-                answer: 'habe|angerufen',
-                alternatives: [],
-                explanation: 'Trennbar im Perfekt: Ich habe dich angerufen (ge no meio!).'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (anrufen): Ich ___ dich ___.',
+                answer: 'habe angerufen',
+                options: ['habe angerufen', 'habe gerufenan', 'bin angerufen', 'bin gerufenan'],
+                explanation: 'Verbo separável no Perfekt: "ge-" fica no meio. Ich habe dich angerufen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Er ___ (einkaufen) im Supermarkt ___.',
-                answer: 'hat|eingekauft',
-                alternatives: [],
-                explanation: 'einkaufen im Perfekt: Er hat eingekauft.'
+                type: 'multipleChoice',
+                question: 'Complete a frase no Perfekt (einkaufen): Er ___ im Supermarkt ___.',
+                answer: 'hat eingekauft',
+                options: ['ist eingekauft', 'hat eingekauft', 'hat gekauftein', 'ist gekauftein'],
+                explanation: 'Verbo separável no Perfekt: "ge-" fica no meio. Er hat eingekauft.'
             }
         ]
     },
-
-    // Exercícios de revisão/mistura distribuídos nas lições restantes
     
     // LEKTION 60-65: Revisão e consolidação
     {
@@ -1120,10 +1121,10 @@ window.exercisesData = [
                 explanation: 'nicht antes de adjetivo: nicht gut.'
             },
             {
-                type: 'fillBlank',
-                question: 'Was ___ du gestern ___? (machen)',
-                answer: 'hast|gemacht',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete a pergunta no Perfekt (machen): Was ___ du gestern ___?',
+                answer: 'hast gemacht',
+                options: ['hast gemacht', 'bist gemacht', 'habe gemacht', 'bin gemacht'],
                 explanation: 'Perfekt: Was hast du gestern gemacht?'
             }
         ]
@@ -1150,18 +1151,19 @@ window.exercisesData = [
                 explanation: 'Vokalwechsel e→i: Du sprichst zu schnell.'
             },
             {
-                type: 'fillBlank',
-                question: 'Ich ___ (anrufen) dich morgen ___.',
-                answer: 'rufe|an',
-                alternatives: [],
-                explanation: 'Trennbar: Ich rufe dich morgen an.'
+                type: 'wordOrder',
+                question: 'Ordene a frase (anrufen):',
+                words: ['Ich', 'rufe', 'dich morgen', 'an', '.'],
+                answer: 'ich rufe dich morgen an .',
+                explanation: 'Verbo separável (anrufen): "an" vai para o final.'
             },
             {
-                type: 'fillBlank',
-                question: 'Der Zug ___ (abfahren) um 10 Uhr ___.',
-                answer: 'fährt|ab',
-                alternatives: ['faehrt|ab'],
-                explanation: 'Trennbar: Der Zug fährt um 10 Uhr ab.'
+                type: 'wordOrder',
+                question: 'Ordene a frase (abfahren):',
+                words: ['Der Zug', 'fährt', 'um 10 Uhr', 'ab', '.'],
+                answer: 'der zug fährt um 10 uhr ab .',
+                alternatives: ['der zug faehrt um 10 uhr ab .'],
+                explanation: 'Verbo separável (abfahren): "ab" vai para o final.'
             },
             {
                 type: 'fillBlank',
@@ -1180,32 +1182,32 @@ window.exercisesData = [
         grammarKeys: ['Satzklammer', 'Perfekt', 'Perfekt-haben', 'Perfekt-sein'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Complete com o modal (müssen): Ich ___ heute ___. (arbeiten)',
-                answer: 'muss|arbeiten',
-                alternatives: ['kann|arbeiten'],
-                explanation: 'Satzklammer Modal: Ich muss heute arbeiten.'
+                type: 'wordOrder',
+                question: 'Ordene com Modalverb (müssen):',
+                words: ['Ich', 'muss', 'heute', 'arbeiten', '.'],
+                answer: 'ich muss heute arbeiten .',
+                explanation: 'Satzklammer Modal: Verbo principal (arbeiten) no final. Ich muss ... arbeiten.'
             },
             {
-                type: 'fillBlank',
-                question: 'Complete no Perfekt: Ich ___ heute ___. (arbeiten)',
-                answer: 'habe|gearbeitet',
-                alternatives: [],
-                explanation: 'Satzklammer Perfekt: Ich habe heute gearbeitet.'
+                type: 'wordOrder',
+                question: 'Ordene no Perfekt (arbeiten):',
+                words: ['Ich', 'habe', 'heute', 'gearbeitet', '.'],
+                answer: 'ich habe heute gearbeitet .',
+                explanation: 'Satzklammer Perfekt: Particípio (gearbeitet) no final. Ich habe ... gearbeitet.'
             },
             {
-                type: 'fillBlank',
-                question: 'Er ___ nach Hause ___. (gehen)',
-                answer: 'ist|gegangen',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete no Perfekt (gehen): Er ___ nach Hause ___.',
+                answer: 'ist gegangen',
+                options: ['hat gegangen', 'ist gegangen', 'hat gegangt', 'ist gegangt'],
                 explanation: 'Movimento usa sein: Er ist nach Hause gegangen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Sie ___ ein Buch ___. (lesen)',
-                answer: 'hat|gelesen',
-                alternatives: [],
-                explanation: 'haben im Perfekt: Sie hat ein Buch gelesen.'
+                type: 'multipleChoice',
+                question: 'Complete no Perfekt (lesen): Sie ___ ein Buch ___.',
+                answer: 'hat gelesen',
+                options: ['hat gelesen', 'ist gelesen', 'hat gelest', 'ist gelest'],
+                explanation: 'haben no Perfekt: Sie hat ein Buch gelesen.'
             }
         ]
     },
@@ -1275,11 +1277,11 @@ window.exercisesData = [
                 explanation: 'Akkusativ: einen Bus.'
             },
             {
-                type: 'fillBlank',
-                question: 'Morgens ___ ich um 7 Uhr ___. (aufstehen)',
-                answer: 'stehe|auf',
-                alternatives: [],
-                explanation: 'Trennbar: Ich stehe um 7 Uhr auf.'
+                type: 'wordOrder',
+                question: 'Ordene a frase (aufstehen):',
+                words: ['Morgens', 'stehe', 'ich', 'um 7 Uhr', 'auf', '.'],
+                answer: 'morgens stehe ich um 7 uhr auf .',
+                explanation: 'Verbo separável (aufstehen): "auf" vai para o final.'
             }
         ]
     },
@@ -1291,31 +1293,31 @@ window.exercisesData = [
         grammarKeys: ['Perfekt', 'Perfekt-haben', 'Perfekt-sein'],
         exercises: [
             {
-                type: 'fillBlank',
-                question: 'Ich ___ gestern ___. (schwimmen)',
-                answer: 'bin|geschwommen',
-                alternatives: ['habe|geschwommen'],
-                explanation: 'schwimmen kann haben oder sein sein! Ich bin geschwommen.'
+                type: 'multipleChoice',
+                question: 'Complete no Perfekt (schwimmen): Ich ___ gestern ___.',
+                answer: 'bin geschwommen',
+                options: ['bin geschwommen', 'habe geschwommen', 'bin geschwimmt', 'habe geschwimmt'],
+                explanation: 'schwimmen (nadar, com deslocamento) usa "sein". Ich bin geschwommen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Er ___ ein Buch ___. (lesen)',
-                answer: 'hat|gelesen',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete no Perfekt (lesen): Er ___ ein Buch ___.',
+                answer: 'hat gelesen',
+                options: ['hat gelesen', 'ist gelesen', 'hat gelest', 'ist gelest'],
                 explanation: 'Perfekt: Er hat ein Buch gelesen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Wir ___ Freunde ___. (treffen)',
-                answer: 'haben|getroffen',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete no Perfekt (treffen): Wir ___ Freunde ___.',
+                answer: 'haben getroffen',
+                options: ['haben getroffen', 'sind getroffen', 'haben getrefft', 'sind getrefft'],
                 explanation: 'treffen mit haben: Wir haben Freunde getroffen.'
             },
             {
-                type: 'fillBlank',
-                question: 'Sie ___ ins Kino ___. (gehen)',
-                answer: 'ist|gegangen',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete no Perfekt (gehen): Sie ___ ins Kino ___.',
+                answer: 'ist gegangen',
+                options: ['hat gegangen', 'ist gegangen', 'hat gegangt', 'ist gegangt'],
                 explanation: 'Bewegung: Sie ist ins Kino gegangen.'
             }
         ]
@@ -1328,18 +1330,20 @@ window.exercisesData = [
         grammarKeys: ['Satzklammer', 'Verbkonjugation'],
         exercises: [
             {
-                type: 'multipleChoice',
-                question: 'Ordnen Sie: Ich - Deutsch - lerne - in Berlin.',
-                answer: 'Ich lerne Deutsch in Berlin.',
-                options: ['Ich lerne Deutsch in Berlin.', 'Ich Deutsch lerne in Berlin.', 'In Berlin lerne ich Deutsch.', 'Deutsch lerne ich in Berlin.'],
-                explanation: 'Richtige Wortstellung: Ich lerne Deutsch in Berlin.'
+                type: 'wordOrder',
+                question: 'Ordene a frase (Presente):',
+                words: ['Ich', 'lerne', 'Deutsch', 'in Berlin', '.'],
+                answer: 'ich lerne deutsch in berlin .',
+                alternatives: ['in berlin lerne ich deutsch .'],
+                explanation: 'Richtige Wortstellung: Subjekt (Ich) + Verb (lerne) + ...'
             },
             {
-                type: 'multipleChoice',
-                question: 'Ordnen Sie (Perfekt): Ich - Deutsch - gelernt - habe - in Berlin.',
-                answer: 'Ich habe in Berlin Deutsch gelernt.',
-                options: ['Ich habe in Berlin Deutsch gelernt.', 'Ich habe Deutsch gelernt in Berlin.', 'In Berlin habe ich Deutsch gelernt.', 'Ich Deutsch habe in Berlin gelernt.'],
-                explanation: 'Perfekt Satzklammer: Ich habe in Berlin Deutsch gelernt.'
+                type: 'wordOrder',
+                question: 'Ordene a frase (Perfekt):',
+                words: ['Ich', 'habe', 'in Berlin', 'Deutsch', 'gelernt', '.'],
+                answer: 'ich habe in berlin deutsch gelernt .',
+                alternatives: ['in berlin habe ich deutsch gelernt .'],
+                explanation: 'Perfekt Satzklammer: Auxiliar (habe) na Posição 2, Particípio (gelernt) no final.'
             }
         ]
     },
@@ -1469,31 +1473,33 @@ window.exercisesData = [
                 explanation: 'W-Frage im Perfekt: Was hast du gemacht?'
             },
             {
-                type: 'fillBlank',
-                question: 'Ich ___ ___ Berlin Deutsch ___. (lernen - Perfekt)',
-                answer: 'habe|in|gelernt',
-                alternatives: [],
+                type: 'wordOrder',
+                question: 'Ordene a frase (Perfekt):',
+                words: ['Ich', 'habe', 'in Berlin', 'Deutsch', 'gelernt', '.'],
+                answer: 'ich habe in berlin deutsch gelernt .',
+                alternatives: ['in berlin habe ich deutsch gelernt .'],
                 explanation: 'Perfekt: Ich habe in Berlin Deutsch gelernt.'
             },
             {
-                type: 'fillBlank',
-                question: 'Complete com o modal (können): Ich ___ in Berlin Deutsch ___. (lernen)',
-                answer: 'kann|lernen',
-                alternatives: [],
+                type: 'wordOrder',
+                question: 'Ordene a frase (Modal):',
+                words: ['Ich', 'kann', 'in Berlin', 'Deutsch', 'lernen', '.'],
+                answer: 'ich kann in berlin deutsch lernen .',
+                alternatives: ['in berlin kann ich deutsch lernen .'],
                 explanation: 'Modal: Ich kann in Berlin Deutsch lernen.'
             },
             {
-                type: 'multipleChoice',
-                question: 'Was ist richtig? (aufstehen)',
-                answer: 'Ich stehe um 7 Uhr auf.',
-                options: ['Ich stehe um 7 Uhr auf.', 'Ich stehe auf um 7 Uhr.', 'Um 7 Uhr ich stehe auf.', 'Ich um 7 Uhr aufstehe.'],
+                type: 'wordOrder',
+                question: 'Ordene a frase (Trennbar):',
+                words: ['Ich', 'stehe', 'um 7 Uhr', 'auf', '.'],
+                answer: 'ich stehe um 7 uhr auf .',
                 explanation: 'Trennbar im Präsens: Ich stehe um 7 Uhr auf.'
             },
             {
-                type: 'fillBlank',
-                question: 'Ich habe jetzt ___. (anfangen - Perfekt)',
-                answer: 'angefangen',
-                alternatives: [],
+                type: 'multipleChoice',
+                question: 'Complete no Perfekt (anfangen):',
+                answer: 'habe angefangen',
+                options: ['habe angefangen', 'bin angefangen', 'habe gefangen an', 'bin gefangen an'],
                 explanation: 'Trennbar im Perfekt: Ich habe jetzt angefangen (ge no meio).'
             }
         ]

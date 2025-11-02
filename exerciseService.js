@@ -7,8 +7,15 @@ import { saveProfileData, getProfileDataOnce } from './firebaseService.js';
 // --- Estado do Exercício ---
 let currentLektion = null;
 let currentExerciseIndex = 0;
-let userAnswer = '';
+// ATUALIZAÇÃO: userAnswer pode ser string (text, choice) ou array (wordOrder)
+let userAnswer = ''; 
 let feedback = null;
+
+// ATUALIZAÇÃO: Estado específico para o wordOrder
+let wordOrderState = {
+    bank: [], // Array de {id, word, hidden}
+    answer: [] // Array de {id, word}
+};
 
 let allLektions = [];
 let allGrammar = {};
@@ -72,31 +79,44 @@ async function finishLektion() {
 async function nextExercise() {
     if (currentExerciseIndex < currentLektion.exercises.length - 1) {
         currentExerciseIndex++;
+        // Limpa o estado para o próximo exercício
         userAnswer = '';
         feedback = null;
+        wordOrderState = { bank: [], answer: [] };
+        
         renderCurrentExerciseOnPage();
     } else {
         await finishLektion();
     }
 }
 
+// ATUALIZAÇÃO: Lógica de verificação refatorada
 function checkAnswer() {
-    if (!userAnswer) return;
+    if (!userAnswer && wordOrderState.answer.length === 0) return;
+    
     const exercise = currentLektion.exercises[currentExerciseIndex];
-    // ... (lógica de verificação da resposta - sem mudanças) ...
-    const userAns = userAnswer.trim().toLowerCase();
-    const correctAns = exercise.answer.toLowerCase();
-    const alternatives = exercise.alternatives?.map(a => a.toLowerCase()) || [];
+    let userAns, correctAns, alternatives, correctAnswers, isCorrect;
 
-    const correctAnswers = [correctAns, ...alternatives];
-    const isCorrect = correctAnswers.some(ans => {
-        if (ans.includes('|')) {
-            const parts = ans.split('|');
-            const userParts = userAns.split(/[\s,|]+/);
-            return parts.every((part, idx) => userParts[idx] === part);
-        }
-        return userAns === ans;
-    });
+    if (exercise.type === 'wordOrder') {
+        // Pega a resposta da área de resposta e junta com espaços
+        userAns = wordOrderState.answer.map(w => w.word).join(' ').toLowerCase();
+        correctAns = exercise.answer.toLowerCase();
+        alternatives = exercise.alternatives?.map(a => a.toLowerCase()) || [];
+        correctAnswers = [correctAns, ...alternatives];
+        // Compara a string montada com as respostas corretas
+        isCorrect = correctAnswers.some(ans => userAns === ans);
+    
+    } else {
+        // Lógica existente para fillBlank, multipleChoice, translation
+        userAns = userAnswer.trim().toLowerCase();
+        correctAns = exercise.answer.toLowerCase();
+        alternatives = exercise.alternatives?.map(a => a.toLowerCase()) || [];
+        correctAnswers = [correctAns, ...alternatives];
+        isCorrect = correctAnswers.some(ans => {
+            // A lógica do pipe | foi removida pois esses exercícios viraram wordOrder
+            return userAns === ans;
+        });
+    }
 
     feedback = { isCorrect, explanation: exercise.explanation };
 
@@ -111,6 +131,8 @@ function checkAnswer() {
             inProgressLektions: userProfile.inProgressLektions
         }).catch(err => console.error("Falha ao salvar progresso parcial:", err));
     }
+    
+    // Re-renderiza a página para mostrar o feedback
     renderCurrentExerciseOnPage();
 }
 
@@ -169,6 +191,63 @@ export function renderExercisePage() {
     renderCurrentExerciseOnPage();
 }
 
+// --- NOVO: Funções de ajuda para o Word Order ---
+
+// Embaralha um array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Inicializa o estado do wordOrder (só na primeira renderização)
+function initWordOrderState(words) {
+    if (wordOrderState.bank.length === 0 && wordOrderState.answer.length === 0) {
+        const shuffledWords = shuffleArray([...words]);
+        wordOrderState.bank = shuffledWords.map((word, index) => ({
+            id: index,
+            word: word,
+            hidden: false
+        }));
+    }
+}
+
+// Move palavra do banco para a resposta
+function moveWordToAnswer(wordId) {
+    if (feedback) return; // Não faz nada se já tiver feedback
+    const wordIndex = wordOrderState.bank.findIndex(w => w.id === wordId);
+    if (wordIndex > -1) {
+        const word = wordOrderState.bank[wordIndex];
+        word.hidden = true; // "Esconde" no banco
+        wordOrderState.answer.push(word); // Adiciona na resposta
+        renderCurrentExerciseOnPage(); // Re-renderiza
+    }
+}
+
+// Move palavra da resposta de volta para o banco
+function moveWordToBank(wordId) {
+    if (feedback) return; // Não faz nada se já tiver feedback
+    const wordIndex = wordOrderState.answer.findIndex(w => w.id === wordId);
+    if (wordIndex > -1) {
+        const [word] = wordOrderState.answer.splice(wordIndex, 1); // Remove da resposta
+        const bankWord = wordOrderState.bank.find(w => w.id === word.id);
+        if (bankWord) bankWord.hidden = false; // "Mostra" de volta no banco
+        renderCurrentExerciseOnPage(); // Re-renderiza
+    }
+}
+
+// Reseta o exercício de wordOrder
+function resetWordOrder() {
+    if (feedback) return; // Não pode resetar se já verificou
+    wordOrderState.answer = [];
+    wordOrderState.bank.forEach(w => w.hidden = false);
+    renderCurrentExerciseOnPage();
+}
+
+
+// ATUALIZAÇÃO: renderCurrentExerciseOnPage foi modificado
 function renderCurrentExerciseOnPage() {
     const container = document.getElementById('exercise-container-page');
     // ... (lógica de renderCurrentExerciseOnPage - sem mudanças) ...
@@ -176,8 +255,11 @@ function renderCurrentExerciseOnPage() {
     const exercise = currentLektion.exercises[currentExerciseIndex];
     const progress = ((currentExerciseIndex + 1) / currentLektion.exercises.length) * 100;
     let inputHtml = '';
+
+    // --- Lógica de renderização por tipo ---
     if (exercise.type === 'fillBlank' || exercise.type === 'translation') {
         inputHtml = `<input type="text" id="exercise-input" class="input-field w-full text-lg p-4 rounded-xl" placeholder="Digite sua resposta..." value="${userAnswer}" ${feedback ? 'disabled' : ''} autocomplete="off">`;
+    
     } else if (exercise.type === 'multipleChoice') {
         inputHtml = `<div class="flex flex-col gap-3">
             ${exercise.options.map(option => `
@@ -186,7 +268,38 @@ function renderCurrentExerciseOnPage() {
                 </button>
             `).join('')}
         </div>`;
+    
+    } else if (exercise.type === 'wordOrder') {
+        // 1. Inicializa o estado se for a primeira vez
+        initWordOrderState(exercise.words);
+        
+        // 2. Renderiza a área de resposta
+        const answerWordsHtml = wordOrderState.answer.map(word => 
+            `<div class="word-token" data-word-id="${word.id}">${word.word}</div>`
+        ).join('');
+
+        // 3. Renderiza o banco de palavras
+        const bankWordsHtml = wordOrderState.bank.map(word =>
+            `<div class="word-token ${word.hidden ? 'hidden' : ''}" data-word-id="${word.id}">${word.word}</div>`
+        ).join('');
+
+        inputHtml = `
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm text-secondary">Organize as palavras:</span>
+                <button id="reset-words-btn" style="display: ${wordOrderState.answer.length > 0 && !feedback ? 'block' : 'none'};">
+                    Limpar
+                </button>
+            </div>
+            <div id="answer-area" class="answer-area ${feedback ? 'pointer-events-none opacity-70' : ''}">
+                ${answerWordsHtml}
+            </div>
+            <div id="word-bank" class="word-bank ${feedback ? 'pointer-events-none opacity-70' : ''}">
+                ${bankWordsHtml}
+            </div>
+        `;
     }
+    // --- Fim da lógica de renderização ---
+
     container.innerHTML = `
         <div class="card p-4 mb-6"><div class="progress-bar h-2.5 rounded-full" style="margin: 0;"><div class="progress-fill h-2.5 rounded-full" style="width: ${progress}%;"></div></div></div>
         <div class="card p-6">
@@ -205,23 +318,56 @@ function renderCurrentExerciseOnPage() {
             </div>
             <div class="flex gap-4 mt-8 pt-6 border-t" style="border-color: var(--border);">
                 <button id="grammar-btn" class="btn-secondary !px-4 !py-3 rounded-xl"><ion-icon name="book-outline" class="w-5 h-5"></ion-icon></button>
-                <button id="action-btn" class="btn-primary flex-grow !py-3 rounded-xl font-semibold" ${(!userAnswer && !feedback) ? 'disabled' : ''}>
+                <button id="action-btn" class="btn-primary flex-grow !py-3 rounded-xl font-semibold">
                     ${feedback ? 'Próximo →' : 'Verificar'}
                 </button>
             </div>
         </div>
     `;
-    // Listeners
+
+    // --- ATUALIZAÇÃO: Listeners ---
+    const actionBtn = document.getElementById('action-btn');
+
     if (exercise.type === 'fillBlank' || exercise.type === 'translation') {
         const input = document.getElementById('exercise-input');
-        input.oninput = (e) => { userAnswer = e.target.value; if (!feedback) document.getElementById('action-btn').disabled = !userAnswer; };
-        input.onkeydown = (e) => { if (e.key === 'Enter' && !feedback && userAnswer) document.getElementById('action-btn').click(); };
+        input.oninput = (e) => { 
+            userAnswer = e.target.value; 
+            if (!feedback) actionBtn.disabled = !userAnswer;
+        };
+        input.onkeydown = (e) => { if (e.key === 'Enter' && !feedback && userAnswer) actionBtn.click(); };
         if (!feedback) input.focus();
+        actionBtn.disabled = !userAnswer && !feedback;
+    
     } else if (exercise.type === 'multipleChoice') {
         document.querySelectorAll('.btn-secondary[data-option]').forEach(btn => {
-            btn.onclick = () => { if (feedback) return; userAnswer = btn.dataset.option; renderCurrentExerciseOnPage(); };
+            btn.onclick = () => { 
+                if (feedback) return; 
+                userAnswer = btn.dataset.option; 
+                renderCurrentExerciseOnPage(); 
+            };
         });
+        actionBtn.disabled = !userAnswer && !feedback;
+
+    } else if (exercise.type === 'wordOrder') {
+        // Listener para o banco de palavras
+        document.getElementById('word-bank')?.addEventListener('click', (e) => {
+            if (e.target.classList.contains('word-token')) {
+                moveWordToAnswer(Number(e.target.dataset.wordId));
+            }
+        });
+        // Listener para a área de resposta
+        document.getElementById('answer-area')?.addEventListener('click', (e) => {
+            if (e.target.classList.contains('word-token')) {
+                moveWordToBank(Number(e.target.dataset.wordId));
+            }
+        });
+        // Listener para o botão de reset
+        document.getElementById('reset-words-btn')?.addEventListener('click', resetWordOrder);
+        
+        // Habilita o botão de verificar se tiver palavras na resposta
+        actionBtn.disabled = wordOrderState.answer.length === 0 && !feedback;
     }
+    
     document.getElementById('grammar-btn').onclick = showGrammarModal;
     document.getElementById('action-btn').onclick = feedback ? nextExercise : checkAnswer;
 }
