@@ -34,7 +34,7 @@
             color: var(--text);
             transition: color 0.3s;
             /* ATUALIZAÇÃO: Garante espaço para a barra de navegação flutuante */
-            padding-bottom: 120px;
+            padding-bottom: 100px;
         }
 
         /* Classes de utilidade baseadas em variáveis CSS */
@@ -149,7 +149,7 @@
         #modal-body h3 {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--primary); /* Usa a cor primária do tema */
+            color: var(--primary);
             margin-bottom: 0.75rem;
         }
         #modal-body strong {
@@ -168,32 +168,30 @@
         .liquid-nav-container {
             /* 1. Flutuante */
             position: fixed;
-            bottom: 0; /* Começa no fundo */
+            bottom: 1.5rem; /* Margem do fundo */
             left: 50%;
             transform: translateX(-50%);
             /* Ajusta para áreas seguras (iPhone X) */
-            padding-bottom: env(safe-area-inset-bottom, 1rem); 
-            padding-left: 1rem;
-            padding-right: 1rem;
-            padding-top: 1rem;
-            width: 100%;
-            max-width: 500px; /* Limita a largura em desktops */
+            padding-bottom: env(safe-area-inset-bottom, 0); 
+            width: auto;
+            max-width: calc(100% - 2rem); /* Margens laterais */
             z-index: 1000;
-            display: flex;
-            justify-content: center;
         }
         
         .liquid-nav {
             /* 2. Efeito "Glassmorphism" */
-            background-color: rgba(var(--card-rgb), 0.7); /* Transparência do Card */
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(var(--border-rgb), 0.5);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1); /* Base translúcida */
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
             
             /* 1. Formato "Pill" */
-            border-radius: 99px;
-            padding: 0.75rem; /* 12px */
+            border-radius: 24px;
+            padding: 0.5rem; /* 8px */
             
             /* Layout dos links */
             display: flex;
@@ -206,16 +204,19 @@
         /* 3. Seletor Líquido (A Pílula que se move) */
         .liquid-pill {
             position: absolute;
-            top: 0.75rem; /* 12px (mesmo que o padding do pai) */
-            height: calc(100% - 1.5rem); /* Altura total - padding vert. */
-            background-color: var(--primary);
-            border-radius: 99px;
+            top: 0.5rem; /* 8px (mesmo que o padding do pai) */
+            height: calc(100% - 1rem); /* Altura total - padding vert. */
+            background: var(--primary);
+            border-radius: 18px;
             z-index: 1;
-            /* A MÁGICA: Transições suaves */
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* A MÁGICA: Transições suaves com efeito "líquido" */
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
             /* Inicialmente escondida */
             width: 0;
-            left: 0;
+            left: 0.5rem;
             opacity: 0;
         }
 
@@ -224,20 +225,27 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0.125rem; /* 2px */
-            padding: 0.25rem 0.75rem; /* 4px 12px */
-            border-radius: 99px;
+            gap: 0.25rem; /* 4px */
+            padding: 0.625rem 1rem; /* 10px 16px */
+            border-radius: 18px;
             text-decoration: none;
             cursor: pointer;
             z-index: 2; /* Fica acima da pílula */
-            min-width: 64px; /* Garante tamanho mínimo */
-            transition: color 0.3s ease, opacity 0.3s ease;
+            min-width: 70px; /* Garante tamanho mínimo */
+            transition: all 0.3s ease;
             color: var(--text);
-            opacity: 0.7; /* Cor dos inativos */
+            opacity: 0.6; /* Cor dos inativos */
+            position: relative;
         }
+        
         .nav-link span {
-            font-size: 0.75rem; /* 12px */
-            font-weight: 500;
+            font-size: 0.6875rem; /* 11px */
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        
+        .nav-link i {
+            transition: transform 0.3s ease;
         }
         
         /* Estado ATIVO (definido via JS) */
@@ -245,9 +253,25 @@
             color: white; /* Texto do item ativo */
             opacity: 1;
         }
-        /* Não-ativo quando passa o mouse */
+        
+        .nav-link.active i {
+            transform: scale(1.1);
+        }
+        
+        /* Hover nos inativos */
         .nav-link:not(.active):hover {
-            opacity: 1;
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link:not(.active):hover i {
+            transform: scale(1.05);
+        }
+        
+        /* Ajuste para temas escuros - Glassmorphism adaptativo */
+        body.dark-theme .liquid-nav {
+            background: rgba(30, 30, 30, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 
@@ -327,5 +351,3 @@
     <script type="module" src="app.js"></script>
 </body>
 </html>
-
-
