@@ -1,4 +1,5 @@
 // exercisesData.js - Banco de dados completo dos 150 exercícios organizados em 30 lições
+// ATUALIZADO: Enunciados (questions) corrigidos para maior clareza.
 
 window.exercisesData = [
     // LEKTION 1: Vorstellung (Apresentação)
@@ -10,49 +11,49 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Wie ___ du?',
+                question: 'Complete com o verbo (heißen): Wie ___ du?',
                 answer: 'heißt',
                 alternatives: ['heisst'],
                 explanation: 'Bei "du" verwenden wir "heißt" (2. Person Singular). Wie heißt du? = Como você se chama?'
             },
             {
                 type: 'fillBlank',
-                question: '___ kommst du?',
+                question: 'Complete a W-Frage (perguntando a origem): ___ kommst du?',
                 answer: 'woher',
                 alternatives: [],
                 explanation: '"Woher" pergunta pela origem/de onde você vem. Woher kommst du? = De onde você vem?'
             },
             {
                 type: 'fillBlank',
-                question: '___ wohnst du?',
+                question: 'Complete a W-Frage (perguntando a localização): ___ wohnst du?',
                 answer: 'wo',
                 alternatives: [],
                 explanation: '"Wo" pergunta pela localização. Wo wohnst du? = Onde você mora?'
             },
             {
                 type: 'fillBlank',
-                question: 'Das ist Maria. ___ kommt aus Spanien.',
+                question: 'Complete com o pronome pessoal: Das ist Maria. ___ kommt aus Spanien.',
                 answer: 'sie',
                 alternatives: [],
                 explanation: '"Sie" (ela) substitui "Maria" (feminino). Das ist Maria. Sie kommt aus Spanien.'
             },
             {
                 type: 'fillBlank',
-                question: '___ heiße Rod.',
+                question: 'Complete com o pronome pessoal: ___ heiße Rod.',
                 answer: 'ich',
                 alternatives: [],
                 explanation: 'O pronome "ich" (eu) é usado na 1ª pessoa do singular. Ich heiße Rod.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich ___ Student.',
+                question: 'Complete com o verbo (sein): Ich ___ Student.',
                 answer: 'bin',
                 alternatives: [],
                 explanation: 'O verbo "sein" na 1ª pessoa singular (ich) é "bin". Ich bin Student = Eu sou estudante.'
             },
             {
                 type: 'multipleChoice',
-                question: 'Wo ___ du?',
+                question: 'Conjugue o verbo (wohnen): Wo ___ du?',
                 answer: 'wohnst',
                 options: ['wohne', 'wohnst', 'wohnt', 'wohnen'],
                 explanation: 'Bei der 2. Person Singular (du) endet das Verb auf -st. Du wohnst = você mora.'
@@ -69,35 +70,35 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich ___ eine Frage.',
+                question: 'Complete com o verbo (haben): Ich ___ eine Frage.',
                 answer: 'habe',
                 alternatives: [],
                 explanation: 'O verbo "haben" (ter) na 1ª pessoa singular é "habe". Ich habe eine Frage = Eu tenho uma pergunta.'
             },
             {
                 type: 'fillBlank',
-                question: 'Du ___ ein schönes Auto.',
+                question: 'Complete com o verbo (haben): Du ___ ein schönes Auto.',
                 answer: 'hast',
                 alternatives: [],
                 explanation: 'O verbo "haben" na 2ª pessoa singular (du) é "hast". Du hast ein Auto = Você tem um carro.'
             },
             {
                 type: 'fillBlank',
-                question: 'Wer aus Spanien kommt, spricht ___.',
+                question: 'Complete com o idioma: Wer aus Spanien kommt, spricht ___.',
                 answer: 'spanisch',
                 alternatives: [],
                 explanation: 'Pessoas da Espanha (Spanien) falam espanhol (Spanisch).'
             },
             {
                 type: 'fillBlank',
-                question: 'Wer ___ spricht, kommt oft aus Portugal oder Brasilien.',
+                question: 'Complete com o idioma: Wer ___ spricht, kommt oft aus Portugal oder Brasilien.',
                 answer: 'portugiesisch',
                 alternatives: [],
                 explanation: 'Português (Portugiesisch) é falado em Portugal e no Brasil.'
             },
             {
                 type: 'fillBlank',
-                question: 'Er kommt aus der Türkei, er spricht ___.',
+                question: 'Complete com o idioma: Er kommt aus der Türkei, er spricht ___.',
                 answer: 'türkisch',
                 alternatives: [],
                 explanation: 'Pessoas da Turquia (Türkei) falam turco (Türkisch).'
@@ -121,14 +122,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich wohne ___ in Hamburg.',
+                question: 'Negue a frase (com "nicht"): Ich wohne ___ in Hamburg.',
                 answer: 'nicht',
                 alternatives: [],
                 explanation: '"nicht" (não) é usado para negar verbos. Ich wohne nicht in Hamburg = Eu não moro em Hamburgo.'
             },
             {
                 type: 'fillBlank',
-                question: 'Das ist ___ mein Bruder.',
+                question: 'Negue a frase (com "nicht"): Das ist ___ mein Bruder.',
                 answer: 'nicht',
                 alternatives: [],
                 explanation: 'Usamos "nicht" antes de substantivos com possessivo. Das ist nicht mein Bruder = Esse não é meu irmão.'
@@ -166,42 +167,42 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Der Lehrer → Die ___',
+                question: 'Forma feminina: Der Lehrer → Die ___',
                 answer: 'lehrerin',
                 alternatives: [],
                 explanation: 'A forma feminina é criada adicionando "-in": der Lehrer → die Lehrerin.'
             },
             {
                 type: 'fillBlank',
-                question: 'Der Arzt → Die ___',
+                question: 'Forma feminina: Der Arzt → Die ___',
                 answer: 'ärztin',
                 alternatives: ['aerztin'],
                 explanation: 'Com Umlaut: der Arzt → die Ärztin (médica).'
             },
             {
                 type: 'fillBlank',
-                question: 'Er arbeitet im Krankenhaus. Er ist ___.',
+                question: 'Complete a profissão: Er arbeitet im Krankenhaus. Er ist ___.',
                 answer: 'arzt',
                 alternatives: [],
                 explanation: 'Quem trabalha no hospital (Krankenhaus) é médico (Arzt).'
             },
             {
                 type: 'fillBlank',
-                question: 'Sie unterrichtet Schüler. Sie ist ___.',
+                question: 'Complete a profissão: Sie unterrichtet Schüler. Sie ist ___.',
                 answer: 'lehrerin',
                 alternatives: [],
                 explanation: 'Quem ensina (unterrichten) alunos é professora (Lehrerin).'
             },
             {
                 type: 'fillBlank',
-                question: 'Der Vater von meinem Vater ist mein ___.',
+                question: 'Complete o parente: Der Vater von meinem Vater ist mein ___.',
                 answer: 'großvater',
                 alternatives: ['grossvater', 'opa'],
                 explanation: 'O pai do seu pai é seu avô (Großvater ou Opa).'
             },
             {
                 type: 'fillBlank',
-                question: 'Die Schwester von meiner Mutter ist meine ___.',
+                question: 'Complete o parente: Die Schwester von meiner Mutter ist meine ___.',
                 answer: 'tante',
                 alternatives: [],
                 explanation: 'A irmã da sua mãe é sua tia (Tante).'
@@ -218,35 +219,35 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich habe ___ (der) Hund.',
+                question: 'Complete com o artigo indefinido (Akkusativ): Ich habe ___ (der) Hund.',
                 answer: 'einen',
                 alternatives: [],
                 explanation: 'Akkusativ masculino: ein → einen. Ich habe einen Hund = Eu tenho um cachorro.'
             },
             {
                 type: 'fillBlank',
-                question: 'Er kauft ___ (die) Jacke.',
+                question: 'Complete com o artigo indefinido (Akkusativ): Er kauft ___ (die) Jacke.',
                 answer: 'eine',
                 alternatives: [],
                 explanation: 'Akkusativ feminino não muda: eine bleibt eine.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich habe ___ (der) Computer.',
+                question: 'Complete com o artigo negativo (Akkusativ): Ich habe ___ (der) Computer.',
                 answer: 'keinen',
                 alternatives: [],
                 explanation: 'Negativartikel im Akkusativ masculino: kein → keinen.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ist das ein Tisch? — Nein, das ist ___ Tisch.',
+                question: 'Complete com o artigo negativo (Nominativ): Ist das ein Tisch? — Nein, das ist ___ Tisch.',
                 answer: 'kein',
                 alternatives: [],
                 explanation: 'Negação de substantivo masculino no nominativo: kein Tisch.'
             },
             {
                 type: 'fillBlank',
-                question: 'Die Banane ist ___.',
+                question: 'Complete com a cor: Die Banane ist ___.',
                 answer: 'gelb',
                 alternatives: [],
                 explanation: 'Bananas são amarelas (gelb).'
@@ -270,14 +271,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich sehe ___ (der) Mann.',
+                question: 'Complete com o artigo definido (Akkusativ): Ich sehe ___ (der) Mann.',
                 answer: 'den',
                 alternatives: [],
                 explanation: 'Akkusativ: der → den. Ich sehe den Mann.'
             },
             {
                 type: 'fillBlank',
-                question: 'Er nimmt ___ (der) Bus.',
+                question: 'Complete com o artigo definido (Akkusativ): Er nimmt ___ (der) Bus.',
                 answer: 'den',
                 alternatives: [],
                 explanation: 'Akkusativ masculino: der Bus → den Bus.'
@@ -353,28 +354,28 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Hier ist ___ (ich) Buch (das).',
+                question: 'Complete com o possessivo (ich - Nom.): Hier ist ___ Buch (das).',
                 answer: 'mein',
                 alternatives: [],
                 explanation: 'Possessivartikel neutro: mein Buch.'
             },
             {
                 type: 'fillBlank',
-                question: 'Hier ist ___ (du) Tasche (die).',
+                question: 'Complete com o possessivo (du - Nom.): Hier ist ___ Tasche (die).',
                 answer: 'deine',
                 alternatives: [],
                 explanation: 'Possessivartikel feminino: deine Tasche.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich suche ___ (mein) Schlüssel (der).',
+                question: 'Complete com o possessivo (ich - Akk.): Ich suche ___ Schlüssel (der).',
                 answer: 'meinen',
                 alternatives: [],
                 explanation: 'Akkusativ masculino: mein → meinen Schlüssel.'
             },
             {
                 type: 'fillBlank',
-                question: '___ Stuhl ist alt.',
+                question: 'Complete com o artigo definido (Nominativ): ___ Stuhl ist alt.',
                 answer: 'der',
                 alternatives: [],
                 explanation: 'Definiter Artikel masculino Nominativ: der Stuhl.'
@@ -422,28 +423,28 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: '___ Montag spiele ich Fußball.',
+                question: 'Preposição temporal (dias da semana): ___ Montag spiele ich Fußball.',
                 answer: 'am',
                 alternatives: [],
                 explanation: 'Dias da semana usam "am": am Montag.'
             },
             {
                 type: 'fillBlank',
-                question: 'Der Film beginnt ___ 20:15 Uhr.',
+                question: 'Preposição temporal (horas): Der Film beginnt ___ 20:15 Uhr.',
                 answer: 'um',
                 alternatives: [],
                 explanation: 'Horas exatas usam "um": um 20:15 Uhr.'
             },
             {
                 type: 'fillBlank',
-                question: '___ Sommer fahren wir nach Italien.',
+                question: 'Preposição temporal (estações): ___ Sommer fahren wir nach Italien.',
                 answer: 'im',
                 alternatives: [],
                 explanation: 'Estações do ano usam "im": im Sommer.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich arbeite ___ 9:00 Uhr ___ 17:00 Uhr.',
+                question: 'Preposição temporal (de... até...): Ich arbeite ___ 9:00 Uhr ___ 17:00 Uhr.',
                 answer: 'von|bis',
                 alternatives: [],
                 explanation: 'von... bis... = de... até...'
@@ -491,21 +492,21 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich ___ gut schwimmen.',
+                question: 'Complete com o verbo modal (können): Ich ___ gut schwimmen.',
                 answer: 'kann',
                 alternatives: [],
                 explanation: 'können = poder/saber. Ich kann schwimmen = Eu sei nadar.'
             },
             {
                 type: 'multipleChoice',
-                question: '___ du mir helfen?',
+                question: 'Complete com o verbo modal (können): ___ du mir helfen?',
                 answer: 'kannst',
                 options: ['kann', 'kannst', 'können', 'könnt'],
                 explanation: 'können com "du": Kannst du mir helfen?'
             },
             {
                 type: 'fillBlank',
-                question: 'Wir ___ am Samstag kommen.',
+                question: 'Complete com o verbo modal (können): Wir ___ am Samstag kommen.',
                 answer: 'können',
                 alternatives: [],
                 explanation: 'können com "wir": Wir können kommen.'
@@ -522,21 +523,21 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Wo ist ___ (dein) Handy (das)?',
+                question: 'Complete com o possessivo (dein - Nom.): Wo ist ___ Handy (das)?',
                 answer: 'dein',
                 alternatives: [],
                 explanation: 'Nominativo neutro: dein Handy.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich finde ___ (dein) Handy (das) nicht.',
+                question: 'Complete com o possessivo (dein - Akk.): Ich finde ___ Handy (das) nicht.',
                 answer: 'dein',
                 alternatives: [],
                 explanation: 'Akkusativ neutro não muda: dein Handy.'
             },
             {
                 type: 'fillBlank',
-                question: 'Hast du ___ (mein) Schlüssel (der) gesehen?',
+                question: 'Complete com o possessivo (mein - Akk.): Hast du ___ Schlüssel (der) gesehen?',
                 answer: 'meinen',
                 alternatives: [],
                 explanation: 'Akkusativ masculino: mein → meinen Schlüssel.'
@@ -553,21 +554,21 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: '8:15 → Es ist acht ___ fünfzehn.',
+                question: 'Complete a hora (formal): 8:15 → Es ist acht ___ fünfzehn.',
                 answer: 'uhr',
                 alternatives: [],
                 explanation: 'Formato formal: acht Uhr fünfzehn.'
             },
             {
                 type: 'fillBlank',
-                question: '10:15 → Es ist Viertel ___ elf.',
+                question: 'Complete a hora (informal): 10:15 → Es ist Viertel ___ elf.',
                 answer: 'nach',
                 alternatives: [],
                 explanation: 'Formato informal: Viertel nach elf (quinze para as onze).'
             },
             {
                 type: 'fillBlank',
-                question: '9:30 → Es ist halb ___.',
+                question: 'Complete a hora (informal): 9:30 → Es ist halb ___.',
                 answer: 'zehn',
                 alternatives: [],
                 explanation: 'halb zehn = 9:30 (meia para as dez).'
@@ -584,14 +585,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich ___ heute nicht ___. (kommen - Modal)',
+                question: 'Complete com o modal (können): Ich ___ heute nicht ___. (kommen)',
                 answer: 'kann|kommen',
                 alternatives: [],
                 explanation: 'Modalverb Satzklammer: Ich kann heute nicht kommen.'
             },
             {
                 type: 'fillBlank',
-                question: 'Sie ___ sehr gut ___. (singen - Modal)',
+                question: 'Complete com o modal (können): Sie ___ sehr gut ___. (singen)',
                 answer: 'kann|singen',
                 alternatives: [],
                 explanation: 'Sie kann sehr gut singen.'
@@ -608,14 +609,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Dezember, Januar und Februar sind ___.',
+                question: 'Complete a estação do ano: Dezember, Januar und Februar sind ___.',
                 answer: 'winter',
                 alternatives: [],
                 explanation: 'Esses meses são no inverno (Winter) no hemisfério norte.'
             },
             {
                 type: 'fillBlank',
-                question: 'Der Monat nach Juni ist ___.',
+                question: 'Complete o mês: Der Monat nach Juni ist ___.',
                 answer: 'juli',
                 alternatives: [],
                 explanation: 'Depois de junho (Juni) vem julho (Juli).'
@@ -632,21 +633,21 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'groß (grande) ≠ ___',
+                question: 'Antônimo: groß (grande) ≠ ___',
                 answer: 'klein',
                 alternatives: [],
                 explanation: 'O oposto de groß (grande) é klein (pequeno).'
             },
             {
                 type: 'fillBlank',
-                question: 'alt (velho) ≠ ___',
+                question: 'Antônimo: alt (velho) ≠ ___',
                 answer: 'jung',
                 alternatives: ['neu'],
                 explanation: 'O oposto de alt pode ser jung (jovem) ou neu (novo).'
             },
             {
                 type: 'fillBlank',
-                question: 'teuer (caro) ≠ ___',
+                question: 'Antônimo: teuer (caro) ≠ ___',
                 answer: 'billig',
                 alternatives: ['günstig'],
                 explanation: 'O oposto de teuer é billig ou günstig (barato).'
@@ -663,14 +664,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Die Mutter von meiner Mutter ist meine ___.',
+                question: 'Complete o parente: Die Mutter von meiner Mutter ist meine ___.',
                 answer: 'großmutter',
                 alternatives: ['grossmutter', 'oma'],
                 explanation: 'A mãe da sua mãe é sua avó (Großmutter/Oma).'
             },
             {
                 type: 'fillBlank',
-                question: 'Der Bruder von meinem Vater ist mein ___.',
+                question: 'Complete o parente: Der Bruder von meinem Vater ist mein ___.',
                 answer: 'onkel',
                 alternatives: [],
                 explanation: 'O irmão do seu pai é seu tio (Onkel).'
@@ -687,14 +688,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich fahre zur Arbeit ___ ___ ___. (o trem)',
+                question: 'Complete (preposição "mit" + Dativ): Ich fahre zur Arbeit ___ ___ ___. (o trem)',
                 answer: 'mit|dem|zug',
                 alternatives: [],
                 explanation: 'mit dem Zug = de trem (preposição "mit" + Dativ).'
             },
             {
                 type: 'fillBlank',
-                question: 'Wir machen eine ___ nach Berlin.',
+                question: 'Complete o substantivo (viagem): Wir machen eine ___ nach Berlin.',
                 answer: 'reise',
                 alternatives: [],
                 explanation: 'eine Reise machen = fazer uma viagem.'
@@ -735,14 +736,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Mein ___ (der) ist langsam.',
+                question: 'Complete o substantivo (computador): Mein ___ (der) ist langsam.',
                 answer: 'computer',
                 alternatives: [],
                 explanation: 'Mein Computer ist langsam = Meu computador é lento.'
             },
             {
                 type: 'fillBlank',
-                question: 'Der ___ (der) funktioniert nicht.',
+                question: 'Complete o substantivo (impressora): Der ___ (der) funktioniert nicht.',
                 answer: 'drucker',
                 alternatives: [],
                 explanation: 'der Drucker = a impressora. Der Drucker funktioniert nicht = A impressora não funciona.'
@@ -759,21 +760,21 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Was ___ Sie von Beruf?',
+                question: 'Complete com o verbo (sein): Was ___ Sie von Beruf?',
                 answer: 'sind',
                 alternatives: [],
                 explanation: 'Was sind Sie von Beruf? = Qual é sua profissão?'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich ___ Lehrerin.',
+                question: 'Complete com o verbo (sein): Ich ___ Lehrerin.',
                 answer: 'bin',
                 alternatives: [],
                 explanation: 'Ich bin Lehrerin = Eu sou professora.'
             },
             {
                 type: 'fillBlank',
-                question: 'Er ___ als Arzt.',
+                question: 'Complete com o verbo (arbeiten): Er ___ als Arzt.',
                 answer: 'arbeitet',
                 alternatives: [],
                 explanation: 'Er arbeitet als Arzt = Ele trabalha como médico.'
@@ -790,14 +791,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: '___ Tisch ist neu.',
+                question: 'Complete com o artigo definido (Nominativ): ___ Tisch ist neu.',
                 answer: 'der',
                 alternatives: [],
                 explanation: 'Nominativo masculino: Der Tisch ist neu.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich kaufe ___ Tisch.',
+                question: 'Complete com o artigo definido (Akkusativ): Ich kaufe ___ Tisch.',
                 answer: 'den',
                 alternatives: [],
                 explanation: 'Akkusativ masculino: Ich kaufe den Tisch.'
@@ -814,7 +815,7 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich habe zwei ___. (Bruder)',
+                question: 'Complete com o plural: Ich habe zwei ___. (Bruder)',
                 answer: 'brüder',
                 alternatives: ['brueder'],
                 explanation: 'Plural de Bruder: die Brüder (com Umlaut).'
@@ -838,14 +839,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich ___ Deutsch.',
+                question: 'Complete com o verbo (lernen): Ich ___ Deutsch.',
                 answer: 'lerne',
                 alternatives: [],
                 explanation: 'Presente simples: Ich lerne Deutsch.'
             },
             {
                 type: 'fillBlank',
-                question: 'Er ___ gern Pizza.',
+                question: 'Complete com o verbo (essen): Er ___ gern Pizza.',
                 answer: 'isst',
                 alternatives: [],
                 explanation: 'Vokalwechsel: Er isst gern Pizza.'
@@ -862,21 +863,21 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: '___ Sommer ist es heiß.',
+                question: 'Preposição temporal (estações): ___ Sommer ist es heiß.',
                 answer: 'im',
                 alternatives: [],
                 explanation: 'Estações usam "im": Im Sommer ist es heiß.'
             },
             {
                 type: 'fillBlank',
-                question: 'Der Kurs beginnt ___ 18:30 Uhr.',
+                question: 'Preposição temporal (horas): Der Kurs beginnt ___ 18:30 Uhr.',
                 answer: 'um',
                 alternatives: [],
                 explanation: 'Horas exatas usam "um": um 18:30 Uhr.'
             },
             {
                 type: 'fillBlank',
-                question: '___ Mittwoch habe ich einen Termin.',
+                question: 'Preposição temporal (dias da semana): ___ Mittwoch habe ich einen Termin.',
                 answer: 'am',
                 alternatives: [],
                 explanation: 'Dias da semana usam "am": am Mittwoch.'
@@ -1092,28 +1093,28 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich habe ___ Zeit. (die Zeit)',
+                question: 'Negue o substantivo (com "kein"): Ich habe ___ Zeit. (die Zeit)',
                 answer: 'keine',
                 alternatives: [],
                 explanation: 'Negação de substantivo feminino: keine Zeit.'
             },
             {
                 type: 'fillBlank',
-                question: 'Er ist ___ mein Freund.',
+                question: 'Negue a frase (com "nicht"): Er ist ___ mein Freund.',
                 answer: 'nicht',
                 alternatives: [],
                 explanation: 'nicht antes de possessivo: Er ist nicht mein Freund.'
             },
             {
                 type: 'fillBlank',
-                question: 'Wir kaufen ___ Auto. (das Auto)',
+                question: 'Negue o substantivo (com "kein"): Wir kaufen ___ Auto. (das Auto)',
                 answer: 'kein',
                 alternatives: [],
                 explanation: 'Negação de substantivo neutro: kein Auto.'
             },
             {
                 type: 'fillBlank',
-                question: 'Das finde ich ___ gut.',
+                question: 'Negue o adjetivo (com "nicht"): Das finde ich ___ gut.',
                 answer: 'nicht',
                 alternatives: [],
                 explanation: 'nicht antes de adjetivo: nicht gut.'
@@ -1164,7 +1165,7 @@ window.exercisesData = [
             },
             {
                 type: 'fillBlank',
-                question: '___ 8:00 Uhr (hora exata)',
+                question: 'Preposição temporal (hora exata): ___ 8:00 Uhr',
                 answer: 'um',
                 alternatives: [],
                 explanation: 'Horas exatas: um 8:00 Uhr.'
@@ -1180,14 +1181,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich ___ heute ___. (arbeiten - Modal)',
+                question: 'Complete com o modal (müssen): Ich ___ heute ___. (arbeiten)',
                 answer: 'muss|arbeiten',
                 alternatives: ['kann|arbeiten'],
                 explanation: 'Satzklammer Modal: Ich muss heute arbeiten.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich ___ heute ___. (arbeiten - Perfekt)',
+                question: 'Complete no Perfekt: Ich ___ heute ___. (arbeiten)',
                 answer: 'habe|gearbeitet',
                 alternatives: [],
                 explanation: 'Satzklammer Perfekt: Ich habe heute gearbeitet.'
@@ -1217,14 +1218,14 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich kaufe drei ___. (der Apfel)',
+                question: 'Complete com o plural: Ich kaufe drei ___. (der Apfel)',
                 answer: 'äpfel',
                 alternatives: ['aepfel'],
                 explanation: 'Plural mit Umlaut: die Äpfel.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich esse zwei ___. (die Banane)',
+                question: 'Complete com o plural: Ich esse zwei ___. (die Banane)',
                 answer: 'bananen',
                 alternatives: [],
                 explanation: 'Plural -n: die Bananen.'
@@ -1254,21 +1255,21 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: 'Ich kaufe ___ Tisch. (der)',
+                question: 'Complete com o artigo indefinido (Akkusativ): Ich kaufe ___ Tisch. (der)',
                 answer: 'einen',
                 alternatives: [],
                 explanation: 'Akkusativ masculino: einen Tisch.'
             },
             {
                 type: 'fillBlank',
-                question: 'Wir brauchen ___ Lampe. (die)',
+                question: 'Complete com o artigo indefinido (Akkusativ): Wir brauchen ___ Lampe. (die)',
                 answer: 'eine',
                 alternatives: [],
                 explanation: 'Akkusativ feminino: eine Lampe.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich nehme ___ Bus. (der)',
+                question: 'Complete com o artigo indefinido (Akkusativ): Ich nehme ___ Bus. (der)',
                 answer: 'einen',
                 alternatives: [],
                 explanation: 'Akkusativ: einen Bus.'
@@ -1351,7 +1352,7 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: '___ ist deine Telefonnummer?',
+                question: 'Complete a W-Frage (Wie?): ___ ist deine Telefonnummer?',
                 answer: 'wie',
                 alternatives: [],
                 explanation: 'Wie fragt nach der Telefonnummer.'
@@ -1388,28 +1389,28 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: '___ Stuhl ist alt. (Nominativ)',
+                question: 'Artigo definido (Nominativ): ___ Stuhl ist alt.',
                 answer: 'der',
                 alternatives: [],
                 explanation: 'Nominativo masculino: Der Stuhl.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich kaufe ___ Stuhl. (Akkusativ)',
+                question: 'Artigo definido (Akkusativ): Ich kaufe ___ Stuhl.',
                 answer: 'den',
                 alternatives: [],
                 explanation: 'Akkusativ masculino: den Stuhl.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich suche ___ Stift. (irgendeinen)',
+                question: 'Artigo indefinido (Akkusativ): Ich suche ___ Stift.',
                 answer: 'einen',
                 alternatives: [],
                 explanation: 'Indefiniter Artikel Akkusativ: einen Stift.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich suche ___ Stift von dir. (den spezifischen)',
+                question: 'Artigo definido (Akkusativ): Ich suche ___ Stift von dir.',
                 answer: 'den',
                 alternatives: [],
                 explanation: 'Definiter Artikel Akkusativ: den Stift.'
@@ -1425,28 +1426,28 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: '___ Computer (der) ist alt. (Nominativ)',
+                question: 'Possessivo (mein - Nominativ): ___ Computer (der) ist alt.',
                 answer: 'mein',
                 alternatives: [],
                 explanation: 'Nominativo masculino: Mein Computer.'
             },
             {
                 type: 'fillBlank',
-                question: 'Ich benutze ___ Computer (der) nicht. (Akkusativ)',
+                question: 'Possessivo (mein - Akkusativ): Ich benutze ___ Computer (der) nicht.',
                 answer: 'meinen',
                 alternatives: [],
                 explanation: 'Akkusativ masculino: meinen Computer.'
             },
             {
                 type: 'fillBlank',
-                question: '___ Tasche (die) ist schwer. (Nominativ)',
+                question: 'Possessivo (mein - Nominativ): ___ Tasche (die) ist schwer.',
                 answer: 'meine',
                 alternatives: [],
                 explanation: 'Nominativo feminino: Meine Tasche.'
             },
             {
                 type: 'fillBlank',
-                question: 'Er nimmt ___ Tasche (die). (Akkusativ)',
+                question: 'Possessivo (mein - Akkusativ): Er nimmt ___ Tasche (die).',
                 answer: 'meine',
                 alternatives: [],
                 explanation: 'Akkusativ feminino (não muda): meine Tasche.'
@@ -1462,7 +1463,7 @@ window.exercisesData = [
         exercises: [
             {
                 type: 'fillBlank',
-                question: '___ hast du gestern gemacht?',
+                question: 'Complete a W-Frage: ___ hast du gestern gemacht?',
                 answer: 'was',
                 alternatives: [],
                 explanation: 'W-Frage im Perfekt: Was hast du gemacht?'
@@ -1476,14 +1477,14 @@ window.exercisesData = [
             },
             {
                 type: 'fillBlank',
-                question: 'Ich ___ in Berlin Deutsch ___. (lernen - Modal)',
+                question: 'Complete com o modal (können): Ich ___ in Berlin Deutsch ___. (lernen)',
                 answer: 'kann|lernen',
                 alternatives: [],
                 explanation: 'Modal: Ich kann in Berlin Deutsch lernen.'
             },
             {
                 type: 'multipleChoice',
-                question: 'Was ist richtig?',
+                question: 'Was ist richtig? (aufstehen)',
                 answer: 'Ich stehe um 7 Uhr auf.',
                 options: ['Ich stehe um 7 Uhr auf.', 'Ich stehe auf um 7 Uhr.', 'Um 7 Uhr ich stehe auf.', 'Ich um 7 Uhr aufstehe.'],
                 explanation: 'Trennbar im Präsens: Ich stehe um 7 Uhr auf.'
