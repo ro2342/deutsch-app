@@ -1,5 +1,5 @@
 // app.js - Lógica principal do App Deutsch A1.1 (Vanilla JS)
-// ATUALIZAÇÃO: Implementa a barra de navegação "Liquid Glass"
+// ATUALIZAÇÃO: Unificado com Ionicons para um visual estilo iOS.
 
 // Importações do Firebase (SDK 9 modular)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -45,17 +45,7 @@ let userAnswer = '';
 let feedback = null;
 
 // --- FUNÇÃO DE AJUDA PARA ÍCONES ---
-function safeCreateIcons() {
-    if (window.lucide) {
-        try {
-            lucide.createIcons();
-        } catch (error) {
-            console.warn("Erro ao criar ícones Lucide:", error.message);
-        }
-    } else {
-        console.warn('Biblioteca de ícones (Lucide) não carregou a tempo.');
-    }
-}
+// (Removida - Ionicons renderiza automaticamente)
 
 
 // --- INICIALIZAÇÃO DO FIREBASE E APP ---
@@ -206,7 +196,7 @@ const modalContent = document.getElementById('modal-content');
 function showModal(title, contentHtml) {
     modalContent.innerHTML = `
         <button id="modal-close-btn">
-            <i data-lucide="x" class="w-5 h-5"></i>
+            <ion-icon name="close-outline" class="w-5 h-5"></ion-icon>
         </button>
         <div id="modal-body" class="mt-4">
              <h3 class="text-xl font-bold mb-4" style="color: var(--primary);">${title}</h3>
@@ -214,7 +204,7 @@ function showModal(title, contentHtml) {
         </div>
     `;
     modalContainer.classList.remove('hidden');
-    safeCreateIcons();
+    // safeCreateIcons() removido;
 
     modalContainer.addEventListener('click', hideModal);
     modalContent.addEventListener('click', (e) => e.stopPropagation());
@@ -296,7 +286,7 @@ function router() {
         renderHome();
     }
     
-    safeCreateIcons();
+    // safeCreateIcons() removido
 }
 
 // --- ATUALIZAÇÃO: LÓGICA DA BARRA DE NAVEGAÇÃO "LIQUID GLASS" ---
@@ -347,7 +337,7 @@ function moveLiquidPill(activeLinkEl) {
             liquidPill.style.transform = 'scale(1)';
         }, 150);
     } else {
-        // Esconde a pílula se nenhuma rota estiver ativa (ex: #/exercise)
+        // Esconde a pílula se nenhuma rota estiverativa (ex: #/exercise)
         liquidPill.style.opacity = '0';
         liquidPill.style.transform = 'scale(0.95)';
     }
@@ -447,10 +437,10 @@ function renderMap() {
                 const isInProgress = Object.keys(inProgress).includes(String(lektion.id));
                 const isLocked = index > 0 && !completed.includes(allLektions[index - 1].id);
                 
-                let icon = index + 1;
-                if (isLocked) icon = '<i data-lucide="lock" class="w-6 h-6"></i>';
-                else if (isCompleted) icon = '<i data-lucide="check" class="w-6 h-6"></i>';
-                else if (isInProgress) icon = '<i data-lucide="play" class="w-6 h-6 fill-current"></i>';
+                let icon = `<span class="text-xl">${index + 1}</span>`; // Número por padrão
+                if (isLocked) icon = '<ion-icon name="lock-closed-outline" class="w-6 h-6"></ion-icon>';
+                else if (isCompleted) icon = '<ion-icon name="checkmark-outline" class="w-6 h-6"></ion-icon>';
+                else if (isInProgress) icon = '<ion-icon name="play-outline" class="w-6 h-6"></ion-icon>';
                 
                 return `
                     <div 
@@ -465,7 +455,7 @@ function renderMap() {
                             <h3 class="text-lg font-bold">${lektion.title}</h3>
                             <p class="text-sm text-secondary">${lektion.topics.join(', ')}</p>
                         </div>
-                        ${!isLocked ? '<i data-lucide="chevron-right" class="w-6 h-6 text-secondary"></i>' : ''}
+                        ${!isLocked ? '<ion-icon name="chevron-forward-outline" class="w-6 h-6 text-secondary"></ion-icon>' : ''}
                     </div>
                 `;
             }).join('')}
@@ -479,7 +469,7 @@ function renderMap() {
         };
     });
     
-    safeCreateIcons();
+    // safeCreateIcons() removido
 }
 
 function renderProgress() {
@@ -494,12 +484,12 @@ function renderProgress() {
             <div class="card p-6 text-center">
                 <h2 class="text-lg font-medium text-secondary mb-2">Pontos Totais</h2>
                 <div class="text-5xl font-bold" style="color: var(--primary);">${score}</div>
-                <i data-lucide="award" class="w-12 h-12 mx-auto mt-4 text-secondary"></i>
+                <ion-icon name="ribbon-outline" class="w-12 h-12 mx-auto mt-4 text-secondary"></ion-icon>
             </div>
             <div class="card p-6 text-center">
                 <h2 class="text-lg font-medium text-secondary mb-2">Lições Completas</h2>
                 <div class="text-5xl font-bold" style="color: var(--accent);">${completedCount} / ${totalLektions || 'N/A'}</div>
-                <i data-lucide="check-circle" class="w-12 h-12 mx-auto mt-4 text-secondary"></i>
+                <ion-icon name="checkmark-done-circle-outline" class="w-12 h-12 mx-auto mt-4 text-secondary"></ion-icon>
             </div>
             <div class="card p-6 md:col-span-2">
                 <h2 class="text-xl font-bold mb-4">Lições Completadas</h2>
@@ -507,7 +497,7 @@ function renderProgress() {
                     <ul class="space-y-3">
                         ${userProfile.completedLektions.map(id => {
                             const lektion = allLektions.find(l => l.id === id);
-                            return lektion ? `<li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> ${lektion.title}</li>` : '';
+                            return lektion ? `<li class="flex items-center gap-3"><ion-icon name="checkmark-outline" class="w-5 h-5 text-green-500"></ion-icon> ${lektion.title}</li>` : '';
                         }).join('')}
                     </ul>
                 ` : `
@@ -517,7 +507,7 @@ function renderProgress() {
         </div>
     `;
     
-    safeCreateIcons();
+    // safeCreateIcons() removido
 }
 
 function renderSettings() {
@@ -643,8 +633,8 @@ function renderExercisePage() {
     
     page.innerHTML = `
         <div class="flex items-center justify-between gap-4 mb-6">
-            <button id="back-to-map-btn" class="btn-secondary !border-0 !bg-gray-700/50 hover:!bg-gray-600/50" style="padding: 0.75rem;">
-                <i data-lucide="x" class="w-6 h-6"></i>
+            <button id="back-to-map-btn" class="btn-secondary !border-0" style="padding: 0.75rem;">
+                <ion-icon name="close-outline" class="w-6 h-6"></ion-icon>
             </button>
             <div class="flex-grow text-right">
                 <h1 class="text-2xl font-bold" style="color: var(--primary);">${currentLektion.title}</h1>
@@ -659,7 +649,7 @@ function renderExercisePage() {
         window.location.hash = '#/map';
     };
     
-    safeCreateIcons();
+    // safeCreateIcons() removido
     renderCurrentExerciseOnPage();
 }
 
@@ -715,7 +705,7 @@ function renderCurrentExerciseOnPage() {
             <div id="feedback-container">
                 ${feedback ? `
                     <div class="feedback ${feedback.isCorrect ? 'correct' : 'incorrect'}">
-                        <i data-lucide="${feedback.isCorrect ? 'check-circle' : 'x-circle'}" class="w-8 h-8 flex-shrink-0"></i>
+                        <ion-icon name="${feedback.isCorrect ? 'checkmark-circle-outline' : 'close-circle-outline'}" class="w-8 h-8 flex-shrink-0"></ion-icon>
                         <div>
                             <strong class="block mb-1">${feedback.isCorrect ? 'Correto!' : 'Incorreto'}</strong>
                             <span class="text-secondary">${feedback.explanation}</span>
@@ -726,7 +716,7 @@ function renderCurrentExerciseOnPage() {
             
             <div class="flex gap-4 mt-8 pt-6 border-t" style="border-color: var(--border);">
                 <button id="grammar-btn" class="btn-secondary !px-4 !py-3 rounded-xl">
-                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <ion-icon name="book-outline" class="w-5 h-5"></ion-icon>
                 </button>
                 <button id="action-btn" class="btn-primary flex-grow !py-3 rounded-xl font-semibold" ${(!userAnswer && !feedback) ? 'disabled' : ''}>
                     ${feedback ? 'Próximo →' : 'Verificar'}
@@ -760,7 +750,7 @@ function renderCurrentExerciseOnPage() {
     document.getElementById('grammar-btn').onclick = showGrammarModal;
     document.getElementById('action-btn').onclick = feedback ? nextExercise : checkAnswer;
     
-    safeCreateIcons();
+    // safeCreateIcons() removido
 }
 
 function showGrammarModal() {
