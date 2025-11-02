@@ -10,17 +10,24 @@ export function renderMap(userProfile, allLektions) {
     
     page.innerHTML = `
         ${getPageHeader(userProfile, 'Mapa de Aprendizado')}
-        <div class="space-y-4">
+        
+        <div class="inset-group">
             ${allLektions.map((lektion, index) => {
                 const isCompleted = completed.includes(lektion.id);
                 const isInProgress = Object.keys(inProgress).includes(String(lektion.id));
                 const isLocked = index > 0 && !completed.includes(allLektions[index - 1].id);
+                
                 let icon = `<span class="text-xl">${index + 1}</span>`;
                 if (isLocked) icon = '<ion-icon name="lock-closed-outline" class="w-6 h-6"></ion-icon>';
                 else if (isCompleted) icon = '<ion-icon name="checkmark-outline" class="w-6 h-6"></ion-icon>';
                 else if (isInProgress) icon = '<ion-icon name="play-outline" class="w-6 h-6"></ion-icon>';
+                
                 return `
-                    <div id="lektion-${lektion.id}" class="card p-5 flex items-center gap-4 lektion-card ${isLocked ? 'locked' : 'cursor-pointer transition-transform transform hover:-translate-y-1'}" data-lektion-id="${lektion.id}">
+                    <div 
+                        id="lektion-${lektion.id}"
+                        class="inset-group-item lektion-card ${isLocked ? 'locked' : 'cursor-pointer'}"
+                        data-lektion-id="${lektion.id}"
+                    >
                         <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl" style="background-color: ${isLocked ? 'var(--border)' : (isCompleted ? '#28a745' : 'var(--primary)')}; color: white;">
                             ${icon}
                         </div>
