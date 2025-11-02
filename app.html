@@ -31,7 +31,7 @@
             --border-rgb: 216, 195, 232;
         }
 
-        /* ATUALIZAÇÃO: Aplicando a fonte Inter e o fundo do tema */
+        /* ATUALIZAÇÃO: Aplicando a fonte Inter */
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg);
@@ -47,7 +47,7 @@
             border-radius: 1rem; /* 16px */
         }
         
-        /* NOVO: Estilo "Inset Group" (para listas no Home, Map, Settings) */
+        /* Estilo "Inset Group" (para listas no Home, Map, Settings) */
         .inset-group {
             background-color: var(--card);
             border: 1px solid var(--border);
@@ -62,8 +62,6 @@
             gap: 1rem;
             padding: 1rem; /* 16px */
             background-color: var(--card); /* Fundo igual ao do grupo */
-            
-            /* Borda apenas entre os itens */
             border-bottom: 1px solid var(--border);
         }
 
@@ -72,11 +70,32 @@
         }
 
         /* Transição de clique no estilo iOS */
-        .inset-group-item:not(.locked):active {
+        .inset-group-item:not(.locked):active,
+        .account-header-item:active { /* ADICIONADO: :active para o item da conta */
             background-color: rgba(var(--text-rgb), 0.05);
             transition: background-color 0.1s ease-out;
         }
 
+        /* NOVO: Estilo para o item de header da conta */
+        .account-header-item {
+            cursor: pointer;
+        }
+        .account-header-item div {
+            flex-grow: 1; /* Faz o nome/email preencher o espaço */
+        }
+        .account-header-item ion-icon {
+            flex-shrink: 0; /* Impede que o ícone seja espremido */
+            margin-left: auto; /* Joga o ícone para a direita */
+        }
+
+        /* NOVO: Estilo para botões "destrutivos" (ex: Logout) */
+        .inset-group-item.destructive {
+            color: #ef4444; /* Cor vermelha (Tailwind red-500) */
+            font-weight: 500;
+        }
+        .inset-group-item.destructive:active {
+             background-color: rgba(239, 68, 68, 0.1); /* Fundo vermelho sutil no clique */
+        }
 
         .btn-primary {
             background-color: var(--primary);
@@ -91,7 +110,7 @@
             cursor: not-allowed;
         }
         
-        /* ATUALIZAÇÃO: Estilo de botão secundário (iOS) */
+        /* Estilo de botão secundário (iOS) */
         .btn-secondary {
             background-color: rgba(var(--text-rgb), 0.08); /* Fundo sutil */
             color: var(--text);
@@ -102,7 +121,7 @@
             background-color: rgba(var(--text-rgb), 0.12);
         }
 
-        /* ATUALIZAÇÃO: Estilo de Input (iOS) */
+        /* Estilo de Input (iOS) */
         .input-field {
             background-color: rgba(var(--text-rgb), 0.05); /* Fundo sutil */
             color: var(--text);
@@ -113,7 +132,6 @@
         .input-field:focus {
             outline: none;
             border-color: var(--primary);
-            /* Sombra de foco no estilo Apple */
             box-shadow: 0 0 0 3px rgba(var(--primary), 0.3);
         }
 
@@ -154,21 +172,18 @@
             opacity: 0.6;
         }
 
-        /* ATUALIZAÇÃO: Modal com "Liquid Glass" */
+        /* Modal com "Liquid Glass" (sem mudanças) */
         #modal-container {
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
         }
         
         #modal-content {
-            /* Efeito Glassmorphism */
-            background: rgba(var(--card-rgb), 0.7); /* Fundo do card, mas com 70% de opacidade */
+            background: rgba(var(--card-rgb), 0.7); 
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(var(--border-rgb), 0.5); /* Borda sutil */
-            color: var(--text); /* Cor do texto baseada no tema */
-            
-            /* Resto do CSS */
+            border: 1px solid rgba(var(--border-rgb), 0.5);
+            color: var(--text);
             max-width: 600px;
             width: calc(100% - 2rem);
             max-height: 85vh;
@@ -193,7 +208,6 @@
             background-color: #cbd5e0;
             transform: scale(1.1);
         }
-        /* Estilos para o conteúdo markdown dentro do modal */
         #modal-body h3 {
             font-size: 1.5rem;
             font-weight: 700;
