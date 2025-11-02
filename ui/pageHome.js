@@ -31,19 +31,21 @@ export function renderHome(userProfile, allLektions) {
 
     const progress = totalLektions > 0 ? (completedCount / totalLektions) * 100 : 0;
     
-    // NOVO: Pega a frase do dia
+    // Pega a frase do dia
     const fortune = getFortuneOfTheDay();
 
     page.innerHTML = `
         ${getPageHeader(userProfile, 'Início')}
         
-        <div class="fortune-box mb-6">
-            <div class="fortune-box-header">
-                <ion-icon name="sparkles-outline"></ion-icon>
-                <h3>Schicksal des Tages (Sorte do Dia)</h3>
+        <div class="inset-group mb-6">
+            <div class="inset-group-item">
+                <ion-icon name="sparkles-outline" class="w-6 h-6 flex-shrink-0" style="color: var(--primary);"></ion-icon>
+                <div class="flex-grow">
+                    <h3 class="font-bold" style="color: var(--primary);">Schicksal des Tages</h3>
+                    <p class="font-medium text-lg mt-2 leading-snug">${fortune.de}</p>
+                    <p class="text-secondary mt-1 text-sm italic">${fortune.pt}</p>
+                </div>
             </div>
-            <p class="fortune-de">${fortune.de}</p>
-            <p class="fortune-pt">${fortune.pt}</p>
         </div>
         
         <div class="inset-group p-6 mb-6">

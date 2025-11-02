@@ -31,9 +31,15 @@
             --border-rgb: 216, 195, 232;
         }
 
+        /* --- CORREÇÃO DO BUG DO BACKGROUND --- */
+        html {
+            background: var(--bg); /* Aplicado ao HTML */
+            min-height: 100vh; /* Garante que o gradiente preencha toda a altura */
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            /* background foi removido daqui */
             color: var(--text);
             transition: color 0.3s;
             padding-bottom: 100px;
@@ -103,7 +109,6 @@
         .inset-group-item:last-child {
             border-bottom: none;
         }
-        /* ATUALIZAÇÃO: 'account-header-item' agora é um 'a' (link) */
         .inset-group-item:not(.locked):active,
         a.account-header-item:active {
             background-color: rgba(var(--text-rgb), 0.05);
@@ -192,7 +197,6 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(var(--primary), 0.3);
         }
-        /* NOVO: Foco no input de perfil */
         #profile-name-input:focus {
             outline: none;
             box-shadow: 0 0 0 2px var(--primary);
@@ -425,41 +429,8 @@
             display: none; /* Começa escondido */
         }
 
-        /* --- NOVO: Estilos para Sorte do Dia --- */
-        .fortune-box {
-            /* Inspirado no Orkut */
-            background-color: rgba(var(--primary), 0.05);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1rem;
-        }
-        .fortune-box-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
-        .fortune-box-header ion-icon {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        .fortune-box-header h3 {
-            font-weight: 700;
-            color: var(--primary);
-        }
-        .fortune-box .fortune-de {
-            font-weight: 500;
-            font-size: 1.1rem;
-            line-height: 1.5;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-        .fortune-box .fortune-pt {
-            font-size: 0.9rem;
-            color: var(--text);
-            opacity: 0.7;
-            line-height: 1.4;
-        }
+        /* --- REMOVIDO: Estilos .fortune-box --- */
+        
     </style>
 
 </head>
@@ -523,8 +494,6 @@
     <script src="themes.js"></script>
     <script src="grammarExplanations.js"></script>
     <script src="exercisesData.js"></script>
-    <script type="module" src="data/fortunes.js"></script> 
-    
     <script type="module" src="main.js"></script> 
 </body>
 </html>
