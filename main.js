@@ -13,17 +13,21 @@ let userId = null;
 let userProfile = {};
 let profileUnsubscribe = () => {};
 
-// Dados estáticos
-const allLektions = window.exercisesData || [];
-const allGrammar = window.grammarExplanations || {};
-const baseThemes = window.baseThemes || {};
-const accentColors = window.accentColors || {};
-// NOVO: Carrega os dados dos artigos
-const allArticleWords = window.articleData || [];
+// !! CONSTANTES MOVIDAS DAQUI !!
+// As constantes de dados (allLektions, allArticleWords, etc.)
+// foram movidas para dentro de initApp() e handleRouting()
+// para garantir que window.articleData já exista.
 
 // --- Inicialização ---
 
 function initApp() {
+    // !! DADOS CARREGADOS AQUI !!
+    const allLektions = window.exercisesData || [];
+    const allGrammar = window.grammarExplanations || {};
+    const baseThemes = window.baseThemes || {};
+    const accentColors = window.accentColors || {};
+    const allArticleWords = window.articleData || [];
+    
     initThemeService(baseThemes, accentColors);
     initLiquidNav();
 
@@ -73,6 +77,12 @@ function handleRouting() {
     const subpath = parts[1] || null;
     
     if (path === 'menu') return;
+
+    // !! DADOS CARREGADOS AQUI TAMBÉM !!
+    // Garante que o router sempre tenha os dados mais recentes da window
+    const allLektions = window.exercisesData || [];
+    const baseThemes = window.baseThemes || {};
+    const accentColors = window.accentColors || {};
 
     router(path, subpath, userProfile, allLektions, baseThemes, accentColors);
 }
