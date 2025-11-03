@@ -3,15 +3,14 @@ import { hideModal } from './modal.js';
 import { updateNavLinks } from './navigation.js';
 import { renderHome } from './pageHome.js';
 import { renderMap } from './pageMap.js';
-// NOVO: Importa o mapa de lições
 import { renderLessonMap } from './pageLessons.js'; 
 import { renderProgress } from './pageProgress.js';
 import { renderSettings, renderThemeSettings } from './pageSettings.js';
 import { renderReview } from './pageReview.js'; 
 import { renderProfileSettings } from './pageProfile.js';
 import { renderExercisePage } from '../exerciseService.js'; 
-// NOVO: Importa o treinador
-import { renderArticleTrainer } from './pageArticleTrainer.js';
+// ATUALIZAÇÃO: Importa do serviço, não da página
+import { renderCurrentTrainerState } from '../articleTrainerService.js';
 
 // ATUALIZAÇÃO: Adiciona 'lessons' e 'trainer'
 const pages = [
@@ -40,7 +39,6 @@ export function router(path, subpath, userProfile, allLektions, baseThemes, acce
     hideAllPages();
     
     // Atualiza o link da barra de navegação
-    // Rotas "filhas" como 'lessons' ou 'trainer' não terão link ativo na barra
     updateNavLinks(path);
 
     // Lógica de roteamento atualizada
@@ -53,7 +51,6 @@ export function router(path, subpath, userProfile, allLektions, baseThemes, acce
             showPage('map');
             renderMap(userProfile, allLektions); // O Hub de Seleção
             break;
-        // NOVO: Rota para o mapa de lições
         case 'lessons':
             showPage('lessons');
             renderLessonMap(userProfile, allLektions); // O Mapa de Lições
@@ -82,10 +79,10 @@ export function router(path, subpath, userProfile, allLektions, baseThemes, acce
             showPage('exercise');
             renderExercisePage(); 
             break;
-        // NOVO: Rota para o treinador
         case 'trainer':
             showPage('trainer');
-            renderArticleTrainer();
+            // ATUALIZAÇÃO: Chama a função correta
+            renderCurrentTrainerState(); 
             break;
         default:
             showPage('home');

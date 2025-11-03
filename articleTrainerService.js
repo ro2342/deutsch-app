@@ -10,6 +10,14 @@ let feedback = null;
 let stats = {};
 
 /**
+ * NOVO: Função que o router vai chamar.
+ * Renderiza a página com o estado atual do serviço.
+ */
+export function renderCurrentTrainerState() {
+    renderArticleTrainer(currentWord, feedback, stats);
+}
+
+/**
  * Inicializa o serviço com os dados estáticos.
  */
 export function initArticleTrainer(words) {
@@ -32,8 +40,8 @@ export function updateTrainerProfile(profile, uId) {
 export function startTrainer() {
     console.log("Iniciando Treinador de Artigos...");
     stats = userProfile.articleTrainingStats; // Carrega os stats atuais
-    pickNextWord();
-    window.location.hash = '#/trainer';
+    pickNextWord(); // Isso vai escolher a palavra e renderizar
+    window.location.hash = '#/trainer'; // Isso vai acionar o router
 }
 
 /**
