@@ -63,6 +63,14 @@ export function listenToProfile(userId, onProfileUpdate) {
         themeAccent: 'purple',  // ATUALIZADO
         name: 'Estudante',
         avatarUrl: ''
+        
+        // SUA NOVA FEATURE AQUI:
+    articleTrainingStats: {
+        streak: 0,
+        correctAnswers: 0,
+        totalAttempts: 0
+    }
+    
     };
 
     return onSnapshot(profileDocRef, (docSnap) => {
