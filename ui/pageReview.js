@@ -24,7 +24,7 @@ export function renderReview(userProfile, allLektions) {
     }
 
     page.innerHTML = `
-        ${getPageHeader(userProfile, 'Ponto de Revisão')}
+        ${getPageHeader('Ponto de Revisão', '#/home', 'Início')}
         
         <div class="inset-group p-6 mb-6 text-center">
             <h2 class="text-xl font-bold mb-2">Exercícios para Revisar</h2>

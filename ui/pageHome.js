@@ -35,7 +35,7 @@ export function renderHome(userProfile, allLektions) {
     const fortune = getFortuneOfTheDay();
 
     page.innerHTML = `
-        ${getPageHeader(userProfile, 'Início')}
+        ${getPageHeader('Início')}
         
         <div class="inset-group mb-6">
             <div class="inset-group-item">

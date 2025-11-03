@@ -92,14 +92,29 @@
             margin-bottom: 1.5rem;
         }
 
+        /* --- INÍCIO DA CORREÇÃO CSS --- */
         .inset-group-item {
             display: flex;
             align-items: center;
             gap: 1rem;
             padding: 1rem;
             background-color: var(--card);
-            border-bottom: 1px solid var(--border);
+            border-bottom: none; /* Borda original removida */
+            position: relative; /* Adicionado para o pseudo-elemento */
         }
+        
+        /* NOVA REGRA: Adiciona a linha de borda no estilo iOS */
+        .inset-group-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem; /* Alinha com o padding-left do item */
+            right: 0;  /* Vai até a borda direita */
+            height: 1px;
+            background-color: var(--border);
+        }
+        /* --- FIM DA CORREÇÃO CSS --- */
+
         .inset-group-item:last-child {
             border-bottom: none;
         }

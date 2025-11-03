@@ -11,7 +11,7 @@ export function renderSettings(userProfile, allThemes) { // allThemes não é ma
     const avatarUrl = userProfile.avatarUrl || `https://placehold.co/100x100/333/FFF?text=${userProfile.name.charAt(0)}`;
 
     page.innerHTML = `
-        <h1 class="ios-main-title">Ajustes</h1>
+        ${getPageHeader('Ajustes', '#/home', 'Início')}
 
         <div class="inset-group mb-6">
             <a href="#/settings/profile" class="inset-group-item account-header-item">

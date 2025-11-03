@@ -9,7 +9,7 @@ export function renderMap(userProfile, allLektions) {
     const inProgress = userProfile.inProgressLektions || {};
 
     if (allLektions.length === 0) { 
-        page.innerHTML = `${getPageHeader(userProfile, 'Mapa de Aprendizado')}
+        page.innerHTML = `${getPageHeader('Mapa de Aprendizado', '#/home', 'Início')}
             <div class="card p-6 text-center">
                 <h2 class="text-xl font-bold mb-4 text-red-500">Erro de Carregamento</h2>
                 <p class="text-secondary">Não foi possível carregar os dados das lições (<code>exercisesData.js</code>).</p>
@@ -18,7 +18,7 @@ export function renderMap(userProfile, allLektions) {
     }
     
     page.innerHTML = `
-        ${getPageHeader(userProfile, 'Mapa de Aprendizado')}
+        ${getPageHeader('Mapa de Aprendizado', '#/home', 'Início')}
         
         <div class="inset-group">
             ${allLektions.map((lektion, index) => {
