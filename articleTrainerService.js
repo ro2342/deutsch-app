@@ -14,7 +14,17 @@ let stats = {};
  * Renderiza a página com o estado atual do serviço.
  */
 export function renderCurrentTrainerState() {
-    renderArticleTrainer(currentWord, feedback, stats);
+    // VERIFICAÇÃO: Se não houver palavra (ex: refresh),
+    // mas os dados (allWords) já estiverem carregados,
+    // pegue uma nova palavra.
+    if (currentWord === null && allWords.length > 0) {
+        pickNextWord(); // Esta função já chama renderArticleTrainer
+    } else {
+        // Se currentWord não for nulo, ou se allWords
+        // ainda não estiver carregado, deixe o renderArticleTrainer
+        // mostrar o "Carregando..."
+        renderArticleTrainer(currentWord, feedback, stats);
+    }
 }
 
 /**
