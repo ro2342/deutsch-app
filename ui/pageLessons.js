@@ -1,5 +1,5 @@
 // ui/pageLessons.js
-// Este é o antigo "Mapa de Aprendizado", agora como uma sub-página.
+// (Este é o antigo pageMap.js, agora renomeado)
 
 import { getPageHeader } from './components.js';
 
@@ -60,5 +60,5 @@ export function renderLessonMap(userProfile, allLektions) {
             }).join('')}
         </div>
     `;
-    // Os listeners de clique são adicionados no main.js
+    // Os listeners de clique SÃO ADICIONADOS NO main.js
 }

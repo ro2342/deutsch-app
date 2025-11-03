@@ -1,62 +1,37 @@
 // ui/pageMap.js
+// ATUALIZADO: Esta página agora é o HUB de seleção de modo.
+
 import { getPageHeader } from './components.js';
 
 export function renderMap(userProfile, allLektions) {
     const page = document.getElementById('page-map');
     
-    // ATUALIZAÇÃO: Usa os novos objetos de stats
-    const stats = userProfile.lektionStats || {};
-    const inProgress = userProfile.inProgressLektions || {};
-
-    if (allLektions.length === 0) { 
-        page.innerHTML = `${getPageHeader('Mapa de Aprendizado', '#/home', 'Início')}
-            <div class="card p-6 text-center">
-                <h2 class="text-xl font-bold mb-4 text-red-500">Erro de Carregamento</h2>
-                <p class="text-secondary">Não foi possível carregar os dados das lições (<code>exercisesData.js</code>).</p>
-            </div>`;
-        return;
-    }
-    
     page.innerHTML = `
-        ${getPageHeader('Mapa de Aprendizado', '#/home', 'Início')}
+        ${getPageHeader('Mapa', '#/home', 'Início')}
         
-        <div class="inset-group">
-            ${allLektions.map((lektion, index) => {
-                const lektionStats = stats[lektion.id];
-                const isCompleted = lektionStats && lektionStats.completed;
-                const isInProgress = Object.keys(inProgress).includes(String(lektion.id));
-                // ATUALIZAÇÃO: Verifica o stats da lição anterior
-                const isLocked = index > 0 && !(stats[allLektions[index - 1].id]?.completed);
-                
-                let icon = `<span class="text-xl">${index + 1}</span>`;
-                if (isLocked) icon = '<ion-icon name="lock-closed-outline" class="w-6 h-6"></ion-icon>';
-                else if (isCompleted) icon = '<ion-icon name="checkmark-outline" class="w-6 h-6"></ion-icon>';
-                else if (isInProgress) icon = '<ion-icon name="play-outline" class="w-6 h-6"></ion-icon>';
-                
-                return `
-                    <div 
-                        id="lektion-${lektion.id}"
-                        class="inset-group-item lektion-card ${isLocked ? 'locked' : 'cursor-pointer'}"
-                        data-lektion-id="${lektion.id}"
-                    >
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl" 
-                             style="background-color: ${isLocked ? 'var(--border)' : (isCompleted ? '#28a745' : 'var(--primary)')}; color: white;">
-                            ${icon}
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold">${lektion.title}</h3>
-                            <p class="text-sm text-secondary">${lektion.topics.join(', ')}</p>
-                            ${isCompleted ? `
-                                <div class="font-medium text-sm mt-1" style="color: var(${lektionStats.correct === lektionStats.total ? 'primary' : 'accent'});">
-                                    ${lektionStats.correct} / ${lektionStats.total} Acertos
-                                </div>
-                            ` : ''}
-                        </div>
-                        ${!isLocked ? '<ion-icon name="chevron-forward-outline" class="w-6 h-6 text-secondary"></ion-icon>' : ''}
-                    </div>
-                `;
-            }).join('')}
+        <p class="text-lg text-secondary mb-8">
+            Escolha seu modo de estudo para hoje.
+        </p>
+        
+        <a href="#/lessons" id="go-to-lessons-btn" class="inset-group p-6 mb-6 flex items-center gap-6 cursor-pointer" 
+           style="text-decoration: none; color: var(--text);">
+            <ion-icon name="map-outline" class="w-16 h-16 flex-shrink-0" style="color: var(--primary);"></ion-icon>
+            <div class="flex-grow">
+                <h2 class="text-2xl font-bold mb-1">Lições Regulares</h2>
+                <p class="text-secondary">Siga o mapa de aprendizado, complete lições e ganhe pontos.</p>
+            </div>
+            <ion-icon name="chevron-forward-outline" class="w-8 h-8 text-secondary flex-shrink-0"></ion-icon>
+        </a>
+        
+        <div id="start-trainer-btn" class="inset-group p-6 mb-6 flex items-center gap-6 cursor-pointer">
+            <ion-icon name="albums-outline" class="w-16 h-16 flex-shrink-0" style="color: var(--accent);"></ion-icon>
+            <div class="flex-grow">
+                <h2 class="text-2xl font-bold mb-1">Treinador de Artigos</h2>
+                <p class="text-secondary">Pratique "Der, Die, Das" em um mini-jogo rápido de memorização.</p>
+            </div>
+            <ion-icon name="chevron-forward-outline" class="w-8 h-8 text-secondary flex-shrink-0"></ion-icon>
         </div>
     `;
-    // Os listeners de clique SÃO ADICIONADOS NO main.js
+    
+    // Os listeners de clique são tratados no main.js
 }
