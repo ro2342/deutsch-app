@@ -509,7 +509,7 @@ window.articleData = [
   { article: "Das", word: "Tanzen", translation: "a dança, o dançar", plural: "(sem plural)" },
   { article: "Das", word: "Lachen", translation: "o riso, o rir", plural: "(sem plural)" },
   { article: "Das", word: "Weinen", translation: "o choro, o chorar", plural: "(sem plural)" },
-  { article:G: "Das", word: "Denken", translation: "o pensamento, o pensar", plural: "(sem plural)" },
+  { article: "Das", word: "Denken", translation: "o pensamento, o pensar", plural: "(sem plural)" },
   { article: "Das", word: "Wissen", translation: "o saber, o conhecimento", plural: "(sem plural)" },
   { article: "Das", word: "Rauchen", translation: "o fumo, o fumar", plural: "(sem plural)" },
   { article: "Das", word: "Treffen", translation: "o encontro, o encontrar", plural: "die Treffen" },
