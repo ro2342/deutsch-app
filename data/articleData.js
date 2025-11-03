@@ -602,6 +602,3 @@ window.articleData = [
   { article: "Das", "word": "Wichtige", "translation": "o importante, a coisa importante", "plural": "(sem plural)" },
   { article: "Das", word: "Besondere", translation: "o especial, a coisa especial", plural: "(sem plural)" },
 ];
-
-}
-
