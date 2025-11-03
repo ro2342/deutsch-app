@@ -81,7 +81,7 @@ export function renderThemeSettings(userProfile, baseThemes, accentColors) {
                 const color = accentColors[colorKey];
                 const isSelected = colorKey === currentAccent;
                 return `
-                    <button class="inset-group-item" data-accent-color="${colorKey}">
+                    <button class="inset-group-item theme-option-item" data-accent-color="${colorKey}">
                         <span class="accent-color-option" style="--swatch-color: ${color.primary};">
                             <span>${color.name}</span>
                             ${isSelected ? '<ion-icon name="checkmark-outline"></ion-icon>' : ''}

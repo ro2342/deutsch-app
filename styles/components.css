@@ -1,0 +1,291 @@
+/* styles/components.css */
+
+/* --- Card e Inset Group --- */
+.card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem; /* 16px */
+}
+
+.inset-group {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.inset-group-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--card);
+    border-bottom: none; 
+    position: relative; 
+}
+
+.inset-group-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1rem; 
+    right: 0;  
+    height: 1px;
+    background-color: var(--border);
+}
+
+.inset-group-item:last-child {
+    border-bottom: none;
+}
+.inset-group-item:not(.locked):active,
+a.account-header-item:active {
+    background-color: rgba(var(--text-rgb), 0.05);
+    transition: background-color 0.1s ease-out;
+}
+
+a.account-header-item {
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text);
+}
+a.account-header-item div {
+    flex-grow: 1;
+}
+a.account-header-item ion-icon {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.inset-group-item.destructive {
+    color: #ef4444;
+    font-weight: 500;
+}
+.inset-group-item.destructive:active {
+     background-color: rgba(239, 68, 68, 0.1);
+}
+
+.inset-group-item.navigation-item {
+    justify-content: space-between;
+    cursor: pointer;
+    color: var(--text);
+    text-decoration: none;
+}
+.inset-group-item.navigation-item .item-value {
+    color: var(--text);
+    opacity: 0.6;
+}
+
+.lektion-card.locked {
+    opacity: 0.6;
+}
+
+/* --- Opções de Tema (Página de Ajustes) --- */
+.theme-option-item {
+    width: 100%;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: 500;
+}
+.theme-option-item ion-icon {
+    color: var(--primary);
+    font-size: 1.5rem; /* 24px */
+}
+
+.accent-color-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 500;
+}
+.accent-color-option::before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    border-radius: 99px;
+    background-color: var(--swatch-color, #ccc); 
+    border: 2px solid rgba(var(--text-rgb), 0.1);
+    margin-right: 1rem;
+}
+.accent-color-option ion-icon {
+    color: var(--primary);
+    font-size: 1.5rem; /* 24px */
+    margin-left: auto;
+}
+
+/* --- Botões e Inputs --- */
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    transition: all 0.2s ease;
+}
+.btn-primary:hover {
+    opacity: 0.85;
+}
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.btn-secondary {
+    background-color: rgba(var(--text-rgb), 0.08);
+    color: var(--text);
+    border: none;
+    transition: all 0.2s ease;
+}
+.btn-secondary:hover {
+    background-color: rgba(var(--text-rgb), 0.12);
+}
+.input-field {
+    background-color: rgba(var(--text-rgb), 0.05);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+}
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(var(--primary), 0.3);
+}
+#profile-name-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+/* --- Barra de Progresso --- */
+.progress-bar {
+    background-color: var(--border);
+}
+.progress-fill {
+    background: var(--primary);
+}
+
+/* --- Feedback de Exercício --- */
+.feedback {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.feedback.correct {
+    background-color: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+}
+.feedback.incorrect {
+    background-color: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+/* --- Modal --- */
+#modal-container {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+#modal-content {
+    background: rgba(var(--card-rgb), 0.7); 
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(var(--border-rgb), 0.5);
+    color: var(--text);
+    max-width: 600px;
+    width: calc(100% - 2rem);
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    position: relative;
+}
+#modal-close-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background-color: #e2e8f0;
+    color: #4a5568;
+    border-radius: 99px;
+    padding: 0.25rem;
+    transition: all 0.2s ease;
+}
+#modal-close-btn:hover {
+    background-color: #cbd5e0;
+    transform: scale(1.1);
+}
+#modal-body h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+}
+#modal-body strong {
+    font-weight: 700;
+    color: var(--text); 
+}
+#modal-body ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+/* --- Word Order (Exercício) --- */
+.answer-area {
+    min-height: 50px;
+    background-color: rgba(var(--text-rgb), 0.02);
+    border: 2px dashed var(--border);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.word-bank {
+    min-height: 50px;
+    padding: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+}
+.word-token {
+    padding: 0.5rem 1rem;
+    background-color: rgba(var(--text-rgb), 0.08);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+.word-token:hover {
+    background-color: rgba(var(--text-rgb), 0.12);
+    transform: translateY(-2px);
+}
+.answer-area .word-token {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+.word-bank .word-token.hidden {
+    opacity: 0.3;
+    pointer-events: none;
+}
+#reset-words-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-left: auto;
+    display: none;
+}

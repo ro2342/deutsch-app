@@ -1,0 +1,35 @@
+/* styles/layout.css */
+.ios-main-title {
+    font-size: 2.25rem; /* 36px */
+    font-weight: 700; /* bold */
+    padding-top: 1.5rem; /* 24px */
+    margin-bottom: 1.5rem; /* 24px */
+}
+
+.ios-subpage-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.5rem; /* 24px */
+    margin-bottom: 1.5rem; /* 24px */
+    position: relative;
+}
+.ios-subpage-header .back-link {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    font-size: 1.05rem; /* 17px */
+    text-decoration: none;
+    position: absolute;
+    left: 0;
+}
+.ios-subpage-header .back-link ion-icon {
+    font-size: 1.75rem; /* 28px */
+    margin-right: -4px;
+}
+.ios-subpage-header h2 {
+    font-size: 1.05rem; /* 17px */
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+}
