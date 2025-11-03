@@ -3,15 +3,20 @@ import { hideModal } from './modal.js';
 import { updateNavLinks } from './navigation.js';
 import { renderHome } from './pageHome.js';
 import { renderMap } from './pageMap.js';
+// NOVO: Importa o mapa de lições
+import { renderLessonMap } from './pageLessons.js'; 
 import { renderProgress } from './pageProgress.js';
 import { renderSettings, renderThemeSettings } from './pageSettings.js';
 import { renderReview } from './pageReview.js'; 
 import { renderProfileSettings } from './pageProfile.js';
 import { renderExercisePage } from '../exerciseService.js'; 
+// NOVO: Importa o treinador
+import { renderArticleTrainer } from './pageArticleTrainer.js';
 
+// ATUALIZAÇÃO: Adiciona 'lessons' e 'trainer'
 const pages = [
-    'home', 'map', 'progress', 'review', 'settings', 'exercise', 
-    'settings-theme', 'settings-profile'
+    'home', 'map', 'lessons', 'progress', 'review', 'settings', 'exercise', 
+    'settings-theme', 'settings-profile', 'trainer'
 ];
 
 function hideAllPages() {
@@ -28,22 +33,15 @@ function showPage(pageId) {
     }
 }
 
-/**
- * ATUALIZADO: O router agora recebe 'baseThemes' e 'accentColors'
- */
 export function router(path, subpath, userProfile, allLektions, baseThemes, accentColors) {
-    if (!userProfile) return; // Proteção
+    if (!userProfile) return; 
 
     hideModal();
     hideAllPages();
     
-    if (path === 'settings' && !subpath) {
-        updateNavLinks(path);
-    } else if (path !== 'settings') {
-         updateNavLinks(path);
-    } else {
-        updateNavLinks('settings');
-    }
+    // Atualiza o link da barra de navegação
+    // Rotas "filhas" como 'lessons' ou 'trainer' não terão link ativo na barra
+    updateNavLinks(path);
 
     // Lógica de roteamento atualizada
     switch (path) {
@@ -53,7 +51,12 @@ export function router(path, subpath, userProfile, allLektions, baseThemes, acce
             break;
         case 'map': 
             showPage('map');
-            renderMap(userProfile, allLektions); 
+            renderMap(userProfile, allLektions); // O Hub de Seleção
+            break;
+        // NOVO: Rota para o mapa de lições
+        case 'lessons':
+            showPage('lessons');
+            renderLessonMap(userProfile, allLektions); // O Mapa de Lições
             break;
         case 'progress': 
             showPage('progress');
@@ -66,20 +69,23 @@ export function router(path, subpath, userProfile, allLektions, baseThemes, acce
         case 'settings':
             if (subpath === 'theme') {
                 showPage('settings-theme');
-                // ATUALIZADO: Passa os novos objetos de tema
                 renderThemeSettings(userProfile, baseThemes, accentColors);
             } else if (subpath === 'profile') {
                 showPage('settings-profile');
                 renderProfileSettings(userProfile);
             } else {
                 showPage('settings');
-                // ATUALIZADO: Não precisa mais passar os temas para a pág. principal
                 renderSettings(userProfile);
             }
             break;
         case 'exercise': 
             showPage('exercise');
             renderExercisePage(); 
+            break;
+        // NOVO: Rota para o treinador
+        case 'trainer':
+            showPage('trainer');
+            renderArticleTrainer();
             break;
         default:
             showPage('home');

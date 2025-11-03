@@ -1,6 +1,8 @@
 // main.js - Ponto de entrada principal do App
 import { db, auth, setupAuthListener, listenToProfile, saveProfileData, signOutUser } from './firebaseService.js';
 import { initExerciseService, updateExerciseServiceProfile, startLektion, startReviewSession } from './exerciseService.js';
+// NOVO: Importa o novo serviço
+import { initArticleTrainer, updateTrainerProfile, startTrainer, checkArticle, pickNextWord } from './articleTrainerService.js';
 import { initThemeService, applyTheme } from './ui/theme.js';
 import { showModal, hideModal, showLoading, hidePageLoader, showPageLoaderError } from './ui/modal.js';
 import { initLiquidNav } from './ui/navigation.js';
@@ -11,46 +13,43 @@ let userId = null;
 let userProfile = {};
 let profileUnsubscribe = () => {};
 
-// Dados estáticos (carregados globalmente pelo app.html)
+// Dados estáticos
 const allLektions = window.exercisesData || [];
 const allGrammar = window.grammarExplanations || {};
-// ATUALIZADO: Passa ambos os objetos de tema
 const baseThemes = window.baseThemes || {};
 const accentColors = window.accentColors || {};
+// NOVO: Carrega os dados dos artigos
+const allArticleWords = window.articleData || [];
 
 // --- Inicialização ---
 
 function initApp() {
-    // 1. Inicializa serviços de UI
-    initThemeService(baseThemes, accentColors); // Passa ambos
+    initThemeService(baseThemes, accentColors);
     initLiquidNav();
 
-    // 2. Inicializa serviço de Exercício (com dados estáticos)
     initExerciseService(allLektions, allGrammar);
+    // NOVO: Inicializa o treinador
+    initArticleTrainer(allArticleWords); 
 
-    // 3. Configura o listener de autenticação
     setupAuthListener(onUserLoggedIn, onUserLoggedOut);
 }
 
 function onUserLoggedIn(uid) {
     userId = uid;
     
-    // 4. Ouve o perfil do usuário
     profileUnsubscribe = listenToProfile(userId, (profile) => {
         userProfile = profile;
         
-        // 5. Atualiza o exerciseService com os dados dinâmicos do perfil
+        // Atualiza ambos os serviços com o perfil
         updateExerciseServiceProfile(userProfile, userId);
+        updateTrainerProfile(userProfile, userId); 
 
-        // 6. ATUALIZADO: Aplica o tema com base e destaque
         applyTheme(userProfile.themeBase, userProfile.themeAccent);
         
-        // 7. Esconde o loader e inicia o roteador
         hidePageLoader();
-        handleRouting(); // Chama o roteador pela primeira vez
+        handleRouting(); 
     });
 
-    // 8. Configura listeners globais
     window.addEventListener('hashchange', handleRouting);
     window.addEventListener('popstate', handleRouting);
     addGlobalClickListeners();
@@ -75,7 +74,6 @@ function handleRouting() {
     
     if (path === 'menu') return;
 
-    // ATUALIZADO: Passa os novos objetos de tema para o roteador
     router(path, subpath, userProfile, allLektions, baseThemes, accentColors);
 }
 
@@ -84,7 +82,16 @@ function handleRouting() {
 function addGlobalClickListeners() {
     document.body.addEventListener('click', async (e) => {
         
-        // Listener para o Mapa -> Iniciar Lição
+        // --- Listeners do Modo de Estudo (agora em #/map) ---
+        // O listener de '#go-to-lessons-btn' não é necessário, pois é um link <a>
+        
+        const trainerBtn = e.target.closest('#start-trainer-btn');
+        if (trainerBtn) {
+            startTrainer(); // Inicia o treinador e navega para #/trainer
+            return;
+        }
+        
+        // --- Listeners do Mapa de Lições (em #/lessons) ---
         const lektionCard = e.target.closest('.lektion-card:not(.locked)');
         if (lektionCard) {
             const lektionId = parseInt(lektionCard.dataset.lektionId);
@@ -92,50 +99,52 @@ function addGlobalClickListeners() {
             return; 
         }
 
-        // Listener para a Página de Revisão -> Iniciar Sessão
+        // --- Listeners da Revisão ---
         const reviewBtn = e.target.closest('#start-review-btn');
         if (reviewBtn) {
             startReviewSession(); 
             return;
         }
 
-        // --- ATUALIZAÇÃO: Novos Listeners de Tema ---
+        // --- Listeners do Treinador de Artigos (em #/trainer) ---
+        const articleBtn = e.target.closest('.btn-article');
+        if (articleBtn) {
+            const chosenArticle = articleBtn.dataset.article;
+            checkArticle(chosenArticle); // Verifica a resposta
+            return;
+        }
         
-        // 1. Listener para MODO DE EXIBIÇÃO (Claro/Escuro)
+        const nextWordBtn = e.target.closest('#trainer-next-btn');
+        if (nextWordBtn) {
+            pickNextWord(); // Pega a próxima palavra
+            return;
+        }
+        
+        // --- Listeners de Ajustes ---
         const baseThemeBtn = e.target.closest('[data-base-theme]');
         if (baseThemeBtn) {
             const newBase = baseThemeBtn.dataset.baseTheme;
-            userProfile.themeBase = newBase; // Atualiza o perfil local
-            applyTheme(newBase, userProfile.themeAccent); // Aplica imediatamente
+            userProfile.themeBase = newBase;
+            applyTheme(newBase, userProfile.themeAccent);
             try {
-                // Salva só o 'base' no Firebase
                 saveProfileData(userId, { themeBase: newBase });
-            } catch (err) {
-                showModal("Erro", "Não foi possível salvar seu tema.");
-            }
-            handleRouting(); // Re-renderiza a página de temas
+            } catch (err) { showModal("Erro", "Não foi possível salvar seu tema."); }
+            handleRouting();
             return;
         }
 
-        // 2. Listener para COR DE DESTAQUE
         const accentColorBtn = e.target.closest('[data-accent-color]');
         if (accentColorBtn) {
             const newAccent = accentColorBtn.dataset.accentColor;
-            userProfile.themeAccent = newAccent; // Atualiza o perfil local
-            applyTheme(userProfile.themeBase, newAccent); // Aplica imediatamente
+            userProfile.themeAccent = newAccent;
+            applyTheme(userProfile.themeBase, newAccent);
             try {
-                // Salva só o 'accent' no Firebase
                 saveProfileData(userId, { themeAccent: newAccent });
-            } catch (err) {
-                showModal("Erro", "Não foi possível salvar sua cor.");
-            }
-            handleRouting(); // Re-renderiza a página de temas
+            } catch (err) { showModal("Erro", "Não foi possível salvar sua cor."); }
+            handleRouting();
             return;
         }
         
-        // --- Fim dos Listeners de Tema ---
-
-        // Listener para salvar o perfil
         const saveProfileBtn = e.target.closest('#save-profile-btn');
         if (saveProfileBtn) {
             const newName = document.getElementById('profile-name-input').value;
@@ -143,12 +152,11 @@ function addGlobalClickListeners() {
                 showModal("Erro", "O nome não pode ficar em branco.");
                 return;
             }
-            
             showLoading("Salvando...");
             try {
                 await saveProfileData(userId, { name: newName.trim() });
                 hideModal();
-                window.location.hash = '#/settings'; // Volta para Ajustes
+                window.location.hash = '#/settings';
             } catch (error) {
                 hideModal();
                 showModal("Erro ao Salvar", error.message);
@@ -156,7 +164,6 @@ function addGlobalClickListeners() {
             return;
         }
 
-        // Listener para Configurações -> Logout
         const logoutBtn = e.target.closest('#logout-btn');
         if (logoutBtn) {
             showLoading("Saindo...");

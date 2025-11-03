@@ -53,24 +53,23 @@ export async function signOutUser() {
 export function listenToProfile(userId, onProfileUpdate) {
     const profileDocRef = doc(db, "users", userId, "profile", "data");
     
-    // Perfil Padrão com as novas propriedades de tema
+    // Perfil Padrão com a NOVA FEATURE
     const defaultProfile = {
         score: 0,
         inProgressLektions: {},
         lektionStats: {}, 
         failedExercises: {}, 
-        themeBase: 'light',     // ATUALIZADO
-        themeAccent: 'purple',  // ATUALIZADO
+        themeBase: 'light',
+        themeAccent: 'purple',
         name: 'Estudante',
-        avatarUrl: ''
+        avatarUrl: '',
         
-        // SUA NOVA FEATURE AQUI:
-    articleTrainingStats: {
-        streak: 0,
-        correctAnswers: 0,
-        totalAttempts: 0
-    }
-    
+        // CORREÇÃO: Adiciona os dados zerados para a nova feature
+        articleTrainingStats: {
+            streak: 0,
+            correctAnswers: 0,
+            totalAttempts: 0
+        }
     };
 
     return onSnapshot(profileDocRef, (docSnap) => {
@@ -79,6 +78,7 @@ export function listenToProfile(userId, onProfileUpdate) {
 
         if (docSnap.exists()) {
             const data = docSnap.data();
+            // Mescla o padrão com os dados do usuário
             userProfile = {
                 ...defaultProfile, 
                 ...data, 
@@ -139,36 +139,32 @@ export async function getProfileDataOnce(userId) {
     // Garante que o perfil retornado tenha os campos padrão
     const data = docSnap.data() || {};
     const profile = {
+        // Define o padrão aqui também para consistência
         score: 0,
         inProgressLektions: {},
         lektionStats: {},
         failedExercises: {},
         themeBase: 'light',
         themeAccent: 'purple',
+        articleTrainingStats: {
+            streak: 0,
+            correctAnswers: 0,
+            totalAttempts: 0
+        },
         ...data
     };
     
-    // Lógica de migração: se o 'theme' antigo existir, converte-o
+    // Lógica de migração de tema (mantida)
     if (profile.theme) {
-        // Tenta mapear o tema antigo para uma cor de destaque
         const themeMap = {
-            'taylorSwift': 'beige',
-            'fearless': 'yellow',
-            'speakNow': 'purple',
-            'red': 'red',
-            'nineteen89': 'lightBlue',
-            'reputation': 'gray',
-            'lover': 'pink',
-            'folklore': 'gray',
-            'evermore': 'brown',
-            'midnights': 'darkBlue',
-            'ttpd': 'gray',
-            'showgirl': 'orange'
+            'taylorSwift': 'beige', 'fearless': 'yellow', 'speakNow': 'purple',
+            'red': 'red', 'nineteen89': 'lightBlue', 'reputation': 'gray',
+            'lover': 'pink', 'folklore': 'gray', 'evermore': 'brown',
+            'midnights': 'darkBlue', 'ttpd': 'gray', 'showgirl': 'orange'
         };
         profile.themeAccent = themeMap[profile.theme] || 'purple';
-        // Define o modo base com base no tema antigo
         profile.themeBase = (profile.theme === 'dark' || profile.theme === 'reputation' || profile.theme === 'midnights') ? 'dark' : 'light';
-        delete profile.theme; // Remove o campo antigo
+        delete profile.theme; 
     }
     
     return profile;

@@ -289,3 +289,43 @@ a.account-header-item ion-icon {
     margin-left: auto;
     display: none;
 }
+
+/* --- NOVO: Estilos do Treinador de Artigos --- */
+.btn-article {
+    background-color: rgba(var(--text-rgb), 0.08);
+    color: var(--text);
+    border: 2px solid var(--border);
+    transition: all 0.2s ease;
+}
+.btn-article:not(:disabled):hover {
+    background-color: rgba(var(--text-rgb), 0.15);
+    transform: translateY(-2px);
+}
+.btn-article.correct {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+.btn-article.incorrect {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+.btn-article.disabled {
+    opacity: 0.3;
+}
+
+.trainer-feedback-box {
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.trainer-feedback-box.visible {
+    visibility: visible;
+    opacity: 1;
+    max-height: 300px;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+}
